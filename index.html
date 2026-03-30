@@ -707,6 +707,32 @@
         font-weight: 800;
         color: var(--accent1);
       }
+      .access-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .access-card {
+        background: var(--card);
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 8px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: 800;
+      }
+      .access-card small {
+        display: block;
+        color: var(--sub);
+        font-weight: 600;
+        margin-top: 4px;
+        font-size: 0.72rem;
+      }
+      .access-card.selected {
+        border-color: var(--accent2);
+        box-shadow: 0 0 12px var(--shadow);
+      }
 
       @keyframes shake {
         0%,
@@ -787,28 +813,65 @@
         <p class="start-desc">
           Aprenda os atalhos mais usados do computador de um jeito divertido!
         </p>
-        <div class="setup-panel">
+        <p
+          style="
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--sub);
+            margin-bottom: 10px;
+          "
+        >
+          Perfil de acesso:
+        </p>
+        <div class="access-grid">
+          <div
+            class="access-card selected"
+            data-access="player"
+            onclick="selectAccessMode('player', this)"
+          >
+            Jogador
+            <small>Entrar na turma com código</small>
+          </div>
+          <div
+            class="access-card"
+            data-access="teacher"
+            onclick="selectAccessMode('teacher', this)"
+          >
+            Professor
+            <small>Criar turma e gerenciar ranking</small>
+          </div>
+          <div
+            class="access-card"
+            data-access="practice"
+            onclick="selectAccessMode('practice', this)"
+          >
+            Aprendizado
+            <small>Prática livre sem usuário</small>
+          </div>
+        </div>
+
+        <div id="player-area">
+          <div class="setup-panel">
           <div class="panel-title">Jogador</div>
           <div class="form-grid">
             <input
               class="form-input"
               id="username-input"
-              placeholder="Seu nome de usuário"
+              placeholder="Nome (opcional)"
               maxlength="24"
             />
             <input
               class="form-input"
               id="classroom-input"
-              placeholder="Código da turma (ex: LAB-A)"
+              placeholder="Código da turma"
               maxlength="24"
             />
           </div>
           <div class="btn-row" style="justify-content: flex-start; margin-top: 8px">
             <button class="mini-btn" onclick="savePlayerProfile()">
-              Salvar jogador
-            </button>
-            <button class="mini-btn" onclick="refreshRankings()">
-              Atualizar ranking
+              Entrar na turma
             </button>
           </div>
           <div class="panel-status" id="player-status">
@@ -835,63 +898,73 @@
           <div class="panel-status" id="supabase-status">
             Configure para habilitar ranking em tempo real.
           </div>
-        </div>
+          </div>
 
-        <div class="ranking-panel">
-          <div class="panel-title">Ranking</div>
-          <div class="ranking-grid">
-            <div class="rank-box">
-              <div class="rank-head">Global</div>
-              <div class="rank-list" id="global-ranking-list"></div>
+          <div class="ranking-panel">
+            <div class="panel-title">Ranking</div>
+            <div class="ranking-grid">
+              <div class="rank-box">
+                <div class="rank-head">Global</div>
+                <div class="rank-list" id="global-ranking-list"></div>
+              </div>
+              <div class="rank-box">
+                <div class="rank-head">Por Turma</div>
+                <div class="rank-list" id="class-ranking-list"></div>
+              </div>
             </div>
-            <div class="rank-box">
-              <div class="rank-head">Por Turma</div>
-              <div class="rank-list" id="class-ranking-list"></div>
+            <div class="panel-status" id="ranking-status">
+              Carregando ranking...
             </div>
           </div>
-          <div class="panel-status" id="ranking-status">
-            Carregando ranking...
+        </div>
+
+        <div id="teacher-area" style="display: none">
+          <div class="teacher-panel">
+            <details open>
+              <summary>Modo Professor</summary>
+              <div style="margin-top: 10px">
+                <div class="form-grid">
+                  <input
+                    class="form-input"
+                    id="teacher-class-name"
+                    placeholder="Nome da turma"
+                    maxlength="32"
+                  />
+                  <input
+                    class="form-input"
+                    id="teacher-class-code"
+                    placeholder="Código único da turma"
+                    maxlength="24"
+                  />
+                </div>
+                <div class="btn-row" style="justify-content: flex-start; margin-top: 8px">
+                  <button class="mini-btn" onclick="teacherCreateClassroom()">
+                    Criar turma
+                  </button>
+                  <button class="mini-btn" onclick="teacherLoadClassRanking()">
+                    Ver ranking da turma
+                  </button>
+                  <button class="mini-btn warn" onclick="teacherResetClassroomScore()">
+                    Resetar pontuação
+                  </button>
+                </div>
+                <div class="rank-box" style="margin-top: 10px">
+                  <div class="rank-head">Alunos da turma</div>
+                  <div class="rank-list" id="teacher-ranking-list"></div>
+                </div>
+                <div class="panel-status" id="teacher-status">
+                  Crie uma turma ou informe o código para gerenciar competições.
+                </div>
+              </div>
+            </details>
           </div>
         </div>
 
-        <div class="teacher-panel">
-          <details>
-            <summary>Modo Professor</summary>
-            <div style="margin-top: 10px">
-              <div class="form-grid">
-                <input
-                  class="form-input"
-                  id="teacher-class-name"
-                  placeholder="Nome da turma"
-                  maxlength="32"
-                />
-                <input
-                  class="form-input"
-                  id="teacher-class-code"
-                  placeholder="Código único da turma"
-                  maxlength="24"
-                />
-              </div>
-              <div class="btn-row" style="justify-content: flex-start; margin-top: 8px">
-                <button class="mini-btn" onclick="teacherCreateClassroom()">
-                  Criar turma
-                </button>
-                <button class="mini-btn" onclick="teacherLoadClassRanking()">
-                  Ver ranking da turma
-                </button>
-                <button class="mini-btn warn" onclick="teacherResetClassroomScore()">
-                  Resetar pontuação
-                </button>
-              </div>
-              <div class="rank-box" style="margin-top: 10px">
-                <div class="rank-head">Alunos da turma</div>
-                <div class="rank-list" id="teacher-ranking-list"></div>
-              </div>
-              <div class="panel-status" id="teacher-status">
-                Crie uma turma ou informe o código para gerenciar competições.
-              </div>
-            </div>
-          </details>
+        <div id="practice-area" class="setup-panel" style="display: none">
+          <div class="panel-title">Modo Aprendizado e Prática</div>
+          <div class="panel-status" style="margin-top: 0">
+            Neste modo você pratica livremente, sem login e sem turma.
+          </div>
         </div>
 
         <p
@@ -1329,8 +1402,11 @@
       const FLAWLESS_MULTIPLIER = 0.3;
       const COMBO_MULTIPLIER = 0.2;
 
-      let supabaseUrl = window.SUPABASE_URL || "";
-      let supabaseAnonKey = window.SUPABASE_ANON_KEY || "";
+      let supabaseUrl =
+        window.SUPABASE_URL || "https://qnhleysiikivflgkzwwy.supabase.co";
+      let supabaseAnonKey =
+        window.SUPABASE_ANON_KEY ||
+        "sb_publishable_epBf5EO28QFGTRbpkGaIg_9F0cfpNj";
 
       let supabaseClient = null;
       let rankingChannel = null;
@@ -1341,6 +1417,7 @@
       };
 
       let mode = "shortcut";
+      let accessMode = "player";
       let difficulty = "easy";
       let questions = [];
       let current = 0;
@@ -1378,6 +1455,25 @@
           .querySelectorAll(".mode-card[data-mode]")
           .forEach((c) => c.classList.remove("selected"));
         el.classList.add("selected");
+      }
+
+      function selectAccessMode(m, el) {
+        accessMode = m;
+        document
+          .querySelectorAll(".access-card[data-access]")
+          .forEach((c) => c.classList.remove("selected"));
+        el.classList.add("selected");
+        updateAccessLayout();
+      }
+
+      function updateAccessLayout() {
+        const playerArea = document.getElementById("player-area");
+        const teacherArea = document.getElementById("teacher-area");
+        const practiceArea = document.getElementById("practice-area");
+        if (!playerArea || !teacherArea || !practiceArea) return;
+        playerArea.style.display = accessMode === "player" ? "block" : "none";
+        teacherArea.style.display = accessMode === "teacher" ? "block" : "none";
+        practiceArea.style.display = accessMode === "practice" ? "block" : "none";
       }
 
       function selectDifficulty(d, el) {
@@ -1422,10 +1518,8 @@
       }
 
       function loadSupabaseConfigFromStorage() {
-        if (!supabaseUrl) supabaseUrl = localStorage.getItem("supabase_url") || "";
-        if (!supabaseAnonKey) {
-          supabaseAnonKey = localStorage.getItem("supabase_anon_key") || "";
-        }
+        supabaseUrl = localStorage.getItem("supabase_url") || supabaseUrl;
+        supabaseAnonKey = localStorage.getItem("supabase_anon_key") || supabaseAnonKey;
         const urlInput = document.getElementById("supabase-url-input");
         const keyInput = document.getElementById("supabase-key-input");
         if (urlInput) urlInput.value = supabaseUrl;
@@ -1503,16 +1597,20 @@
       }
 
       async function savePlayerProfile() {
-        const username = document.getElementById("username-input").value.trim();
+        let username = document.getElementById("username-input").value.trim();
         const turma = document.getElementById("classroom-input").value.trim().toUpperCase();
 
-        if (!username || !turma) {
+        if (!turma) {
           setStatus(
             "player-status",
-            "Informe nome de usuário e código da turma.",
+            "Informe o código da turma para entrar.",
             "var(--accent3)",
           );
           return;
+        }
+        if (!username) {
+          username = `Aluno-${Math.floor(Math.random() * 9000 + 1000)}`;
+          document.getElementById("username-input").value = username;
         }
 
         currentPlayer = {
@@ -1726,6 +1824,7 @@
       }
 
       async function submitScoreToRanking() {
+        if (accessMode === "practice") return;
         if (!currentPlayer.id || !currentPlayer.username || !currentPlayer.turma) return;
         if (!supabaseClient) return;
 
@@ -1758,10 +1857,10 @@
       }
 
       function startGame() {
-        if (!currentPlayer.username || !currentPlayer.turma) {
+        if (accessMode !== "practice" && (!currentPlayer.username || !currentPlayer.turma)) {
           setStatus(
             "player-status",
-            "Antes de jogar, salve usuário e turma para registrar pontuação.",
+            "Para registrar pontuação, entre na turma com seu código.",
             "var(--accent2)",
           );
         }
@@ -2137,6 +2236,7 @@
         loadPlayerFromStorage();
         loadSupabaseConfigFromStorage();
         initSupabase();
+        updateAccessLayout();
         await refreshRankings();
       }
 
