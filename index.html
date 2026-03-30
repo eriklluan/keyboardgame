@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0f0e17;
+    --card: #1a1a2e;
+    --accent1: #ff6b6b;
+    --accent2: #ffd93d;
+    --accent3: #6bcb77;
+    --accent4: #4d96ff;
+    --text: #fffffe;
+    --sub: #a7a9be;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* floating bg dots */
+  .bg-dot {
+    position: fixed;
+    border-radius: 50%;
+    opacity: 0.07;
+    animation: float 8s infinite ease-in-out;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+  }
+
+  #app {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ====== TELA INICIAL ====== */
+  #screen-start {
+    text-align: center;
+  }
+  .logo {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3.2rem;
+    line-height: 1;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--accent2), var(--accent1));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(255,107,107,0.4));
+  }
+  .logo span { display: block; font-size: 1.1rem; color: var(--sub); font-family: 'Nunito', sans-serif; -webkit-text-fill-color: var(--sub); filter: none; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px;}
+
+  .keyboard-icon {
+    font-size: 4rem;
+    margin: 20px 0;
+    display: block;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
+  }
+
+  .start-desc {
+    color: var(--sub);
+    font-size: 1rem;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 14px 40px;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+    letter-spacing: 1px;
+  }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary { background: linear-gradient(135deg, var(--accent1), #ff9a3c); color: #fff; }
+  .btn-secondary { background: var(--card); color: var(--sub); border: 2px solid #2a2a4a; margin-top: 10px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1rem; }
+
+  .mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .mode-card {
+    background: var(--card);
+    border: 2px solid #2a2a4a;
+    border-radius: 16px;
+    padding: 18px 12px;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+  }
+  .mode-card:hover { border-color: var(--accent4); transform: translateY(-2px); }
+  .mode-card.selected { border-color: var(--accent2); background: rgba(255,217,61,0.08); }
+  .mode-card .mode-icon { font-size: 2rem; display: block; margin-bottom: 6px; }
+  .mode-card .mode-title { font-weight: 800; font-size: .95rem; display: block; }
+  .mode-card .mode-sub { font-size: .75rem; color: var(--sub); margin-top: 3px; display: block; }
+
+  /* ====== TELA JOGO ====== */
+  #screen-game { display: none; }
+
+  .hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .hud-box {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 8px 18px;
+    text-align: center;
+    min-width: 80px;
+  }
+  .hud-label { font-size: .65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--sub); }
+  .hud-value { font-family: 'Fredoka One', cursive; font-size: 1.6rem; line-height: 1.1; }
+  #score-val { color: var(--accent2); }
+  #lives-val { color: var(--accent1); }
+  #progress-val { color: var(--accent4); }
+
+  .timer-bar-wrap {
+    width: 100%;
+    height: 8px;
+    background: #1a1a2e;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .timer-bar {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--accent3), var(--accent4));
+    transition: width .1s linear, background .5s;
+  }
+
+  .challenge-card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 32px 28px;
+    text-align: center;
+    border: 2px solid #2a2a4a;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .challenge-card::before {
+    content:'';
+    position:absolute;
+    top:-60px;right:-60px;
+    width:180px;height:180px;
+    border-radius:50%;
+    background: radial-gradient(circle, rgba(77,150,255,0.08), transparent 70%);
+  }
+
+  .challenge-mode-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(255,217,61,0.15);
+    border: 1px solid rgba(255,217,61,0.3);
+    color: var(--accent2);
+    font-size: .65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  .challenge-emoji { font-size: 3rem; margin-bottom: 12px; display: block; }
+  .challenge-text {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .challenge-hint { color: var(--sub); font-size: .9rem; }
+
+  /* key display */
+  .key-display {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .key {
+    background: #12122a;
+    border: 2px solid #3a3a6a;
+    border-bottom-width: 4px;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: var(--text);
+    min-width: 44px;
+    text-align: center;
+    transition: all .15s;
+  }
+  .key.active {
+    border-bottom-width: 2px;
+    transform: translateY(2px);
+    background: var(--accent4);
+    border-color: var(--accent4);
+  }
+  .key-plus { color: var(--sub); font-size: 1.2rem; }
+
+  /* feedback overlay */
+  .feedback {
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .1s;
+    z-index: 10;
+  }
+  .feedback.show { opacity: 1; }
+  .feedback.correct { background: rgba(107,203,119,0.92); color: #fff; }
+  .feedback.wrong { background: rgba(255,107,107,0.92); color: #fff; }
+  .feedback .fb-sub { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; margin-top: 4px; opacity: .9; }
+
+  /* options (quiz mode) */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .opt-btn {
+    background: var(--card);
+    border: 2px solid #2a2a4a;
+    border-radius: 14px;
+    padding: 14px 10px;
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: .9rem;
+    cursor: pointer;
+    transition: all .15s;
+    text-align: center;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent4); transform: translateY(-2px); }
+  .opt-btn.correct { background: rgba(107,203,119,0.2); border-color: var(--accent3); color: var(--accent3); }
+  .opt-btn.wrong { background: rgba(255,107,107,0.2); border-color: var(--accent1); color: var(--accent1); }
+
+  /* ====== TELA FIM ====== */
+  #screen-end { display: none; text-align: center; }
+
+  .result-icon { font-size: 5rem; display: block; margin-bottom: 16px; animation: bounce 1.5s infinite; }
+  .result-title { font-family: 'Fredoka One', cursive; font-size: 2.5rem; background: linear-gradient(135deg, var(--accent2), var(--accent1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .result-sub { color: var(--sub); margin-bottom: 24px; font-size: 1rem; }
+
+  .stats-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .stat-box {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 16px 20px;
+    min-width: 100px;
+    border: 2px solid #2a2a4a;
+  }
+  .stat-val { font-family: 'Fredoka One', cursive; font-size: 2rem; display: block; }
+  .stat-lbl { font-size: .72rem; text-transform: uppercase; letter-spacing: 2px; color: var(--sub); }
+
+  .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  @keyframes shake {
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-8px)}
+    40%{transform:translateX(8px)}
+    60%{transform:translateX(-5px)}
+    80%{transform:translateX(5px)}
+  }
+  .shake { animation: shake .4s ease; }
+
+  @keyframes pop {
+    0%{transform:scale(1)}
+    50%{transform:scale(1.05)}
+    100%{transform:scale(1)}
+  }
+  .pop { animation: pop .2s ease; }
+</style>
+</head>
+<body>
+
+<!-- bg decorations -->
+<div class="bg-dot" style="width:300px;height:300px;background:var(--accent4);top:-80px;right:-80px;animation-duration:9s"></div>
+<div class="bg-dot" style="width:200px;height:200px;background:var(--accent1);bottom:-50px;left:-60px;animation-duration:7s;animation-delay:-3s"></div>
+
+<div id="app">
+
+  <!-- TELA INÍCIO -->
+  <div id="screen-start">
+    <div class="logo">
+      KeyGame
+      <span>⌨ treino de atalhos</span>
+    </div>
+    <span class="keyboard-icon">🎮</span>
+    <p class="start-desc">Aprenda os atalhos mais usados do computador de um jeito divertido!</p>
+
+    <p style="font-weight:800;font-size:.9rem;text-transform:uppercase;letter-spacing:2px;color:var(--sub);margin-bottom:12px">Escolha o modo:</p>
+    <div class="mode-grid">
+      <div class="mode-card selected" data-mode="shortcut" onclick="selectMode('shortcut',this)">
+        <span class="mode-icon">⚡</span>
+        <span class="mode-title">Atalho Rápido</span>
+        <span class="mode-sub">Veja a ação, pressione o atalho</span>
+      </div>
+      <div class="mode-card" data-mode="quiz" onclick="selectMode('quiz',this)">
+        <span class="mode-icon">🧠</span>
+        <span class="mode-title">Quiz</span>
+        <span class="mode-sub">Veja o atalho, escolha o que faz</span>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="startGame()">▶ Jogar!</button>
+  </div>
+
+  <!-- TELA JOGO -->
+  <div id="screen-game">
+    <div class="hud">
+      <div class="hud-box"><div class="hud-label">Pontos</div><div class="hud-value" id="score-val">0</div></div>
+      <div class="hud-box"><div class="hud-label">Fase</div><div class="hud-value" id="progress-val">1/10</div></div>
+      <div class="hud-box"><div class="hud-label">Vidas</div><div class="hud-value" id="lives-val">❤❤❤</div></div>
+    </div>
+
+    <div class="timer-bar-wrap">
+      <div class="timer-bar" id="timer-bar" style="width:100%"></div>
+    </div>
+
+    <div class="challenge-card" id="challenge-card">
+      <div class="feedback" id="feedback"></div>
+      <span class="challenge-mode-badge" id="mode-badge">Pressione o atalho</span>
+      <span class="challenge-emoji" id="challenge-emoji">📋</span>
+      <div class="challenge-text" id="challenge-text">Copiar</div>
+      <div class="challenge-hint" id="challenge-hint">Pressione o atalho correto no teclado</div>
+      <div class="key-display" id="key-display"></div>
+    </div>
+
+    <!-- options para quiz mode -->
+    <div class="options-grid" id="options-grid" style="display:none"></div>
+  </div>
+
+  <!-- TELA FIM -->
+  <div id="screen-end">
+    <span class="result-icon" id="result-icon">🏆</span>
+    <div class="result-title" id="result-title">Incrível!</div>
+    <p class="result-sub" id="result-sub">Você acertou todos!</p>
+    <div class="stats-row">
+      <div class="stat-box"><span class="stat-val" id="end-score" style="color:var(--accent2)">0</span><span class="stat-lbl">Pontos</span></div>
+      <div class="stat-box"><span class="stat-val" id="end-acc" style="color:var(--accent3)">0%</span><span class="stat-lbl">Acertos</span></div>
+      <div class="stat-box"><span class="stat-val" id="end-combo" style="color:var(--accent4)">0x</span><span class="stat-lbl">Combo máx</span></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="startGame()">🔄 Jogar de Novo</button>
+      <button class="btn btn-secondary" onclick="showStart()">🏠 Início</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SHORTCUTS = [
+  { key:'c', ctrl:true, label:'Ctrl + C', action:'Copiar', emoji:'📋', hint:'Copia o texto ou arquivo selecionado' },
+  { key:'v', ctrl:true, label:'Ctrl + V', action:'Colar', emoji:'📌', hint:'Cola o que foi copiado' },
+  { key:'z', ctrl:true, label:'Ctrl + Z', action:'Desfazer', emoji:'↩️', hint:'Desfaz a última ação' },
+  { key:'s', ctrl:true, label:'Ctrl + S', action:'Salvar', emoji:'💾', hint:'Salva o arquivo atual' },
+  { key:'a', ctrl:true, label:'Ctrl + A', action:'Selecionar Tudo', emoji:'🖱️', hint:'Seleciona todo o conteúdo' },
+  { key:'x', ctrl:true, label:'Ctrl + X', action:'Recortar', emoji:'✂️', hint:'Remove e copia o conteúdo selecionado' },
+  { key:'p', ctrl:true, label:'Ctrl + P', action:'Imprimir', emoji:'🖨️', hint:'Abre o menu de impressão' },
+  { key:'t', ctrl:true, label:'Ctrl + T', action:'Nova Aba', emoji:'🗂️', hint:'Abre uma nova aba no navegador' },
+  { key:'w', ctrl:true, label:'Ctrl + W', action:'Fechar Aba', emoji:'❌', hint:'Fecha a aba atual do navegador' },
+  { key:'f4', alt:true, label:'Alt + F4', action:'Fechar Janela', emoji:'🚪', hint:'Fecha o programa aberto' },
+  { key:'b', ctrl:true, label:'Ctrl + B', action:'Negrito', emoji:'𝐁', hint:'Deixa o texto em negrito' },
+  { key:'u', ctrl:true, label:'Ctrl + U', action:'Sublinhar', emoji:'U̲', hint:'Sublinha o texto selecionado' },
+  { key:'n', ctrl:true, label:'Ctrl + N', action:'Novo', emoji:'📄', hint:'Cria um novo documento' },
+  { key:'o', ctrl:true, label:'Ctrl + O', action:'Abrir', emoji:'📂', hint:'Abre um arquivo existente' },
+  { key:'f', ctrl:true, label:'Ctrl + F', action:'Buscar', emoji:'🔍', hint:'Busca texto na página' },
+  { key:'r', ctrl:true, label:'Ctrl + R', action:'Recarregar', emoji:'🔄', hint:'Recarrega a página' },
+  { key:'tab', ctrl:true, label:'Ctrl + Tab', action:'Próxima Aba', emoji:'➡️', hint:'Vai para a próxima aba' },
+  { key:'tab', alt:true, label:'Alt + Tab', action:'Alternar Janelas', emoji:'🔄', hint:'Alterna entre janelas abertas' },
+  { key:'F5', special:true, label:'F5', action:'Recarregar', emoji:'🔄', hint:'Recarrega a página' },
+  { key:'F11', special:true, label:'F11', action:'Tela Cheia', emoji:'🖥️', hint:'Entra ou sai do modo tela cheia' },
+  { key:'t', ctrl:true, shift:true, label:'Ctrl + Shift + T', action:'Reabrir Aba', emoji:'🔄', hint:'Reabre a última aba fechada' },
+  { key:'d', ctrl:true, label:'Ctrl + D', action:'Favoritos', emoji:'⭐', hint:'Adiciona a página aos favoritos' },
+  { key:'i', ctrl:true, shift:true, label:'Ctrl + Shift + I', action:'Inspecionar', emoji:'🔧', hint:'Abre as ferramentas de desenvolvedor' },
+  { key:'l', ctrl:true, label:'Ctrl + L', action:'Barra de Endereço', emoji:'🔗', hint:'Foca na barra de endereço' },
+];
+
+let mode = 'shortcut';
+let questions = [];
+let current = 0;
+let score = 0;
+let lives = 3;
+let combo = 0;
+let maxCombo = 0;
+let correct = 0;
+let timerInterval = null;
+let timeLeft = 0;
+let TIME_LIMIT = 8;
+let answered = false;
+let keysDown = {};
+
+function selectMode(m, el) {
+  mode = m;
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function shuffle(a) { return [...a].sort(() => Math.random() - .5); }
+
+function startGame() {
+  score = 0; lives = 3; combo = 0; maxCombo = 0; correct = 0; current = 0; answered = false;
+  questions = shuffle(SHORTCUTS).slice(0, 10);
+  showScreen('game');
+  loadQuestion();
+  document.addEventListener('keydown', onKeyDown);
+  document.addEventListener('keyup', onKeyUp);
+}
+
+function showStart() {
+  showScreen('start');
+  document.removeEventListener('keydown', onKeyDown);
+  document.removeEventListener('keyup', onKeyUp);
+  clearInterval(timerInterval);
+}
+
+function showScreen(s) {
+  document.getElementById('screen-start').style.display = s==='start' ? 'block' : 'none';
+  document.getElementById('screen-game').style.display = s==='game' ? 'block' : 'none';
+  document.getElementById('screen-end').style.display = s==='end' ? 'block' : 'none';
+}
+
+function loadQuestion() {
+  if (current >= questions.length || lives <= 0) { endGame(); return; }
+  answered = false;
+  keysDown = {};
+  const q = questions[current];
+
+  document.getElementById('progress-val').textContent = `${current+1}/10`;
+  document.getElementById('score-val').textContent = score;
+  updateLivesDisplay();
+
+  const badge = document.getElementById('mode-badge');
+  const emojiEl = document.getElementById('challenge-emoji');
+  const textEl = document.getElementById('challenge-text');
+  const hintEl = document.getElementById('challenge-hint');
+  const keyDisplay = document.getElementById('key-display');
+  const optGrid = document.getElementById('options-grid');
+  const feedback = document.getElementById('feedback');
+  feedback.className = 'feedback';
+
+  clearInterval(timerInterval);
+
+  if (mode === 'shortcut') {
+    badge.textContent = '⚡ Pressione o atalho';
+    emojiEl.textContent = q.emoji;
+    textEl.textContent = q.action;
+    hintEl.textContent = q.hint;
+    keyDisplay.style.display = 'none';
+    optGrid.style.display = 'none';
+    TIME_LIMIT = 8;
+  } else {
+    // quiz: show shortcut, pick action
+    badge.textContent = '🧠 Qual é essa ação?';
+    emojiEl.textContent = '⌨️';
+    textEl.textContent = q.label;
+    hintEl.textContent = 'Escolha a resposta correta';
+    keyDisplay.style.display = 'none';
+    optGrid.style.display = 'grid';
+    TIME_LIMIT = 12;
+
+    // build options
+    const others = SHORTCUTS.filter(s => s !== q);
+    const opts = shuffle([q, ...shuffle(others).slice(0,3)]);
+    optGrid.innerHTML = '';
+    opts.forEach(o => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.textContent = o.emoji + ' ' + o.action;
+      btn.onclick = () => answerQuiz(o === q, btn, optGrid);
+      optGrid.appendChild(btn);
+    });
+  }
+
+  // timer
+  timeLeft = TIME_LIMIT;
+  const bar = document.getElementById('timer-bar');
+  bar.style.width = '100%';
+  bar.style.background = 'linear-gradient(90deg, #6bcb77, #4d96ff)';
+  timerInterval = setInterval(() => {
+    timeLeft -= 0.1;
+    const pct = Math.max(0, (timeLeft / TIME_LIMIT) * 100);
+    bar.style.width = pct + '%';
+    if (pct < 40) bar.style.background = 'linear-gradient(90deg, #ffd93d, #ff6b6b)';
+    if (pct < 15) bar.style.background = 'var(--accent1)';
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      if (!answered) timeUp();
+    }
+  }, 100);
+}
+
+function onKeyDown(e) {
+  if (answered || mode !== 'shortcut') return;
+  keysDown[e.key.toLowerCase()] = true;
+
+  // prevent default for our shortcuts
+  const q = questions[current];
+  const needCtrl = q.ctrl;
+  const needAlt = q.alt;
+  const needShift = q.shift;
+  const needSpecial = q.special;
+  if ((needCtrl && e.ctrlKey) || (needAlt && e.altKey) || (needShift && e.shiftKey) || needSpecial) e.preventDefault();
+
+  // check
+  const hasCtrl = e.ctrlKey;
+  const hasAlt = e.altKey;
+  const hasShift = e.shiftKey;
+  const k = e.key.toLowerCase();
+
+  const q2 = questions[current];
+  let match = false;
+  if (q2.ctrl && hasCtrl && !q2.shift && !q2.alt && k === q2.key) match = true;
+  if (q2.alt && hasAlt && !q2.ctrl && !q2.shift && (k === q2.key || e.key === 'F4')) match = true;
+  if (q2.ctrl && q2.shift && hasCtrl && hasShift && !q2.alt && k === q2.key) match = true;
+  if (q2.special && !hasCtrl && !hasAlt && !hasShift && e.key === q2.key) match = true;
+
+  if (match) {
+    handleResult(true);
+  } else if ((hasCtrl || hasAlt || hasShift) && k !== 'control' && k !== 'alt' && k !== 'shift') {
+    handleResult(false);
+  }
+}
+
+function onKeyUp(e) {
+  delete keysDown[e.key.toLowerCase()];
+}
+
+function answerQuiz(isCorrect, btn, grid) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+
+  Array.from(grid.children).forEach(b => {
+    b.disabled = true;
+    const q = questions[current];
+    if (b.textContent.includes(q.action)) b.classList.add('correct');
+  });
+  if (!isCorrect) btn.classList.add('wrong');
+
+  handleResult(isCorrect, true);
+}
+
+function handleResult(isCorrect, fromQuiz=false) {
+  answered = true;
+  clearInterval(timerInterval);
+  const q = questions[current];
+
+  if (isCorrect) {
+    correct++;
+    combo++;
+    if (combo > maxCombo) maxCombo = combo;
+    const bonus = combo >= 3 ? 20 : combo >= 2 ? 10 : 0;
+    score += 10 + bonus;
+    showFeedback(true, combo >= 2 ? `+${10+bonus} 🔥 Combo x${combo}!` : '✓ Correto! +10');
+    document.getElementById('score-val').textContent = score;
+    if (mode === 'shortcut') highlightKeys(q);
+  } else {
+    combo = 0;
+    lives--;
+    updateLivesDisplay();
+    showFeedback(false, mode === 'shortcut' ? `✗ Era ${q.label}` : '✗ Errou!');
+    document.getElementById('challenge-card').classList.add('shake');
+    setTimeout(() => document.getElementById('challenge-card').classList.remove('shake'), 400);
+  }
+
+  setTimeout(() => {
+    current++;
+    if (lives <= 0 || current >= questions.length) { endGame(); }
+    else loadQuestion();
+  }, 1200);
+}
+
+function timeUp() {
+  if (answered) return;
+  answered = true;
+  lives--;
+  combo = 0;
+  updateLivesDisplay();
+  const q = questions[current];
+  showFeedback(false, `⏰ Tempo! Era ${q.label}`);
+  setTimeout(() => {
+    current++;
+    if (lives <= 0 || current >= questions.length) endGame();
+    else loadQuestion();
+  }, 1400);
+}
+
+function highlightKeys(q) {
+  const kd = document.getElementById('key-display');
+  kd.style.display = 'flex';
+  const parts = q.label.split(' + ');
+  kd.innerHTML = parts.map((p, i) =>
+    `<span class="key active">${p}</span>${i < parts.length-1 ? '<span class="key-plus">+</span>' : ''}`
+  ).join('');
+}
+
+function showFeedback(ok, msg) {
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback show ' + (ok ? 'correct' : 'wrong');
+  fb.innerHTML = (ok ? '🎉' : '😅') + `<span class="fb-sub">${msg}</span>`;
+}
+
+function updateLivesDisplay() {
+  const icons = ['❤','❤','❤'].map((h,i) => i < lives ? '❤' : '🖤').join('');
+  document.getElementById('lives-val').textContent = icons;
+}
+
+function endGame() {
+  clearInterval(timerInterval);
+  document.removeEventListener('keydown', onKeyDown);
+  document.removeEventListener('keyup', onKeyUp);
+
+  const acc = questions.length > 0 ? Math.round((correct / Math.min(current, questions.length)) * 100) || 0 : 0;
+  document.getElementById('end-score').textContent = score;
+  document.getElementById('end-acc').textContent = acc + '%';
+  document.getElementById('end-combo').textContent = maxCombo + 'x';
+
+  let icon, title, sub;
+  if (acc >= 90) { icon='🏆'; title='Incrível!'; sub='Você é um mestre dos atalhos! 🎉'; }
+  else if (acc >= 70) { icon='🌟'; title='Muito bom!'; sub='Continue praticando para chegar ao topo!'; }
+  else if (acc >= 50) { icon='💪'; title='Bom trabalho!'; sub='Você está no caminho certo!'; }
+  else { icon='📚'; title='Continue tentando!'; sub='A prática leva à perfeição!'; }
+
+  document.getElementById('result-icon').textContent = icon;
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-sub').textContent = sub;
+  showScreen('end');
+}
+</script>
+</body>
+</html>
