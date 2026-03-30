@@ -1,69 +1,49 @@
-# KeyGame - Treino de Atalhos de Teclado
+﻿⌨️ Keyboard Learning App | "Programe seu Futuro" Project
+An interactive web application designed to boost digital literacy and help beginner students master essential keyboard commands and shortcuts.
 
-Um jogo divertido e interativo para aprender os atalhos de teclado mais essenciais do computador, com um toque retrô dos anos 2000!
+🎯 Project Overview
+This software was born from a real-world need identified during my time as a scholarship instructor for the Programe seu Futuro (Unijuí) extension project.
 
-## Funcionalidades
+As we transitioned the curriculum to MIT App Inventor, I noticed that students often struggled with the creative flow due to a lack of familiarity with keyboard shortcuts. This tool serves as a pedagogical bridge, providing a gamified way for students to memorize commands that are essential for coding and productivity.
 
-- **Dois modos de jogo**: Atalho Rápido e Quiz
-- **Três níveis de dificuldade**: Fácil, Médio e Difícil
-- **Mais de 40 atalhos incluídos**, incluindo botões do mouse
-- **Design retrô anos 2000** com gradientes vibrantes e animações exageradas
+🤖 AI-Assisted Development
+This project serves as a case study for AI-Driven Development (AIDD). I leveraged the industry’s leading generative tools to accelerate the prototyping phase while maintaining high code quality:
 
-## Atalhos Incluídos
+Claude & ChatGPT: Utilized for architecting the event-handling logic and structuring the project’s core components.
 
-### Fácil
+GitHub Copilot: Integrated into the workflow for real-time code completion and boilerplate optimization.
 
-- Ctrl + C (Copiar), Ctrl + V (Colar), Ctrl + Z (Desfazer), etc.
-- Clique Esquerdo, Clique Direito, Scroll
+Engineering Note: As a Software Engineering student, my role was that of a System Architect. I was responsible for drafting the prompts, validating the AI-generated logic, implementing accessibility standards, and ensuring the final product met the specific educational requirements of the Unijuí labs.
 
-### Médio
+🚀 Tech Stack & Deployment
+Frontend: HTML5, CSS3, and Vanilla JavaScript.
 
-- Ctrl + T (Nova Aba), Alt + Tab (Alternar Janelas), etc.
-- Duplo Clique, Clique do Meio
+Infrastructure: Automated CI/CD deployment via Vercel.
 
-### Difícil
+Versioning: Git & GitHub.
 
-- Ctrl + 1 (Primeira Aba), Esc (Cancelar), Delete (Excluir), etc.
+✨ Key Features
+Interactive Practice: Drills for essential shortcuts like Ctrl+C, Ctrl+V, Alt+Tab, and system navigation.
 
-## Como Jogar
+Instant Visual Feedback: Real-time responses to help students correct errors and reinforce learning.
 
-1. Escolha o modo de jogo (Atalho Rápido ou Quiz)
-2. Escolha a dificuldade (Fácil, Médio ou Difícil)
-3. No modo "Atalho Rápido", veja a ação e pressione o atalho correto
-4. No modo "Quiz", veja o atalho e escolha a ação correspondente
-5. Ganhe pontos e combos por acertos consecutivos
-6. Tenha cuidado com o tempo e as vidas!
-7. Agora com 15 perguntas por jogo!
+Lab-Ready Design: Optimized for the desktop environments found in university computer labs.
 
-## Deploy na Vercel
+🔗 Live Demo
+Check out the application in action: https://keyboardgame-main.vercel.app
 
-Este projeto é um site estático e pode ser facilmente implantado na Vercel.
+👨‍💻 About Me
+Erik
 
-1. Faça upload do código para um repositório Git (GitHub, GitLab, etc.)
-2. Conecte o repositório à Vercel
-3. A Vercel detectará automaticamente o `index.html` e fará o deploy
+Software Engineering Student (3rd Semester).
 
-## Deploy na Vercel
+Scholarship Holder at the "Programe seu Futuro" Extension Project - Unijuí.
 
-Este projeto é um site estático e pode ser facilmente implantado na Vercel.
+Focus: Full Stack Development & AI Innovation.
 
-1. Faça upload do código para um repositório Git (GitHub, GitLab, etc.)
-2. Conecte o repositório à Vercel
-3. A Vercel detectará automaticamente o `index.html` e fará o deploy
+Pro-Tips for your GitHub Profile:
+The "About" Section: In the right-hand sidebar of your GitHub repo, add a short description: "Pedagogical web app for the Programe seu Futuro project (Unijuí). Built with AI-assisted engineering (Claude/GPT/Copilot)."
 
-## Desenvolvimento Local
+Add Topics: Add tags to your repository like javascript, education, ai-assisted, software-engineering, and unijui. This makes your project easier to find.
 
-Para rodar localmente:
-
-```bash
-npm install
-npm run dev
-```
-
-Ou simplesmente abra o `index.html` no navegador.
-
-## Tecnologias
-
-- HTML5
-- CSS3
-- JavaScript (Vanilla)
+Screenshot: Don't forget to add a screenshot or a small GIF of the app running. It makes the README much more engaging!
