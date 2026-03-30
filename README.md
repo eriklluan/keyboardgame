@@ -1,69 +1,99 @@
-# KeyGame - Treino de Atalhos de Teclado
+﻿# ⌨️ Keyboard Learning App | "Programe seu Futuro" Project
 
-Um jogo divertido e interativo para aprender os atalhos de teclado mais essenciais do computador, com um toque retrô dos anos 2000!
+An interactive web application designed to boost digital literacy and help beginner students master essential keyboard commands and shortcuts.
 
-## Funcionalidades
+## 🎯 Project Overview
+This software was born from a real-world need identified during my time as a scholarship instructor for the **Programe seu Futuro (Unijuí)** extension project.
 
-- **Dois modos de jogo**: Atalho Rápido e Quiz
-- **Três níveis de dificuldade**: Fácil, Médio e Difícil
-- **Mais de 40 atalhos incluídos**, incluindo botões do mouse
-- **Design retrô anos 2000** com gradientes vibrantes e animações exageradas
+As we transitioned the curriculum to MIT App Inventor, I noticed that students often struggled with creative flow due to limited familiarity with keyboard shortcuts. This tool works as a pedagogical bridge, providing a gamified experience to memorize commands that are essential for coding and productivity.
 
-## Atalhos Incluídos
+## 🤖 AI-Assisted Development
+This project is a practical case study in **AI-Driven Development (AIDD)**.
 
-### Fácil
+- **Claude & ChatGPT**: Used for architecture decisions, event-flow design, and interaction logic.
+- **GitHub Copilot**: Used for real-time completions, repetitive code acceleration, and refactoring support.
 
-- Ctrl + C (Copiar), Ctrl + V (Colar), Ctrl + Z (Desfazer), etc.
-- Clique Esquerdo, Clique Direito, Scroll
+**Engineering Note:** As a Software Engineering student, I acted as the **System Architect**. I drafted prompts, validated AI-generated logic, implemented accessibility-minded flows, and aligned the final system with the educational context of Unijuí labs.
 
-### Médio
+## 🚀 Tech Stack & Deployment
+- **Frontend:** HTML5, CSS3, Vanilla JavaScript
+- **Backend:** Vercel Serverless Functions (`/api/*`)
+- **Database:** Supabase (PostgreSQL)
+- **Infrastructure:** Vercel CI/CD
+- **Versioning:** Git & GitHub
 
-- Ctrl + T (Nova Aba), Alt + Tab (Alternar Janelas), etc.
-- Duplo Clique, Clique do Meio
+## ✨ Key Features
+- Interactive shortcut practice (Windows/system + editing commands)
+- Real-time visual feedback for correct/incorrect actions
+- Difficulty-based scoring model:
+  - Easy = 10 points
+  - Medium = 25 points
+  - Hard = 50 points
+- Bonus mechanics:
+  - Flawless bonus (no mistakes)
+  - Combo bonus (streaks)
+- Light penalties for mistakes/timeouts
 
-### Difícil
+### Access Profiles
+- **Player Mode**
+  - Simple classroom join via code
+  - Username optional (auto-generated if empty)
+  - Score persistence in ranking
+- **Teacher Mode**
+  - Create classroom with unique code
+  - View classroom ranking
+  - Reset classroom score for new competitions
+- **Practice Mode**
+  - Learn and practice without user/classroom requirements
 
-- Ctrl + 1 (Primeira Aba), Esc (Cancelar), Delete (Excluir), etc.
+### Rankings
+- Global ranking (all users)
+- Classroom ranking (filtered by class code)
+- Ordered by score (descending)
 
-## Como Jogar
+## 🧱 Backend Architecture
+The frontend communicates with server-side endpoints:
 
-1. Escolha o modo de jogo (Atalho Rápido ou Quiz)
-2. Escolha a dificuldade (Fácil, Médio ou Difícil)
-3. No modo "Atalho Rápido", veja a ação e pressione o atalho correto
-4. No modo "Quiz", veja o atalho e escolha a ação correspondente
-5. Ganhe pontos e combos por acertos consecutivos
-6. Tenha cuidado com o tempo e as vidas!
-7. Agora com 15 perguntas por jogo!
+- `POST /api/player/join`
+- `POST /api/player/score`
+- `GET /api/rankings?turma=CODE`
+- `POST /api/teacher/classroom`
+- `POST /api/teacher/reset`
 
-## Deploy na Vercel
+This keeps privileged database operations outside the browser.
 
-Este projeto é um site estático e pode ser facilmente implantado na Vercel.
+## 🗃️ Database Schema
+See: `supabase/schema.sql`
 
-1. Faça upload do código para um repositório Git (GitHub, GitLab, etc.)
-2. Conecte o repositório à Vercel
-3. A Vercel detectará automaticamente o `index.html` e fará o deploy
+Core entities:
+- `users (id, username, pontos, turma, created_at, updated_at)`
+- `turmas (id, codigo, nome, created_at)`
 
-## Deploy na Vercel
+Includes indexes, trigger for `updated_at`, and base RLS read policies.
 
-Este projeto é um site estático e pode ser facilmente implantado na Vercel.
+## ⚙️ Environment Variables (Vercel)
+Configure in Vercel Project Settings:
 
-1. Faça upload do código para um repositório Git (GitHub, GitLab, etc.)
-2. Conecte o repositório à Vercel
-3. A Vercel detectará automaticamente o `index.html` e fará o deploy
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `TEACHER_ACCESS_KEY` (optional but recommended)
 
-## Desenvolvimento Local
+## 🔗 Live Demo
+Check out the application in action:
 
-Para rodar localmente:
+**https://keyboardgame-main.vercel.app**
 
-```bash
-npm install
-npm run dev
-```
+## 👨‍💻 About Me
+**Erik**
 
-Ou simplesmente abra o `index.html` no navegador.
+- Software Engineering Student (3rd Semester)
+- Scholarship Holder at the "Programe seu Futuro" Extension Project - Unijuí
+- Focus: Full Stack Development & AI Innovation
 
-## Tecnologias
-
-- HTML5
-- CSS3
-- JavaScript (Vanilla)
+## 📌 GitHub Profile Tips
+- **About Section suggestion:**
+  - *Pedagogical web app for the Programe seu Futuro project (Unijuí). Built with AI-assisted engineering (Claude/GPT/Copilot).*
+- **Repository topics:**
+  - `javascript`, `education`, `ai-assisted`, `software-engineering`, `unijui`, `supabase`, `vercel`
+- **Media:**
+  - Add at least one screenshot or short GIF of gameplay/ranking flow.
