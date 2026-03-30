@@ -91,9 +91,11 @@ Check out the application in action:
 - Focus: Full Stack Development & AI Innovation
 
 ## 📌 GitHub Profile Tips
-- **About Section suggestion:**
-  - *Pedagogical web app for the Programe seu Futuro project (Unijuí). Built with AI-assisted engineering (Claude/GPT/Copilot).*
-- **Repository topics:**
-  - `javascript`, `education`, `ai-assisted`, `software-engineering`, `unijui`, `supabase`, `vercel`
-- **Media:**
-  - Add at least one screenshot or short GIF of gameplay/ranking flow.
+### About Section suggestion:
+Pedagogical web app for the Programe seu Futuro project (Unijuí). Built with AI-assisted engineering (Claude/GPT/Copilot).
+
+### Repository topics:
+javascript, education, ai-assisted, software-engineering, unijui, supabase, vercel
+
+### Media:
+Add at least one screenshot or short GIF of gameplay/ranking flow.
