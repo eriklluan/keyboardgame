@@ -47,3 +47,31 @@ The "About" Section: In the right-hand sidebar of your GitHub repo, add a short 
 Add Topics: Add tags to your repository like javascript, education, ai-assisted, software-engineering, and unijui. This makes your project easier to find.
 
 Screenshot: Don't forget to add a screenshot or a small GIF of the app running. It makes the README much more engaging!
+
+## Backend Setup (Supabase)
+
+Add these two global variables before the main script in `index.html`:
+
+```html
+<script>
+  window.SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
+  window.SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+</script>
+```
+
+Create the tables in Supabase SQL Editor:
+
+```sql
+create table if not exists turmas (
+  id text primary key,
+  codigo text unique not null,
+  nome text not null
+);
+
+create table if not exists users (
+  id text primary key,
+  username text not null,
+  pontos integer not null default 0,
+  turma text not null references turmas(codigo) on update cascade
+);
+```

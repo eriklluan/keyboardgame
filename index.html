@@ -608,6 +608,105 @@
         justify-content: center;
         flex-wrap: wrap;
       }
+      .setup-panel,
+      .ranking-panel,
+      .teacher-panel {
+        background: rgba(0, 0, 0, 0.2);
+        border: 2px solid var(--border);
+        border-radius: 14px;
+        padding: 14px;
+        margin-bottom: 14px;
+        text-align: left;
+      }
+      .panel-title {
+        color: var(--accent2);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .form-input {
+        width: 100%;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 12px;
+        background: #0f1030;
+        color: var(--text);
+        font-family: "Nunito", sans-serif;
+        font-size: 0.9rem;
+      }
+      .form-input::placeholder {
+        color: #8f95c9;
+      }
+      .mini-btn {
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        background: var(--card);
+        color: var(--text);
+        font-weight: 800;
+        font-size: 0.85rem;
+        padding: 10px 12px;
+        cursor: pointer;
+      }
+      .mini-btn:hover {
+        border-color: var(--accent1);
+      }
+      .mini-btn.warn {
+        border-color: var(--accent3);
+        color: var(--accent3);
+      }
+      .panel-status {
+        margin-top: 8px;
+        font-size: 0.82rem;
+        color: var(--sub);
+      }
+      .ranking-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .rank-box {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 8px;
+      }
+      .rank-head {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--accent4);
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+      .rank-list {
+        max-height: 170px;
+        overflow-y: auto;
+        font-size: 0.84rem;
+      }
+      .rank-row {
+        display: grid;
+        grid-template-columns: 24px 1fr auto;
+        gap: 8px;
+        padding: 4px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .rank-row:last-child {
+        border-bottom: 0;
+      }
+      .rank-row b {
+        color: var(--accent2);
+      }
+      .teacher-panel details summary {
+        cursor: pointer;
+        font-weight: 800;
+        color: var(--accent1);
+      }
 
       @keyframes shake {
         0%,
@@ -688,6 +787,91 @@
         <p class="start-desc">
           Aprenda os atalhos mais usados do computador de um jeito divertido!
         </p>
+        <div class="setup-panel">
+          <div class="panel-title">Jogador</div>
+          <div class="form-grid">
+            <input
+              class="form-input"
+              id="username-input"
+              placeholder="Seu nome de usuário"
+              maxlength="24"
+            />
+            <input
+              class="form-input"
+              id="classroom-input"
+              placeholder="Código da turma (ex: LAB-A)"
+              maxlength="24"
+            />
+          </div>
+          <div class="btn-row" style="justify-content: flex-start; margin-top: 8px">
+            <button class="mini-btn" onclick="savePlayerProfile()">
+              Salvar jogador
+            </button>
+            <button class="mini-btn" onclick="refreshRankings()">
+              Atualizar ranking
+            </button>
+          </div>
+          <div class="panel-status" id="player-status">
+            Defina usuário e turma para entrar no ranking.
+          </div>
+        </div>
+
+        <div class="ranking-panel">
+          <div class="panel-title">Ranking</div>
+          <div class="ranking-grid">
+            <div class="rank-box">
+              <div class="rank-head">Global</div>
+              <div class="rank-list" id="global-ranking-list"></div>
+            </div>
+            <div class="rank-box">
+              <div class="rank-head">Por Turma</div>
+              <div class="rank-list" id="class-ranking-list"></div>
+            </div>
+          </div>
+          <div class="panel-status" id="ranking-status">
+            Carregando ranking...
+          </div>
+        </div>
+
+        <div class="teacher-panel">
+          <details>
+            <summary>Modo Professor</summary>
+            <div style="margin-top: 10px">
+              <div class="form-grid">
+                <input
+                  class="form-input"
+                  id="teacher-class-name"
+                  placeholder="Nome da turma"
+                  maxlength="32"
+                />
+                <input
+                  class="form-input"
+                  id="teacher-class-code"
+                  placeholder="Código único da turma"
+                  maxlength="24"
+                />
+              </div>
+              <div class="btn-row" style="justify-content: flex-start; margin-top: 8px">
+                <button class="mini-btn" onclick="teacherCreateClassroom()">
+                  Criar turma
+                </button>
+                <button class="mini-btn" onclick="teacherLoadClassRanking()">
+                  Ver ranking da turma
+                </button>
+                <button class="mini-btn warn" onclick="teacherResetClassroomScore()">
+                  Resetar pontuação
+                </button>
+              </div>
+              <div class="rank-box" style="margin-top: 10px">
+                <div class="rank-head">Alunos da turma</div>
+                <div class="rank-list" id="teacher-ranking-list"></div>
+              </div>
+              <div class="panel-status" id="teacher-status">
+                Crie uma turma ou informe o código para gerenciar competições.
+              </div>
+            </div>
+          </details>
+        </div>
 
         <p
           style="
@@ -849,6 +1033,7 @@
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
             const SHORTCUTS = [
         {
@@ -1118,7 +1303,24 @@
         },
       ];
 
-            let mode = "shortcut";
+                  const SCORE_BY_DIFFICULTY = { easy: 10, medium: 25, hard: 50 };
+      const ERROR_PENALTY_BY_DIFFICULTY = { easy: 3, medium: 7, hard: 12 };
+      const FLAWLESS_MULTIPLIER = 0.3;
+      const COMBO_MULTIPLIER = 0.2;
+
+      const SUPABASE_URL = window.SUPABASE_URL || localStorage.getItem("supabase_url") || "";
+      const SUPABASE_ANON_KEY =
+        window.SUPABASE_ANON_KEY || localStorage.getItem("supabase_anon_key") || "";
+
+      let supabaseClient = null;
+      let rankingChannel = null;
+      let currentPlayer = {
+        id: "",
+        username: "",
+        turma: "",
+      };
+
+      let mode = "shortcut";
       let difficulty = "easy";
       let questions = [];
       let current = 0;
@@ -1128,11 +1330,27 @@
       let combo = 0;
       let maxCombo = 0;
       let correct = 0;
+      let mistakes = 0;
       let timerInterval = null;
       let timeLeft = 0;
       let TIME_LIMIT = 8;
       let answered = false;
       let keysDown = {};
+
+      function setStatus(id, message, color = "var(--sub)") {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = message;
+        el.style.color = color;
+      }
+
+      function getDifficultyPoints(level) {
+        return SCORE_BY_DIFFICULTY[level] || 10;
+      }
+
+      function getErrorPenalty(level) {
+        return ERROR_PENALTY_BY_DIFFICULTY[level] || 3;
+      }
 
       function selectMode(m, el) {
         mode = m;
@@ -1154,12 +1372,352 @@
         return [...a].sort(() => Math.random() - 0.5);
       }
 
+      function loadPlayerFromStorage() {
+        try {
+          const raw = localStorage.getItem("kg_player");
+          if (!raw) return;
+          const data = JSON.parse(raw);
+          if (!data) return;
+          currentPlayer = {
+            id: data.id || "",
+            username: data.username || "",
+            turma: data.turma || "",
+          };
+          document.getElementById("username-input").value = currentPlayer.username;
+          document.getElementById("classroom-input").value = currentPlayer.turma;
+          if (currentPlayer.username && currentPlayer.turma) {
+            setStatus(
+              "player-status",
+              `Jogador ativo: ${currentPlayer.username} | Turma: ${currentPlayer.turma}`,
+              "var(--accent4)",
+            );
+          }
+        } catch (_e) {
+          // ignore storage parse issues
+        }
+      }
+
+      function savePlayerToStorage() {
+        localStorage.setItem("kg_player", JSON.stringify(currentPlayer));
+      }
+
+      function createLocalId() {
+        if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
+        return `usr_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+      }
+
+      function initSupabase() {
+        if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !window.supabase) {
+          setStatus(
+            "ranking-status",
+            "Ranking online desativado: configure SUPABASE_URL e SUPABASE_ANON_KEY.",
+            "var(--accent2)",
+          );
+          return;
+        }
+
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        subscribeRankingRealtime();
+      }
+
+      function subscribeRankingRealtime() {
+        if (!supabaseClient) return;
+        if (rankingChannel) {
+          supabaseClient.removeChannel(rankingChannel);
+        }
+
+        rankingChannel = supabaseClient
+          .channel("ranking-live")
+          .on(
+            "postgres_changes",
+            { event: "*", schema: "public", table: "users" },
+            () => {
+              refreshRankings();
+            },
+          )
+          .subscribe();
+      }
+
+      async function ensureClassroomExists(code, name) {
+        if (!supabaseClient || !code) return;
+        const payload = {
+          id: createLocalId(),
+          codigo: code,
+          nome: name || code,
+        };
+        await supabaseClient.from("turmas").upsert(payload, { onConflict: "codigo" });
+      }
+
+      async function savePlayerProfile() {
+        const username = document.getElementById("username-input").value.trim();
+        const turma = document.getElementById("classroom-input").value.trim().toUpperCase();
+
+        if (!username || !turma) {
+          setStatus(
+            "player-status",
+            "Informe nome de usuário e código da turma.",
+            "var(--accent3)",
+          );
+          return;
+        }
+
+        currentPlayer = {
+          id: currentPlayer.id || createLocalId(),
+          username,
+          turma,
+        };
+
+        savePlayerToStorage();
+        setStatus(
+          "player-status",
+          `Jogador salvo: ${currentPlayer.username} | Turma: ${currentPlayer.turma}`,
+          "var(--accent4)",
+        );
+
+        if (!supabaseClient) {
+          setStatus(
+            "ranking-status",
+            "Sem backend configurado: perfil salvo localmente.",
+            "var(--accent2)",
+          );
+          return;
+        }
+
+        try {
+          await ensureClassroomExists(currentPlayer.turma, currentPlayer.turma);
+          await supabaseClient.from("users").upsert(
+            {
+              id: currentPlayer.id,
+              username: currentPlayer.username,
+              pontos: 0,
+              turma: currentPlayer.turma,
+            },
+            { onConflict: "id" },
+          );
+          await refreshRankings();
+        } catch (_e) {
+          setStatus(
+            "player-status",
+            "Erro ao salvar perfil no backend. Confira a estrutura das tabelas.",
+            "var(--accent3)",
+          );
+        }
+      }
+
+      function renderRanking(listId, users, emptyText) {
+        const el = document.getElementById(listId);
+        if (!el) return;
+        if (!users || users.length === 0) {
+          el.innerHTML = `<div class="panel-status">${emptyText}</div>`;
+          return;
+        }
+
+        el.innerHTML = users
+          .map(
+            (u, i) => `
+              <div class="rank-row">
+                <span>${i + 1}</span>
+                <span>${u.username || "Sem nome"}</span>
+                <b>${u.pontos || 0}</b>
+              </div>
+            `,
+          )
+          .join("");
+      }
+
+      async function refreshRankings() {
+        if (!supabaseClient) {
+          renderRanking("global-ranking-list", [], "Sem dados online.");
+          renderRanking("class-ranking-list", [], "Sem dados online.");
+          return;
+        }
+
+        try {
+          const { data: globalData, error: globalError } = await supabaseClient
+            .from("users")
+            .select("id, username, pontos, turma")
+            .order("pontos", { ascending: false })
+            .limit(50);
+
+          if (globalError) throw globalError;
+          renderRanking("global-ranking-list", globalData || [], "Nenhum usuário ainda.");
+
+          if (currentPlayer.turma) {
+            const { data: classData, error: classError } = await supabaseClient
+              .from("users")
+              .select("id, username, pontos, turma")
+              .eq("turma", currentPlayer.turma)
+              .order("pontos", { ascending: false })
+              .limit(50);
+
+            if (classError) throw classError;
+            renderRanking(
+              "class-ranking-list",
+              classData || [],
+              `Nenhum aluno na turma ${currentPlayer.turma}.`,
+            );
+          } else {
+            renderRanking("class-ranking-list", [], "Defina sua turma para ver este ranking.");
+          }
+
+          setStatus("ranking-status", "Ranking atualizado em tempo real.", "var(--accent4)");
+        } catch (_e) {
+          setStatus(
+            "ranking-status",
+            "Erro ao carregar ranking. Verifique credenciais/tabelas do Supabase.",
+            "var(--accent3)",
+          );
+        }
+      }
+
+      async function teacherCreateClassroom() {
+        const className = document.getElementById("teacher-class-name").value.trim();
+        const classCode = document
+          .getElementById("teacher-class-code")
+          .value.trim()
+          .toUpperCase();
+
+        if (!classCode) {
+          setStatus("teacher-status", "Informe um código de turma.", "var(--accent3)");
+          return;
+        }
+        if (!supabaseClient) {
+          setStatus(
+            "teacher-status",
+            "Backend não configurado. Não foi possível criar turma online.",
+            "var(--accent2)",
+          );
+          return;
+        }
+
+        try {
+          await ensureClassroomExists(classCode, className || classCode);
+          setStatus(
+            "teacher-status",
+            `Turma ${classCode} criada/atualizada com sucesso.`,
+            "var(--accent4)",
+          );
+        } catch (_e) {
+          setStatus("teacher-status", "Erro ao criar turma.", "var(--accent3)");
+        }
+      }
+
+      async function teacherLoadClassRanking() {
+        const classCode = document
+          .getElementById("teacher-class-code")
+          .value.trim()
+          .toUpperCase();
+
+        if (!classCode) {
+          setStatus("teacher-status", "Informe o código da turma para consultar.", "var(--accent3)");
+          return;
+        }
+
+        if (!supabaseClient) {
+          setStatus("teacher-status", "Backend não configurado.", "var(--accent2)");
+          return;
+        }
+
+        try {
+          const { data, error } = await supabaseClient
+            .from("users")
+            .select("id, username, pontos, turma")
+            .eq("turma", classCode)
+            .order("pontos", { ascending: false })
+            .limit(50);
+          if (error) throw error;
+
+          renderRanking(
+            "teacher-ranking-list",
+            data || [],
+            `Nenhum aluno encontrado na turma ${classCode}.`,
+          );
+          setStatus("teacher-status", `Ranking da turma ${classCode} carregado.`, "var(--accent4)");
+        } catch (_e) {
+          setStatus("teacher-status", "Erro ao carregar ranking da turma.", "var(--accent3)");
+        }
+      }
+
+      async function teacherResetClassroomScore() {
+        const classCode = document
+          .getElementById("teacher-class-code")
+          .value.trim()
+          .toUpperCase();
+
+        if (!classCode) {
+          setStatus("teacher-status", "Informe o código da turma para resetar.", "var(--accent3)");
+          return;
+        }
+
+        if (!supabaseClient) {
+          setStatus("teacher-status", "Backend não configurado.", "var(--accent2)");
+          return;
+        }
+
+        if (!window.confirm(`Resetar a pontuação da turma ${classCode}?`)) return;
+
+        try {
+          const { error } = await supabaseClient
+            .from("users")
+            .update({ pontos: 0 })
+            .eq("turma", classCode);
+          if (error) throw error;
+
+          setStatus("teacher-status", `Pontuação da turma ${classCode} resetada.`, "var(--accent4)");
+          await teacherLoadClassRanking();
+          await refreshRankings();
+        } catch (_e) {
+          setStatus("teacher-status", "Erro ao resetar pontuação.", "var(--accent3)");
+        }
+      }
+
+      async function submitScoreToRanking() {
+        if (!currentPlayer.id || !currentPlayer.username || !currentPlayer.turma) return;
+        if (!supabaseClient) return;
+
+        try {
+          await ensureClassroomExists(currentPlayer.turma, currentPlayer.turma);
+          const { data: currentData, error: fetchError } = await supabaseClient
+            .from("users")
+            .select("id, pontos")
+            .eq("id", currentPlayer.id)
+            .maybeSingle();
+
+          if (fetchError) throw fetchError;
+          const total = (currentData?.pontos || 0) + score;
+
+          const { error: upsertError } = await supabaseClient.from("users").upsert(
+            {
+              id: currentPlayer.id,
+              username: currentPlayer.username,
+              pontos: total,
+              turma: currentPlayer.turma,
+            },
+            { onConflict: "id" },
+          );
+
+          if (upsertError) throw upsertError;
+          await refreshRankings();
+        } catch (_e) {
+          setStatus("ranking-status", "Não foi possível salvar a pontuação online.", "var(--accent3)");
+        }
+      }
+
       function startGame() {
+        if (!currentPlayer.username || !currentPlayer.turma) {
+          setStatus(
+            "player-status",
+            "Antes de jogar, salve usuário e turma para registrar pontuação.",
+            "var(--accent2)",
+          );
+        }
+
         score = 0;
         lives = 3;
         combo = 0;
         maxCombo = 0;
         correct = 0;
+        mistakes = 0;
         current = 0;
         answered = false;
 
@@ -1174,10 +1732,7 @@
             : [...SHORTCUTS];
         }
 
-        questions = shuffle(filteredShortcuts).slice(
-          0,
-          Math.min(15, filteredShortcuts.length),
-        );
+        questions = shuffle(filteredShortcuts).slice(0, Math.min(15, filteredShortcuts.length));
         totalQuestions = questions.length;
 
         showScreen("game");
@@ -1193,15 +1748,13 @@
         document.removeEventListener("keydown", onKeyDown);
         document.removeEventListener("keyup", onKeyUp);
         clearInterval(timerInterval);
+        refreshRankings();
       }
 
       function showScreen(s) {
-        document.getElementById("screen-start").style.display =
-          s === "start" ? "block" : "none";
-        document.getElementById("screen-game").style.display =
-          s === "game" ? "block" : "none";
-        document.getElementById("screen-end").style.display =
-          s === "end" ? "block" : "none";
+        document.getElementById("screen-start").style.display = s === "start" ? "block" : "none";
+        document.getElementById("screen-game").style.display = s === "game" ? "block" : "none";
+        document.getElementById("screen-end").style.display = s === "end" ? "block" : "none";
       }
 
       function loadQuestion() {
@@ -1213,8 +1766,7 @@
         keysDown = {};
         const q = questions[current];
 
-        document.getElementById("progress-val").textContent =
-          `${current + 1}/${totalQuestions}`;
+        document.getElementById("progress-val").textContent = `${current + 1}/${totalQuestions}`;
         document.getElementById("score-val").textContent = score;
         updateLivesDisplay();
 
@@ -1238,16 +1790,14 @@
           emojiEl.textContent = q.emoji;
           textEl.textContent = q.action;
           hintEl.textContent = q.hint;
-          TIME_LIMIT =
-            difficulty === "easy" ? 12 : difficulty === "medium" ? 10 : 8;
+          TIME_LIMIT = difficulty === "easy" ? 12 : difficulty === "medium" ? 10 : 8;
         } else if (mode === "quiz") {
           badge.textContent = "🧠 Qual é essa ação?";
           emojiEl.textContent = "⌨️";
           textEl.textContent = q.label;
           hintEl.textContent = "Escolha a função correta do atalho";
           optGrid.style.display = "grid";
-          TIME_LIMIT =
-            difficulty === "easy" ? 18 : difficulty === "medium" ? 15 : 12;
+          TIME_LIMIT = difficulty === "easy" ? 18 : difficulty === "medium" ? 15 : 12;
           renderQuizOptions(q, optGrid);
         } else {
           badge.textContent = "📘 Aprendizado guiado";
@@ -1255,8 +1805,7 @@
           textEl.textContent = q.label;
           hintEl.textContent = q.hint;
           guidedPanel.style.display = "block";
-          TIME_LIMIT =
-            difficulty === "easy" ? 35 : difficulty === "medium" ? 30 : 25;
+          TIME_LIMIT = difficulty === "easy" ? 35 : difficulty === "medium" ? 30 : 25;
           renderGuidedPanel(q, guidedPanel);
         }
 
@@ -1268,8 +1817,7 @@
           timeLeft -= 0.1;
           const pct = Math.max(0, (timeLeft / TIME_LIMIT) * 100);
           bar.style.width = pct + "%";
-          if (pct < 40)
-            bar.style.background = "linear-gradient(90deg, #ffd93d, #ff6b6b)";
+          if (pct < 40) bar.style.background = "linear-gradient(90deg, #ffd93d, #ff6b6b)";
           if (pct < 15) bar.style.background = "var(--accent1)";
           if (timeLeft <= 0) {
             clearInterval(timerInterval);
@@ -1366,12 +1914,7 @@
         keysDown[normalizeKey(e.key)] = true;
 
         const q = questions[current];
-        if (
-          (q.ctrl && e.ctrlKey) ||
-          (q.alt && e.altKey) ||
-          (q.shift && e.shiftKey) ||
-          (q.meta && e.metaKey)
-        ) {
+        if ((q.ctrl && e.ctrlKey) || (q.alt && e.altKey) || (q.shift && e.shiftKey) || (q.meta && e.metaKey)) {
           e.preventDefault();
         }
 
@@ -1402,51 +1945,56 @@
         });
         if (!isCorrect) btn.classList.add("wrong");
 
-        handleResult(isCorrect, true);
+        handleResult(isCorrect);
       }
 
       function handleResult(isCorrect) {
         answered = true;
         clearInterval(timerInterval);
         const q = questions[current];
+        const basePoints = getDifficultyPoints(q.difficulty || difficulty);
 
         if (isCorrect) {
           correct++;
           combo++;
           if (combo > maxCombo) maxCombo = combo;
-          const bonus = combo >= 3 ? 20 : combo >= 2 ? 10 : 0;
-          score += 10 + bonus;
+
+          const flawlessBonus = mistakes === 0 ? Math.round(basePoints * FLAWLESS_MULTIPLIER) : 0;
+          const comboBonus = combo > 1 ? Math.round(basePoints * COMBO_MULTIPLIER * (combo - 1)) : 0;
+          const earned = basePoints + flawlessBonus + comboBonus;
+
+          score += earned;
           showFeedback(
             true,
-            combo >= 2
-              ? `+${10 + bonus} 🔥 Combo x${combo}!`
-              : "✓ Correto! +10",
+            `+${earned} (Base ${basePoints}${flawlessBonus ? ` + Sem erro ${flawlessBonus}` : ""}${comboBonus ? ` + Combo ${comboBonus}` : ""})`,
           );
           document.getElementById("score-val").textContent = score;
           if (mode === "shortcut") highlightKeys(q);
         } else {
+          mistakes++;
           combo = 0;
           lives--;
+
+          const penalty = getErrorPenalty(q.difficulty || difficulty);
+          score = Math.max(0, score - penalty);
+
           updateLivesDisplay();
+          document.getElementById("score-val").textContent = score;
           showFeedback(
             false,
-            mode === "shortcut" ? `✗ Era ${q.label}` : "✗ Resposta incorreta",
+            `✗ -${penalty} | ${mode === "shortcut" ? `Era ${q.label}` : "Resposta incorreta"}`,
           );
           document.getElementById("challenge-card").classList.add("shake");
-          setTimeout(
-            () =>
-              document
-                .getElementById("challenge-card")
-                .classList.remove("shake"),
-            400,
-          );
+          setTimeout(() => document.getElementById("challenge-card").classList.remove("shake"), 400);
         }
 
         setTimeout(() => {
           current++;
           if (lives <= 0 || current >= questions.length) {
             endGame();
-          } else loadQuestion();
+          } else {
+            loadQuestion();
+          }
         }, 1200);
       }
 
@@ -1455,9 +2003,15 @@
         answered = true;
         lives--;
         combo = 0;
-        updateLivesDisplay();
+        mistakes++;
+
         const q = questions[current];
-        showFeedback(false, `⏰ Tempo! Era ${q.label}`);
+        const penalty = Math.max(2, Math.round(getErrorPenalty(q.difficulty || difficulty) / 2));
+        score = Math.max(0, score - penalty);
+
+        updateLivesDisplay();
+        document.getElementById("score-val").textContent = score;
+        showFeedback(false, `⏰ Tempo! -${penalty} | Era ${q.label}`);
         setTimeout(() => {
           current++;
           if (lives <= 0 || current >= questions.length) endGame();
@@ -1480,14 +2034,11 @@
       function showFeedback(ok, msg) {
         const fb = document.getElementById("feedback");
         fb.className = "feedback show " + (ok ? "correct" : "wrong");
-        fb.innerHTML =
-          (ok ? "🎉" : "😅") + `<span class="fb-sub">${msg}</span>`;
+        fb.innerHTML = (ok ? "🎉" : "😅") + `<span class="fb-sub">${msg}</span>`;
       }
 
       function updateLivesDisplay() {
-        const icons = ["❤", "❤", "❤"]
-          .map((h, i) => (i < lives ? "❤" : "🖤"))
-          .join("");
+        const icons = ["❤", "❤", "❤"].map((h, i) => (i < lives ? "❤" : "🖤")).join("");
         document.getElementById("lives-val").textContent = icons;
       }
 
@@ -1496,8 +2047,7 @@
         document.removeEventListener("keydown", onKeyDown);
         document.removeEventListener("keyup", onKeyUp);
 
-        const acc =
-          totalQuestions > 0 ? Math.round((correct / totalQuestions) * 100) || 0 : 0;
+        const acc = totalQuestions > 0 ? Math.round((correct / totalQuestions) * 100) || 0 : 0;
         document.getElementById("end-score").textContent = score;
         document.getElementById("end-acc").textContent = acc + "%";
         document.getElementById("end-combo").textContent = maxCombo + "x";
@@ -1525,9 +2075,20 @@
         document.getElementById("result-title").textContent = title;
         document.getElementById("result-sub").textContent = sub;
         showScreen("end");
+
+        submitScoreToRanking();
       }
+
+      async function initApp() {
+        loadPlayerFromStorage();
+        initSupabase();
+        await refreshRankings();
+      }
+
+      initApp();
     </script>
   </body>
 </html>
+
 
 
