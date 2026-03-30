@@ -877,26 +877,8 @@
           <div class="panel-status" id="player-status">
             Defina usuário e turma para entrar no ranking.
           </div>
-          <div class="panel-title" style="margin-top: 12px">Configuração Supabase</div>
-          <div class="form-grid">
-            <input
-              class="form-input"
-              id="supabase-url-input"
-              placeholder="https://SEU-PROJETO.supabase.co"
-            />
-            <input
-              class="form-input"
-              id="supabase-key-input"
-              placeholder="Sua anon key do Supabase"
-            />
-          </div>
-          <div class="btn-row" style="justify-content: flex-start; margin-top: 8px">
-            <button class="mini-btn" onclick="saveSupabaseConfig()">
-              Conectar Supabase
-            </button>
-          </div>
           <div class="panel-status" id="supabase-status">
-            Configure para habilitar ranking em tempo real.
+            Backend Supabase conectado.
           </div>
           </div>
 
@@ -935,6 +917,12 @@
                     id="teacher-class-code"
                     placeholder="Código único da turma"
                     maxlength="24"
+                  />
+                  <input
+                    class="form-input"
+                    id="teacher-access-key"
+                    placeholder="Chave do professor (opcional)"
+                    maxlength="64"
                   />
                 </div>
                 <div class="btn-row" style="justify-content: flex-start; margin-top: 8px">
@@ -1127,7 +1115,6 @@
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
             const SHORTCUTS = [
         {
@@ -1408,8 +1395,6 @@
         window.SUPABASE_ANON_KEY ||
         "sb_publishable_epBf5EO28QFGTRbpkGaIg_9F0cfpNj";
 
-      let supabaseClient = null;
-      let rankingChannel = null;
       let currentPlayer = {
         id: "",
         username: "",
@@ -1433,6 +1418,8 @@
       let TIME_LIMIT = 8;
       let answered = false;
       let keysDown = {};
+      let rankingPollInterval = null;
+      const API_BASE = "/api";
 
       function setStatus(id, message, color = "var(--sub)") {
         const el = document.getElementById(id);
@@ -1517,29 +1504,19 @@
         localStorage.setItem("kg_player", JSON.stringify(currentPlayer));
       }
 
-      function loadSupabaseConfigFromStorage() {
-        supabaseUrl = localStorage.getItem("supabase_url") || supabaseUrl;
-        supabaseAnonKey = localStorage.getItem("supabase_anon_key") || supabaseAnonKey;
-        const urlInput = document.getElementById("supabase-url-input");
-        const keyInput = document.getElementById("supabase-key-input");
-        if (urlInput) urlInput.value = supabaseUrl;
-        if (keyInput) keyInput.value = supabaseAnonKey;
-      }
-
-      async function saveSupabaseConfig() {
-        const url = document.getElementById("supabase-url-input").value.trim();
-        const key = document.getElementById("supabase-key-input").value.trim();
-        if (!url || !key) {
-          setStatus("supabase-status", "Informe URL e anon key para conectar.", "var(--accent3)");
-          return;
+      async function apiRequest(path, options = {}) {
+        const response = await fetch(`${API_BASE}${path}`, {
+          headers: {
+            "Content-Type": "application/json",
+            ...(options.headers || {}),
+          },
+          ...options,
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(data.error || "Request failed");
         }
-
-        supabaseUrl = url;
-        supabaseAnonKey = key;
-        localStorage.setItem("supabase_url", supabaseUrl);
-        localStorage.setItem("supabase_anon_key", supabaseAnonKey);
-        initSupabase();
-        await refreshRankings();
+        return data;
       }
 
       function createLocalId() {
@@ -1547,53 +1524,18 @@
         return `usr_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
       }
 
-      function initSupabase() {
-        if (!supabaseUrl || !supabaseAnonKey || !window.supabase) {
-          supabaseClient = null;
-          setStatus(
-            "ranking-status",
-            "Ranking online desativado: configure SUPABASE_URL e SUPABASE_ANON_KEY.",
-            "var(--accent2)",
-          );
-          setStatus(
-            "supabase-status",
-            "Supabase não configurado.",
-            "var(--accent2)",
-          );
+      function initBackend() {
+        if (!supabaseUrl || !supabaseAnonKey) {
+          setStatus("supabase-status", "Supabase não configurado.", "var(--accent3)");
           return;
         }
-
-        supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-        subscribeRankingRealtime();
-        setStatus("supabase-status", "Supabase conectado com sucesso.", "var(--accent4)");
-      }
-
-      function subscribeRankingRealtime() {
-        if (!supabaseClient) return;
-        if (rankingChannel) {
-          supabaseClient.removeChannel(rankingChannel);
-        }
-
-        rankingChannel = supabaseClient
-          .channel("ranking-live")
-          .on(
-            "postgres_changes",
-            { event: "*", schema: "public", table: "users" },
-            () => {
-              refreshRankings();
-            },
-          )
-          .subscribe();
-      }
-
-      async function ensureClassroomExists(code, name) {
-        if (!supabaseClient || !code) return;
-        const payload = {
-          id: createLocalId(),
-          codigo: code,
-          nome: name || code,
-        };
-        await supabaseClient.from("turmas").upsert(payload, { onConflict: "codigo" });
+        setStatus("supabase-status", "Backend Supabase ativo.", "var(--accent4)");
+        if (rankingPollInterval) clearInterval(rankingPollInterval);
+        rankingPollInterval = setInterval(() => {
+          if (document.getElementById("screen-start").style.display !== "none") {
+            refreshRankings();
+          }
+        }, 10000);
       }
 
       async function savePlayerProfile() {
@@ -1619,38 +1561,31 @@
           turma,
         };
 
-        savePlayerToStorage();
-        setStatus(
-          "player-status",
-          `Jogador salvo: ${currentPlayer.username} | Turma: ${currentPlayer.turma}`,
-          "var(--accent4)",
-        );
-
-        if (!supabaseClient) {
-          setStatus(
-            "ranking-status",
-            "Sem backend configurado: perfil salvo localmente.",
-            "var(--accent2)",
-          );
-          return;
-        }
-
         try {
-          await ensureClassroomExists(currentPlayer.turma, currentPlayer.turma);
-          await supabaseClient.from("users").upsert(
-            {
-              id: currentPlayer.id,
+          const joined = await apiRequest("/player/join", {
+            method: "POST",
+            body: JSON.stringify({
+              playerId: currentPlayer.id,
               username: currentPlayer.username,
-              pontos: 0,
               turma: currentPlayer.turma,
-            },
-            { onConflict: "id" },
+            }),
+          });
+          currentPlayer = {
+            id: joined.id,
+            username: joined.username,
+            turma: joined.turma,
+          };
+          savePlayerToStorage();
+          setStatus(
+            "player-status",
+            `Entrou na turma ${currentPlayer.turma} como ${currentPlayer.username}.`,
+            "var(--accent4)",
           );
           await refreshRankings();
         } catch (_e) {
           setStatus(
             "player-status",
-            "Erro ao salvar perfil no backend. Confira a estrutura das tabelas.",
+            "Erro ao entrar na turma. Verifique o backend.",
             "var(--accent3)",
           );
         }
@@ -1678,45 +1613,25 @@
       }
 
       async function refreshRankings() {
-        if (!supabaseClient) {
-          renderRanking("global-ranking-list", [], "Sem dados online.");
-          renderRanking("class-ranking-list", [], "Sem dados online.");
-          return;
-        }
-
         try {
-          const { data: globalData, error: globalError } = await supabaseClient
-            .from("users")
-            .select("id, username, pontos, turma")
-            .order("pontos", { ascending: false })
-            .limit(50);
-
-          if (globalError) throw globalError;
-          renderRanking("global-ranking-list", globalData || [], "Nenhum usuário ainda.");
-
-          if (currentPlayer.turma) {
-            const { data: classData, error: classError } = await supabaseClient
-              .from("users")
-              .select("id, username, pontos, turma")
-              .eq("turma", currentPlayer.turma)
-              .order("pontos", { ascending: false })
-              .limit(50);
-
-            if (classError) throw classError;
-            renderRanking(
-              "class-ranking-list",
-              classData || [],
-              `Nenhum aluno na turma ${currentPlayer.turma}.`,
-            );
-          } else {
-            renderRanking("class-ranking-list", [], "Defina sua turma para ver este ranking.");
-          }
-
+          const payload = await apiRequest(
+            `/rankings${currentPlayer.turma ? `?turma=${encodeURIComponent(currentPlayer.turma)}` : ""}`,
+          );
+          renderRanking("global-ranking-list", payload.global || [], "Nenhum usuário ainda.");
+          renderRanking(
+            "class-ranking-list",
+            payload.turma || [],
+            currentPlayer.turma
+              ? `Nenhum aluno na turma ${currentPlayer.turma}.`
+              : "Defina sua turma para ver este ranking.",
+          );
           setStatus("ranking-status", "Ranking atualizado em tempo real.", "var(--accent4)");
         } catch (_e) {
+          renderRanking("global-ranking-list", [], "Sem dados online.");
+          renderRanking("class-ranking-list", [], "Sem dados online.");
           setStatus(
             "ranking-status",
-            "Erro ao carregar ranking. Verifique credenciais/tabelas do Supabase.",
+            "Erro ao carregar ranking. Verifique o backend.",
             "var(--accent3)",
           );
         }
@@ -1728,22 +1643,22 @@
           .getElementById("teacher-class-code")
           .value.trim()
           .toUpperCase();
+        const teacherKey = document.getElementById("teacher-access-key").value.trim();
 
         if (!classCode) {
           setStatus("teacher-status", "Informe um código de turma.", "var(--accent3)");
           return;
         }
-        if (!supabaseClient) {
-          setStatus(
-            "teacher-status",
-            "Backend não configurado. Não foi possível criar turma online.",
-            "var(--accent2)",
-          );
-          return;
-        }
 
         try {
-          await ensureClassroomExists(classCode, className || classCode);
+          await apiRequest("/teacher/classroom", {
+            method: "POST",
+            body: JSON.stringify({
+              codigo: classCode,
+              nome: className || classCode,
+              teacherKey,
+            }),
+          });
           setStatus(
             "teacher-status",
             `Turma ${classCode} criada/atualizada com sucesso.`,
@@ -1765,23 +1680,12 @@
           return;
         }
 
-        if (!supabaseClient) {
-          setStatus("teacher-status", "Backend não configurado.", "var(--accent2)");
-          return;
-        }
-
         try {
-          const { data, error } = await supabaseClient
-            .from("users")
-            .select("id, username, pontos, turma")
-            .eq("turma", classCode)
-            .order("pontos", { ascending: false })
-            .limit(50);
-          if (error) throw error;
+          const payload = await apiRequest(`/rankings?turma=${encodeURIComponent(classCode)}`);
 
           renderRanking(
             "teacher-ranking-list",
-            data || [],
+            payload.turma || [],
             `Nenhum aluno encontrado na turma ${classCode}.`,
           );
           setStatus("teacher-status", `Ranking da turma ${classCode} carregado.`, "var(--accent4)");
@@ -1795,25 +1699,23 @@
           .getElementById("teacher-class-code")
           .value.trim()
           .toUpperCase();
+        const teacherKey = document.getElementById("teacher-access-key").value.trim();
 
         if (!classCode) {
           setStatus("teacher-status", "Informe o código da turma para resetar.", "var(--accent3)");
           return;
         }
 
-        if (!supabaseClient) {
-          setStatus("teacher-status", "Backend não configurado.", "var(--accent2)");
-          return;
-        }
-
         if (!window.confirm(`Resetar a pontuação da turma ${classCode}?`)) return;
 
         try {
-          const { error } = await supabaseClient
-            .from("users")
-            .update({ pontos: 0 })
-            .eq("turma", classCode);
-          if (error) throw error;
+          await apiRequest("/teacher/reset", {
+            method: "POST",
+            body: JSON.stringify({
+              codigo: classCode,
+              teacherKey,
+            }),
+          });
 
           setStatus("teacher-status", `Pontuação da turma ${classCode} resetada.`, "var(--accent4)");
           await teacherLoadClassRanking();
@@ -1826,30 +1728,17 @@
       async function submitScoreToRanking() {
         if (accessMode === "practice") return;
         if (!currentPlayer.id || !currentPlayer.username || !currentPlayer.turma) return;
-        if (!supabaseClient) return;
 
         try {
-          await ensureClassroomExists(currentPlayer.turma, currentPlayer.turma);
-          const { data: currentData, error: fetchError } = await supabaseClient
-            .from("users")
-            .select("id, pontos")
-            .eq("id", currentPlayer.id)
-            .maybeSingle();
-
-          if (fetchError) throw fetchError;
-          const total = (currentData?.pontos || 0) + score;
-
-          const { error: upsertError } = await supabaseClient.from("users").upsert(
-            {
-              id: currentPlayer.id,
+          await apiRequest("/player/score", {
+            method: "POST",
+            body: JSON.stringify({
+              playerId: currentPlayer.id,
               username: currentPlayer.username,
-              pontos: total,
               turma: currentPlayer.turma,
-            },
-            { onConflict: "id" },
-          );
-
-          if (upsertError) throw upsertError;
+              points: score,
+            }),
+          });
           await refreshRankings();
         } catch (_e) {
           setStatus("ranking-status", "Não foi possível salvar a pontuação online.", "var(--accent3)");
@@ -2234,8 +2123,7 @@
 
       async function initApp() {
         loadPlayerFromStorage();
-        loadSupabaseConfigFromStorage();
-        initSupabase();
+        initBackend();
         updateAccessLayout();
         await refreshRankings();
       }

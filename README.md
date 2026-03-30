@@ -50,28 +50,27 @@ Screenshot: Don't forget to add a screenshot or a small GIF of the app running. 
 
 ## Backend Setup (Supabase)
 
-Add these two global variables before the main script in `index.html`:
+This project now uses Vercel Serverless Functions as the backend layer (`/api/*`), with Supabase as database.
 
-```html
-<script>
-  window.SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
-  window.SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-</script>
+Required Vercel environment variables:
+
+```bash
+SUPABASE_URL=https://qnhleysiikivflgkzwwy.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
+TEACHER_ACCESS_KEY=YOUR_OPTIONAL_TEACHER_SECRET
 ```
 
-Create the tables in Supabase SQL Editor:
+Database schema:
 
-```sql
-create table if not exists turmas (
-  id text primary key,
-  codigo text unique not null,
-  nome text not null
-);
+- Run the SQL in `supabase/schema.sql` in Supabase SQL Editor.
+- This creates:
+  - `turmas (id, codigo, nome, created_at)`
+  - `users (id, username, pontos, turma, created_at, updated_at)`
 
-create table if not exists users (
-  id text primary key,
-  username text not null,
-  pontos integer not null default 0,
-  turma text not null references turmas(codigo) on update cascade
-);
-```
+API routes included:
+
+- `POST /api/player/join`
+- `POST /api/player/score`
+- `GET /api/rankings?turma=CODE`
+- `POST /api/teacher/classroom`
+- `POST /api/teacher/reset`

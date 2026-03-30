@@ -11,6 +11,9 @@
   "keywords": ["game", "keyboard", "shortcuts", "learning"],
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.4"
+  },
   "devDependencies": {
     "serve": "^14.2.1"
   }
