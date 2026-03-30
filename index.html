@@ -6,14 +6,16 @@
       @import url("https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap");
 
       :root {
-        --bg: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff);
-        --card: linear-gradient(135deg, #1a1a2e, #16213e);
-        --accent1: #ff0080;
-        --accent2: #00ff80;
-        --accent3: #8000ff;
-        --accent4: #ff8000;
+        --bg: linear-gradient(135deg, #0a0a1e, #1a1a3e, #2a2a5e);
+        --card: linear-gradient(135deg, #1a1a2e, #2a2a4e);
+        --accent1: #00aaff; /* Mega Man blue */
+        --accent2: #ffaa00; /* Energy yellow */
+        --accent3: #ff4444; /* Warning red */
+        --accent4: #44ff88; /* Health green */
         --text: #ffffff;
-        --sub: #c0c0c0;
+        --sub: #cccccc;
+        --border: #444466;
+        --shadow: rgba(0, 170, 255, 0.3);
       }
 
       * {
@@ -33,7 +35,7 @@
         overflow: hidden;
         position: relative;
         background-size: 400% 400%;
-        animation: bgShift 10s ease infinite;
+        animation: bgShift 15s ease infinite;
       }
 
       @keyframes bgShift {
@@ -48,20 +50,37 @@
         }
       }
 
-      /* floating bg dots */
+      /* floating bg elements - Mega Man style */
       .bg-dot {
         position: fixed;
         border-radius: 50%;
-        opacity: 0.07;
-        animation: float 8s infinite ease-in-out;
+        opacity: 0.08;
+        animation: float 12s infinite ease-in-out;
+        background: var(--accent1);
+      }
+      .bg-dot:nth-child(2n) {
+        background: var(--accent4);
+        animation-duration: 15s;
+        animation-delay: -2s;
+      }
+      .bg-dot:nth-child(3n) {
+        background: var(--accent2);
+        animation-duration: 18s;
+        animation-delay: -4s;
       }
       @keyframes float {
         0%,
         100% {
-          transform: translateY(0) scale(1);
+          transform: translateY(0) scale(1) rotate(0deg);
+        }
+        25% {
+          transform: translateY(-40px) scale(1.1) rotate(90deg);
         }
         50% {
-          transform: translateY(-30px) scale(1.05);
+          transform: translateY(-20px) scale(0.9) rotate(180deg);
+        }
+        75% {
+          transform: translateY(-60px) scale(1.05) rotate(270deg);
         }
       }
 
@@ -79,34 +98,56 @@
       }
       .logo {
         font-family: "Fredoka One", cursive;
-        font-size: 3.2rem;
+        font-size: 3.5rem;
         line-height: 1;
         margin-bottom: 8px;
-        background: linear-gradient(135deg, var(--accent2), var(--accent1));
+        background: linear-gradient(135deg, var(--accent1), var(--accent2), var(--accent4));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 0 20px rgba(255, 107, 107, 0.4));
+        filter: drop-shadow(0 0 20px var(--shadow));
+        text-shadow: 0 0 30px var(--accent1);
+        position: relative;
+      }
+      .logo::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        background: linear-gradient(45deg, var(--accent1), transparent, var(--accent2));
+        border-radius: 10px;
+        opacity: 0.1;
+        z-index: -1;
+        animation: logoGlow 3s infinite alternate;
+      }
+      @keyframes logoGlow {
+        0% { opacity: 0.1; }
+        100% { opacity: 0.3; }
       }
       .logo span {
         display: block;
-        font-size: 1.1rem;
-        color: var(--sub);
+        font-size: 1rem;
+        color: var(--accent1);
         font-family: "Nunito", sans-serif;
-        -webkit-text-fill-color: var(--sub);
+        -webkit-text-fill-color: var(--accent1);
         filter: none;
         font-weight: 700;
-        letter-spacing: 3px;
+        letter-spacing: 2px;
         text-transform: uppercase;
         margin-top: 4px;
+        text-shadow: 0 0 10px var(--accent1);
+      }
       }
 
       .keyboard-icon {
-        font-size: 4rem;
+        font-size: 4.5rem;
         margin: 20px 0;
         display: block;
         animation:
-          bounce 2s infinite,
-          glow 2s infinite alternate;
+          bounce 2.5s infinite,
+          energyPulse 1.5s infinite alternate;
+        filter: drop-shadow(0 0 20px var(--accent1));
       }
       @keyframes bounce {
         0%,
@@ -114,15 +155,15 @@
           transform: translateY(0) scale(1);
         }
         50% {
-          transform: translateY(-20px) scale(1.1);
+          transform: translateY(-15px) scale(1.05);
         }
       }
-      @keyframes glow {
+      @keyframes energyPulse {
         0% {
-          filter: drop-shadow(0 0 10px #00ff80);
+          filter: drop-shadow(0 0 15px var(--accent1)) brightness(1);
         }
         100% {
-          filter: drop-shadow(0 0 20px #ff0080);
+          filter: drop-shadow(0 0 30px var(--accent2)) brightness(1.2);
         }
       }
 
@@ -135,36 +176,64 @@
 
       .btn {
         display: inline-block;
-        padding: 14px 40px;
-        border-radius: 50px;
-        border: none;
+        padding: 16px 45px;
+        border-radius: 8px;
+        border: 3px solid var(--border);
         font-family: "Fredoka One", cursive;
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         cursor: pointer;
         transition:
           transform 0.15s,
-          box-shadow 0.15s;
+          box-shadow 0.15s,
+          border-color 0.15s;
         letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+      }
+      .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+      .btn:hover::before {
+        left: 100%;
       }
       .btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 8px 25px var(--shadow);
+        border-color: var(--accent1);
       }
       .btn:active {
         transform: translateY(0);
       }
       .btn-primary {
-        background: linear-gradient(135deg, var(--accent1), #ff9a3c);
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
         color: #fff;
+        box-shadow: 0 4px 15px var(--shadow);
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, var(--accent2), var(--accent1));
+        box-shadow: 0 6px 20px var(--shadow);
       }
       .btn-secondary {
         background: var(--card);
-        color: var(--sub);
-        border: 2px solid #2a2a4a;
+        color: var(--accent1);
+        border: 2px solid var(--border);
         margin-top: 10px;
         font-family: "Nunito", sans-serif;
         font-weight: 800;
         font-size: 1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+      .btn-secondary:hover {
+        border-color: var(--accent1);
+        color: var(--accent2);
+        box-shadow: 0 6px 20px var(--shadow);
       }
 
       .mode-grid {
@@ -175,20 +244,38 @@
       }
       .mode-card {
         background: var(--card);
-        border: 2px solid #2a2a4a;
-        border-radius: 16px;
-        padding: 18px 12px;
+        border: 3px solid var(--border);
+        border-radius: 12px;
+        padding: 20px 15px;
         cursor: pointer;
         transition: all 0.2s;
         text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .mode-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent, rgba(0, 170, 255, 0.05), transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
       }
       .mode-card:hover {
-        border-color: var(--accent4);
-        transform: translateY(-2px);
+        border-color: var(--accent1);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px var(--shadow);
+      }
+      .mode-card:hover::before {
+        opacity: 1;
       }
       .mode-card.selected {
         border-color: var(--accent2);
-        background: rgba(255, 217, 61, 0.08);
+        background: rgba(255, 170, 0, 0.1);
+        box-shadow: 0 0 20px var(--shadow);
       }
       .mode-card .mode-icon {
         font-size: 2rem;
