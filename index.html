@@ -1,0 +1,3357 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap");
+
+      :root {
+        --bg:
+          radial-gradient(circle at 15% 20%, rgba(0, 209, 255, 0.22), transparent 26%),
+          radial-gradient(circle at 85% 18%, rgba(255, 107, 107, 0.22), transparent 24%),
+          radial-gradient(circle at 50% 85%, rgba(122, 229, 130, 0.16), transparent 24%),
+          linear-gradient(145deg, #07111f 0%, #111b36 36%, #1e1e46 100%);
+        --card: linear-gradient(160deg, rgba(18, 28, 56, 0.96), rgba(31, 38, 78, 0.95));
+        --accent1: #00d1ff;
+        --accent2: #ffd166;
+        --accent3: #ff6b6b;
+        --accent4: #7ae582;
+        --accent5: #ff8f5c;
+        --text: #f4f1de;
+        --sub: #c7d0ee;
+        --border: #2b3763;
+        --shadow: rgba(0, 209, 255, 0.28);
+        --panel-shadow: 0 16px 38px rgba(4, 8, 24, 0.42);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Nunito", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: relative;
+        background-size: 180% 180%;
+        animation: bgShift 22s ease infinite;
+        padding: 20px 0;
+        scrollbar-gutter: stable;
+      }
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.5;
+      }
+      body::before {
+        width: 320px;
+        height: 320px;
+        top: 120px;
+        left: -90px;
+        border-radius: 38% 62% 65% 35% / 41% 33% 67% 59%;
+        background: radial-gradient(circle, rgba(255, 209, 102, 0.2), rgba(255, 209, 102, 0));
+        filter: blur(10px);
+      }
+      body::after {
+        width: 380px;
+        height: 380px;
+        right: -100px;
+        bottom: 40px;
+        border-radius: 58% 42% 32% 68% / 48% 64% 36% 52%;
+        background: radial-gradient(circle, rgba(0, 209, 255, 0.18), rgba(0, 209, 255, 0));
+        filter: blur(14px);
+      }
+      html {
+        scrollbar-gutter: stable;
+      }
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent1) rgba(10, 10, 30, 0.55);
+      }
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+      ::-webkit-scrollbar-track {
+        background: linear-gradient(180deg, rgba(10, 10, 30, 0.55), rgba(26, 26, 62, 0.7));
+        border-left: 1px solid rgba(68, 68, 102, 0.45);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, var(--accent1), var(--accent2));
+        border-radius: 12px;
+        border: 2px solid rgba(10, 10, 30, 0.8);
+        box-shadow: 0 0 12px rgba(0, 170, 255, 0.45);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, var(--accent2), var(--accent1));
+      }
+
+      @keyframes bgShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* floating bg elements */
+      .bg-dot {
+        position: fixed;
+        border-radius: 30px;
+        opacity: 0.14;
+        animation: float 12s infinite ease-in-out;
+        background: var(--accent1);
+        filter: blur(1px);
+        box-shadow: 0 0 40px rgba(0, 209, 255, 0.2);
+      }
+      .bg-dot:nth-child(2n) {
+        background: var(--accent4);
+        animation-duration: 15s;
+        animation-delay: -2s;
+      }
+      .bg-dot:nth-child(3n) {
+        background: var(--accent2);
+        animation-duration: 18s;
+        animation-delay: -4s;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) scale(1) rotate(0deg);
+        }
+        25% {
+          transform: translateY(-40px) scale(1.1) rotate(90deg);
+        }
+        50% {
+          transform: translateY(-20px) scale(0.9) rotate(180deg);
+        }
+        75% {
+          transform: translateY(-60px) scale(1.05) rotate(270deg);
+        }
+      }
+
+      #app {
+        width: 100%;
+        max-width: 1080px;
+        padding: 26px 22px 34px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ====== TELA INICIAL ====== */
+      #screen-start {
+        text-align: center;
+        position: relative;
+      }
+      .logo {
+        font-family: "Fredoka One", cursive;
+        font-size: clamp(3.4rem, 8vw, 5.4rem);
+        line-height: 0.92;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, #fff7d4, var(--accent2), var(--accent5));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.38));
+        position: relative;
+        letter-spacing: 1px;
+      }
+      .logo::before {
+        content: "";
+        position: absolute;
+        top: -18px;
+        left: 50%;
+        width: min(520px, 95%);
+        height: calc(100% + 36px);
+        transform: translateX(-50%) rotate(-2deg);
+        background:
+          linear-gradient(135deg, rgba(0, 209, 255, 0.15), rgba(255, 209, 102, 0.18)),
+          rgba(13, 22, 46, 0.6);
+        border: 3px solid rgba(255, 209, 102, 0.22);
+        border-radius: 28px;
+        z-index: -1;
+        box-shadow: var(--panel-shadow);
+        animation: logoGlow 3.2s infinite alternate;
+      }
+      @keyframes logoGlow {
+        0% {
+          transform: translateX(-50%) rotate(-2deg) scale(1);
+        }
+        100% {
+          transform: translateX(-50%) rotate(1deg) scale(1.02);
+        }
+      }
+      .logo span {
+        display: block;
+        font-size: 0.98rem;
+        color: #fff7d4;
+        font-family: "Nunito", sans-serif;
+        -webkit-text-fill-color: #fff7d4;
+        filter: none;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-top: 10px;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+      }
+
+      .keyboard-icon {
+        font-size: 5rem;
+        margin: 28px 0 18px;
+        display: block;
+        animation:
+          bounce 2.5s infinite,
+          energyPulse 1.5s infinite alternate;
+        filter: drop-shadow(0 10px 22px rgba(0, 209, 255, 0.35));
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-15px) scale(1.05);
+        }
+      }
+      @keyframes energyPulse {
+        0% {
+          filter: drop-shadow(0 0 15px var(--accent1)) brightness(1);
+        }
+        100% {
+          filter: drop-shadow(0 0 30px var(--accent2)) brightness(1.2);
+        }
+      }
+
+      .start-desc {
+        color: var(--sub);
+        font-size: 1.05rem;
+        margin: 0 auto 30px;
+        line-height: 1.7;
+        max-width: 640px;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 16px 45px;
+        border-radius: 18px;
+        border: 3px solid rgba(255, 255, 255, 0.08);
+        font-family: "Fredoka One", cursive;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s,
+          border-color 0.15s;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+      }
+      .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+      .btn:hover::before {
+        left: 100%;
+      }
+      .btn:hover {
+        transform: translateY(-4px) rotate(-1deg);
+        box-shadow: 0 12px 30px var(--shadow);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      .btn:active {
+        transform: translateY(0);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent5), var(--accent2));
+        color: #1f1834;
+        box-shadow:
+          0 6px 0 rgba(145, 81, 19, 0.9),
+          0 14px 24px rgba(255, 143, 92, 0.24);
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, var(--accent2), #ffe29a);
+        box-shadow:
+          0 6px 0 rgba(145, 81, 19, 0.9),
+          0 18px 28px rgba(255, 209, 102, 0.28);
+      }
+      .btn-secondary {
+        background: linear-gradient(160deg, rgba(17, 29, 61, 0.95), rgba(34, 43, 84, 0.95));
+        color: #dcf9ff;
+        border: 2px solid rgba(0, 209, 255, 0.18);
+        margin-top: 10px;
+        font-family: "Nunito", sans-serif;
+        font-weight: 800;
+        font-size: 1rem;
+        box-shadow: 0 10px 20px rgba(4, 8, 24, 0.34);
+      }
+      .btn-secondary:hover {
+        border-color: var(--accent1);
+        color: var(--accent2);
+        box-shadow: 0 16px 26px rgba(0, 209, 255, 0.16);
+      }
+      .play-cta {
+        position: sticky;
+        bottom: 18px;
+        display: flex;
+        justify-content: center;
+        margin-top: 22px;
+        padding: 16px 0 6px;
+        z-index: 8;
+      }
+      .play-cta::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(7, 17, 31, 0), rgba(7, 17, 31, 0.9) 44%, rgba(7, 17, 31, 0.96));
+        border-radius: 28px;
+        pointer-events: none;
+      }
+      #play-btn {
+        position: relative;
+        min-width: 280px;
+        z-index: 1;
+      }
+
+      .mode-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .mode-card {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 55%),
+          var(--card);
+        border: 3px solid rgba(90, 112, 174, 0.4);
+        border-radius: 24px;
+        padding: 22px 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--panel-shadow);
+      }
+      .mode-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent, rgba(0, 170, 255, 0.05), transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .mode-card:hover {
+        border-color: rgba(0, 209, 255, 0.75);
+        transform: translateY(-5px) rotate(-1deg);
+        box-shadow: 0 16px 28px rgba(0, 209, 255, 0.12);
+      }
+      .mode-card:hover::before {
+        opacity: 1;
+      }
+      .mode-card.selected {
+        border-color: var(--accent2);
+        background:
+          linear-gradient(180deg, rgba(255, 209, 102, 0.14), transparent 60%),
+          var(--card);
+        box-shadow:
+          0 0 0 2px rgba(255, 209, 102, 0.12),
+          0 16px 34px rgba(255, 209, 102, 0.1);
+      }
+      .mode-card .mode-icon {
+        font-size: 2.3rem;
+        display: block;
+        margin-bottom: 8px;
+      }
+      .mode-card .mode-title {
+        font-weight: 800;
+        font-size: 1rem;
+        display: block;
+      }
+      .mode-card .mode-sub {
+        font-size: 0.78rem;
+        color: var(--sub);
+        margin-top: 5px;
+        display: block;
+      }
+
+      /* ====== TELA JOGO ====== */
+      #screen-game {
+        display: none;
+      }
+
+      .hud {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+        gap: 12px;
+      }
+      .hud-box {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 65%),
+          var(--card);
+        border-radius: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        padding: 10px 18px;
+        text-align: center;
+        min-width: 80px;
+        box-shadow: var(--panel-shadow);
+      }
+      .hud-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--sub);
+      }
+      .hud-value {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.6rem;
+        line-height: 1.1;
+      }
+      #score-val {
+        color: var(--accent2);
+      }
+      #lives-val {
+        color: var(--accent1);
+      }
+      #progress-val {
+        color: var(--accent4);
+      }
+
+      .timer-bar-wrap {
+        width: 100%;
+        height: 14px;
+        background: rgba(9, 14, 34, 0.92);
+        border-radius: 99px;
+        overflow: hidden;
+        margin-bottom: 22px;
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.35);
+      }
+      .timer-bar {
+        height: 100%;
+        border-radius: 99px;
+        background: linear-gradient(90deg, var(--accent3), var(--accent4));
+        transition:
+          width 0.1s linear,
+          background 0.5s;
+      }
+
+      .challenge-card {
+        background:
+          radial-gradient(circle at top left, rgba(255, 209, 102, 0.12), transparent 28%),
+          radial-gradient(circle at bottom right, rgba(0, 209, 255, 0.12), transparent 32%),
+          var(--card);
+        border-radius: 32px;
+        padding: 32px 28px;
+        text-align: center;
+        border: 4px solid rgba(255, 209, 102, 0.6);
+        position: relative;
+        overflow: hidden;
+        min-height: 240px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow:
+          0 24px 44px rgba(4, 8, 24, 0.5),
+          inset 0 0 30px rgba(255, 209, 102, 0.06);
+        animation: pulse 2.6s infinite ease-in-out;
+      }
+      .challenge-card::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(77, 150, 255, 0.08),
+          transparent 70%
+        );
+      }
+
+      .challenge-mode-badge {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        background: rgba(255, 209, 102, 0.16);
+        border: 2px solid rgba(255, 209, 102, 0.26);
+        color: var(--accent2);
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 4px 10px;
+        border-radius: 20px;
+      }
+
+      .challenge-emoji {
+        font-size: 3.4rem;
+        margin-bottom: 14px;
+        display: block;
+      }
+      .challenge-text {
+        font-family: "Fredoka One", cursive;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        line-height: 1.2;
+        margin-bottom: 10px;
+        max-width: 680px;
+      }
+      .challenge-hint {
+        color: var(--sub);
+        font-size: 0.98rem;
+        max-width: 620px;
+      }
+
+      /* key display */
+      .key-display {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+      .key {
+        background: linear-gradient(180deg, #20346e, #141d46);
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        border-bottom-width: 6px;
+        border-radius: 12px;
+        padding: 8px 14px;
+        font-family: "Fredoka One", cursive;
+        font-size: 1.1rem;
+        color: var(--text);
+        min-width: 44px;
+        text-align: center;
+        transition: all 0.15s;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
+      }
+      .key.active {
+        border-bottom-width: 3px;
+        transform: translateY(2px);
+        background: linear-gradient(180deg, #a7f0b1, var(--accent4));
+        border-color: rgba(255, 255, 255, 0.12);
+        color: #0c2316;
+      }
+      .key-plus {
+        color: var(--sub);
+        font-size: 1.2rem;
+      }
+
+      /* feedback overlay */
+      .feedback {
+        position: absolute;
+        inset: 0;
+        border-radius: 22px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: "Fredoka One", cursive;
+        font-size: 2rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.1s;
+        z-index: 10;
+      }
+      .feedback.show {
+        opacity: 1;
+      }
+      .feedback.correct {
+        background: rgba(107, 203, 119, 0.92);
+        color: #fff;
+      }
+      .feedback.wrong {
+        background: rgba(255, 107, 107, 0.92);
+        color: #fff;
+      }
+      .feedback .fb-sub {
+        font-family: "Nunito", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-top: 4px;
+        opacity: 0.9;
+      }
+
+      /* options (quiz mode) */
+      .options-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .guided-panel {
+        margin-top: 20px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 55%),
+          rgba(9, 14, 34, 0.62);
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        border-radius: 22px;
+        padding: 18px;
+        box-shadow: var(--panel-shadow);
+      }
+      .guided-title {
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--accent2);
+        font-weight: 800;
+        margin-bottom: 4px;
+      }
+      .guided-text {
+        color: var(--text);
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+      }
+      .guided-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .guided-actions .opt-btn {
+        width: 100%;
+      }
+      .guided-status {
+        color: var(--accent4);
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-align: center;
+      }
+      .opt-btn {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 60%),
+          var(--card);
+        border: 2px solid rgba(86, 108, 168, 0.5);
+        border-radius: 18px;
+        padding: 14px 10px;
+        color: var(--text);
+        font-family: "Nunito", sans-serif;
+        font-weight: 800;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.15s;
+        text-align: center;
+      }
+      .opt-btn:hover:not(:disabled) {
+        border-color: var(--accent4);
+        transform: translateY(-3px) rotate(-0.5deg);
+        box-shadow: 0 12px 22px rgba(122, 229, 130, 0.12);
+      }
+      .opt-btn.correct {
+        background: rgba(107, 203, 119, 0.2);
+        border-color: var(--accent3);
+        color: var(--accent3);
+      }
+      .opt-btn.wrong {
+        background: rgba(255, 107, 107, 0.2);
+        border-color: var(--accent1);
+        color: var(--accent1);
+      }
+
+      /* ====== TELA FIM ====== */
+      #screen-end {
+        display: none;
+        text-align: center;
+      }
+
+      .result-icon {
+        font-size: 5.4rem;
+        display: block;
+        margin-bottom: 16px;
+        animation: bounce 1.5s infinite;
+      }
+      .result-title {
+        font-family: "Fredoka One", cursive;
+        font-size: clamp(2.8rem, 6vw, 4rem);
+        background: linear-gradient(135deg, #fff1be, var(--accent5), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+      }
+      .result-sub {
+        color: var(--sub);
+        margin-bottom: 24px;
+        font-size: 1rem;
+      }
+
+      .stats-row {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-bottom: 28px;
+      }
+      .stat-box {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 65%),
+          var(--card);
+        border-radius: 22px;
+        padding: 16px 20px;
+        min-width: 100px;
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        box-shadow: var(--panel-shadow);
+      }
+      .stat-val {
+        font-family: "Fredoka One", cursive;
+        font-size: 2rem;
+        display: block;
+      }
+      .stat-lbl {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--sub);
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .setup-panel,
+      .ranking-panel,
+      .teacher-panel {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 58%),
+          rgba(10, 16, 38, 0.76);
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 16px;
+        margin-bottom: 16px;
+        text-align: left;
+        box-shadow: var(--panel-shadow);
+      }
+      .mindmap-panel {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 58%),
+          rgba(10, 16, 38, 0.8);
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 16px;
+        margin-top: 18px;
+        text-align: left;
+        box-shadow: var(--panel-shadow);
+      }
+      .mindmap-panel summary {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .mindmap-panel summary::-webkit-details-marker {
+        display: none;
+      }
+      .mindmap-summary-text {
+        flex: 1;
+      }
+      .mindmap-summary-icon {
+        color: var(--accent2);
+        font-weight: 800;
+        font-size: 1.1rem;
+        transition: transform 0.2s ease;
+      }
+      .mindmap-panel[open] .mindmap-summary-icon {
+        transform: rotate(180deg);
+      }
+      .mindmap-content {
+        margin-top: 12px;
+      }
+      .map-menu {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 10px 0 12px;
+      }
+      .map-tab {
+        border: 2px solid rgba(86, 108, 168, 0.55);
+        border-radius: 999px;
+        background: rgba(16, 26, 58, 0.92);
+        color: var(--text);
+        font-weight: 800;
+        font-size: 0.78rem;
+        letter-spacing: 0.5px;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .map-tab.active {
+        border-color: var(--accent2);
+        color: var(--accent2);
+        box-shadow: 0 0 16px rgba(255, 170, 0, 0.25);
+      }
+      .mindmap-list {
+        display: grid;
+        gap: 12px;
+      }
+      .mindmap-group {
+        border: 2px dashed rgba(122, 229, 130, 0.26);
+        border-radius: 18px;
+        padding: 12px;
+        background: rgba(11, 18, 41, 0.66);
+      }
+      .mindmap-head {
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--accent4);
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      .mindmap-items {
+        display: grid;
+        gap: 8px;
+      }
+      .mindmap-item {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 10px 12px;
+      }
+      .mindmap-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        font-weight: 800;
+        color: var(--accent1);
+        margin-bottom: 4px;
+      }
+      .mindmap-tag {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        background: rgba(255, 170, 0, 0.15);
+        color: var(--accent2);
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 170, 0, 0.35);
+      }
+      .mindmap-action {
+        font-size: 0.9rem;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .mindmap-hint {
+        font-size: 0.82rem;
+        color: var(--sub);
+        line-height: 1.4;
+      }
+      .mindmap-note {
+        font-size: 0.75rem;
+        color: var(--accent3);
+        font-weight: 700;
+        margin-top: 6px;
+      }
+      .panel-title {
+        color: var(--accent2);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .form-input {
+        width: 100%;
+        border: 2px solid rgba(86, 108, 168, 0.55);
+        border-radius: 16px;
+        padding: 12px 14px;
+        background: rgba(8, 14, 36, 0.92);
+        color: var(--text);
+        font-family: "Nunito", sans-serif;
+        font-size: 0.9rem;
+        box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.22);
+      }
+      .form-input::placeholder {
+        color: #8f95c9;
+      }
+      .mini-btn {
+        border: 2px solid rgba(86, 108, 168, 0.55);
+        border-radius: 16px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 60%),
+          var(--card);
+        color: var(--text);
+        font-weight: 800;
+        font-size: 0.85rem;
+        padding: 11px 14px;
+        cursor: pointer;
+        box-shadow: 0 12px 20px rgba(4, 8, 24, 0.28);
+      }
+      .mini-btn:hover {
+        border-color: var(--accent1);
+        transform: translateY(-2px);
+      }
+      .mini-btn.warn {
+        border-color: var(--accent3);
+        color: var(--accent3);
+      }
+      .panel-status {
+        margin-top: 8px;
+        font-size: 0.82rem;
+        color: var(--sub);
+      }
+      .ranking-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .rank-box {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 60%),
+          rgba(12, 19, 44, 0.76);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 10px;
+      }
+      .rank-head {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--accent4);
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+      .rank-list {
+        max-height: 170px;
+        overflow-y: auto;
+        font-size: 0.84rem;
+      }
+      .rank-row {
+        display: grid;
+        grid-template-columns: 24px 1fr auto;
+        gap: 8px;
+        padding: 4px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .rank-row:last-child {
+        border-bottom: 0;
+      }
+      .rank-row b {
+        color: var(--accent2);
+      }
+      .teacher-panel details summary {
+        cursor: pointer;
+        font-weight: 800;
+        color: var(--accent1);
+      }
+      .access-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .access-card {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 60%),
+          var(--card);
+        border: 2px solid rgba(86, 108, 168, 0.55);
+        border-radius: 18px;
+        padding: 14px 10px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: 800;
+        box-shadow: var(--panel-shadow);
+        transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+      }
+      .access-card:hover {
+        transform: translateY(-3px) rotate(-0.5deg);
+        border-color: rgba(0, 209, 255, 0.75);
+      }
+      .access-card small {
+        display: block;
+        color: var(--sub);
+        font-weight: 600;
+        margin-top: 4px;
+        font-size: 0.72rem;
+      }
+      .access-card.selected {
+        border-color: var(--accent2);
+        box-shadow:
+          0 0 0 2px rgba(255, 209, 102, 0.12),
+          0 16px 28px rgba(255, 209, 102, 0.12);
+      }
+      .lang-toggle {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 1000;
+        display: flex;
+        gap: 6px;
+        background: rgba(8, 14, 36, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 6px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 12px 24px rgba(4, 8, 24, 0.24);
+      }
+      .lang-btn {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(17, 26, 58, 0.96);
+        color: var(--text);
+        border-radius: 12px;
+        padding: 6px 10px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .lang-btn.active {
+        border-color: var(--accent2);
+        color: var(--accent2);
+        background: rgba(59, 43, 8, 0.9);
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20% {
+          transform: translateX(-8px);
+        }
+        40% {
+          transform: translateX(8px);
+        }
+        60% {
+          transform: translateX(-5px);
+        }
+        80% {
+          transform: translateX(5px);
+        }
+      }
+      .shake {
+        animation: shake 0.4s ease;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          box-shadow:
+            0 24px 44px rgba(4, 8, 24, 0.5),
+            inset 0 0 24px rgba(255, 209, 102, 0.08);
+        }
+        50% {
+          transform: scale(1.02);
+          box-shadow:
+            0 28px 52px rgba(4, 8, 24, 0.56),
+            inset 0 0 30px rgba(0, 209, 255, 0.08);
+        }
+      }
+      .pop {
+        animation: pop 0.2s ease;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 12px 0 24px;
+        }
+        #app {
+          padding: 18px 14px 28px;
+        }
+        .hud,
+        .stats-row,
+        .ranking-grid,
+        .form-grid,
+        .options-grid,
+        .access-grid {
+          grid-template-columns: 1fr;
+          flex-direction: column;
+        }
+        .hud-box,
+        .stat-box {
+          width: 100%;
+        }
+        .btn {
+          width: 100%;
+          max-width: 100%;
+        }
+        #play-btn {
+          width: min(100%, 360px);
+          min-width: 0;
+        }
+        .btn-row {
+          align-items: stretch;
+        }
+        .lang-toggle {
+          left: auto;
+          right: 12px;
+        }
+        .challenge-card {
+          padding: 28px 20px;
+          min-height: 220px;
+        }
+        .mode-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="lang-toggle">
+      <button
+        class="lang-btn active"
+        id="lang-pt-btn"
+        onclick="setLanguage('pt-BR')"
+      >
+        PT-BR
+      </button>
+      <button class="lang-btn" id="lang-en-btn" onclick="setLanguage('en')">
+        EN
+      </button>
+    </div>
+    <!-- bg decorations -->
+    <div
+      class="bg-dot"
+      style="
+        width: 300px;
+        height: 300px;
+        background: var(--accent4);
+        top: -80px;
+        right: -80px;
+        animation-duration: 9s;
+      "
+    ></div>
+    <div
+      class="bg-dot"
+      style="
+        width: 200px;
+        height: 200px;
+        background: var(--accent1);
+        bottom: -50px;
+        left: -60px;
+        animation-duration: 7s;
+        animation-delay: -3s;
+      "
+    ></div>
+
+    <div id="app">
+      <!-- TELA INÍCIO -->
+      <div id="screen-start">
+        <div class="logo">
+          KeyGame
+          <span id="logo-subtitle">⌨ treino de atalhos</span>
+        </div>
+        <span class="keyboard-icon">🎮</span>
+        <p class="start-desc" id="start-desc">
+          Aprenda os atalhos mais usados do computador de um jeito divertido!
+        </p>
+        <p
+          style="
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--sub);
+            margin-bottom: 10px;
+          "
+        >
+          <span id="access-title">Perfil de acesso:</span>
+        </p>
+        <div class="access-grid">
+          <div
+            class="access-card selected"
+            data-access="player"
+            onclick="selectAccessMode('player', this)"
+          >
+            <span id="access-player-title">Jogador</span>
+            <small id="access-player-sub">Entrar na turma com código</small>
+          </div>
+          <div
+            class="access-card"
+            data-access="teacher"
+            onclick="selectAccessMode('teacher', this)"
+          >
+            <span id="access-teacher-title">Professor</span>
+            <small id="access-teacher-sub">Criar turma e gerenciar ranking</small>
+          </div>
+          <div
+            class="access-card"
+            data-access="practice"
+            onclick="selectAccessMode('practice', this)"
+          >
+            <span id="access-practice-title">Aprendizado</span>
+            <small id="access-practice-sub">Prática livre sem usuário</small>
+          </div>
+        </div>
+
+        <div id="player-area">
+          <div class="setup-panel">
+          <div class="panel-title" id="player-panel-title">Jogador</div>
+          <div class="form-grid">
+            <input
+              class="form-input"
+              id="username-input"
+              placeholder="Nome (opcional)"
+              maxlength="24"
+            />
+            <input
+              class="form-input"
+              id="classroom-input"
+              placeholder="Código da turma"
+              maxlength="24"
+            />
+          </div>
+          <div class="btn-row" style="justify-content: flex-start; margin-top: 8px">
+            <button class="mini-btn" onclick="savePlayerProfile()">
+              <span id="join-classroom-btn-label">Entrar na turma</span>
+            </button>
+          </div>
+          <div class="panel-status" id="player-status">
+            Defina usuário e turma para entrar no ranking.
+          </div>
+          <div class="panel-status" id="supabase-status">
+            Backend Supabase conectado.
+          </div>
+          </div>
+
+          <div class="ranking-panel">
+            <div class="panel-title" id="ranking-title">Ranking</div>
+            <div class="ranking-grid">
+              <div class="rank-box">
+                <div class="rank-head" id="ranking-global-title">Global</div>
+                <div class="rank-list" id="global-ranking-list"></div>
+              </div>
+              <div class="rank-box">
+                <div class="rank-head" id="ranking-class-title">Por Turma</div>
+                <div class="rank-list" id="class-ranking-list"></div>
+              </div>
+            </div>
+            <div class="panel-status" id="ranking-status">
+              Carregando ranking...
+            </div>
+          </div>
+        </div>
+
+        <div id="teacher-area" style="display: none">
+          <div class="teacher-panel">
+            <details open>
+              <summary id="teacher-mode-summary">Modo Professor</summary>
+              <div style="margin-top: 10px">
+                <div class="form-grid">
+                  <input
+                    class="form-input"
+                    id="teacher-class-name"
+                    placeholder="Nome da turma"
+                    maxlength="32"
+                  />
+                  <input
+                    class="form-input"
+                    id="teacher-class-code"
+                    placeholder="Código único da turma"
+                    maxlength="24"
+                  />
+                  <input
+                    class="form-input"
+                    id="teacher-access-key"
+                    placeholder="Chave do professor (opcional)"
+                    maxlength="64"
+                  />
+                </div>
+                <div class="btn-row" style="justify-content: flex-start; margin-top: 8px">
+                  <button class="mini-btn" onclick="teacherCreateClassroom()">
+                    <span id="teacher-create-btn-label">Criar turma</span>
+                  </button>
+                  <button class="mini-btn" onclick="teacherLoadClassRanking()">
+                    <span id="teacher-view-btn-label">Ver ranking da turma</span>
+                  </button>
+                  <button class="mini-btn warn" onclick="teacherResetClassroomScore()">
+                    <span id="teacher-reset-btn-label">Resetar pontuação</span>
+                  </button>
+                </div>
+                <div class="rank-box" style="margin-top: 10px">
+                  <div class="rank-head" id="teacher-ranking-title">Alunos da turma</div>
+                  <div class="rank-list" id="teacher-ranking-list"></div>
+                </div>
+                <div class="panel-status" id="teacher-status">
+                  Crie uma turma ou informe o código para gerenciar competições.
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div id="practice-area" class="setup-panel" style="display: none">
+          <div class="panel-title" id="practice-panel-title">Modo Aprendizado e Prática</div>
+          <div class="panel-status" id="practice-panel-sub" style="margin-top: 0">
+            Neste modo você pratica livremente, sem login e sem turma.
+          </div>
+        </div>
+
+        <p
+          style="
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--sub);
+            margin-bottom: 12px;
+          "
+        >
+          <span id="choose-mode-label">Escolha o modo:</span>
+        </p>
+        <div class="mode-grid">
+          <div
+            class="mode-card selected"
+            data-mode="shortcut"
+            onclick="selectMode('shortcut', this)"
+          >
+            <span class="mode-icon">⚡</span>
+            <span class="mode-title" id="mode-shortcut-title">Atalho Rápido</span>
+            <span class="mode-sub" id="mode-shortcut-sub">Veja a ação, pressione o atalho</span>
+          </div>
+          <div
+            class="mode-card"
+            data-mode="quiz"
+            onclick="selectMode('quiz', this)"
+          >
+            <span class="mode-icon">🧠</span>
+            <span class="mode-title" id="mode-quiz-title">Quiz</span>
+            <span class="mode-sub" id="mode-quiz-sub">Veja o atalho, escolha o que faz</span>
+          </div>
+          <div
+            class="mode-card"
+            data-mode="guided"
+            onclick="selectMode('guided', this)"
+          >
+            <span class="mode-icon">📘</span>
+            <span class="mode-title" id="mode-guided-title">Aprendizado guiado</span>
+            <span class="mode-sub" id="mode-guided-sub">Explicação + prática + validação</span>
+          </div>
+        </div>
+
+        <details class="mindmap-panel">
+          <summary>
+            <div class="mindmap-summary-text">
+              <div class="panel-title" id="map-panel-title">Mapa mental dos comandos</div>
+              <div class="panel-status" id="map-panel-sub">
+                Veja todos os atalhos e relembre com explicações rápidas.
+              </div>
+            </div>
+            <span class="mindmap-summary-icon">⌄</span>
+          </summary>
+          <div class="mindmap-content">
+            <div class="map-menu">
+              <button class="map-tab active" id="map-tab-mind" onclick="selectMapTab('mind')">
+                Mapa mental
+              </button>
+              <button class="map-tab" id="map-tab-bonus" onclick="selectMapTab('bonus')">
+                Comandos bônus
+              </button>
+            </div>
+            <div id="mindmap-list" class="mindmap-list"></div>
+            <div id="bonus-list" class="mindmap-list" style="display: none"></div>
+          </div>
+        </details>
+
+        <div class="play-cta">
+          <button class="btn btn-primary" onclick="startGame()" id="play-btn">▶ Jogar!</button>
+        </div>
+      </div>
+
+      <!-- TELA JOGO -->
+      <div id="screen-game">
+        <div class="hud">
+          <div class="hud-box">
+            <div class="hud-label" id="hud-score-label">Pontos</div>
+            <div class="hud-value" id="score-val">0</div>
+          </div>
+          <div class="hud-box">
+            <div class="hud-label" id="hud-phase-label">Fase</div>
+            <div class="hud-value" id="progress-val">1/10</div>
+          </div>
+          <div class="hud-box">
+            <div class="hud-label" id="hud-lives-label">Vidas</div>
+            <div class="hud-value" id="lives-val">❤❤❤</div>
+          </div>
+        </div>
+
+        <div class="timer-bar-wrap">
+          <div class="timer-bar" id="timer-bar" style="width: 100%"></div>
+        </div>
+
+        <div class="challenge-card" id="challenge-card">
+          <div class="feedback" id="feedback"></div>
+          <span class="challenge-mode-badge" id="mode-badge"
+            >Pressione o atalho</span
+          >
+          <span class="challenge-emoji" id="challenge-emoji">📋</span>
+          <div class="challenge-text" id="challenge-text">Copiar</div>
+          <div class="challenge-hint" id="challenge-hint">
+            Pressione o atalho correto no teclado
+          </div>
+          <div class="key-display" id="key-display"></div>
+        </div>
+
+        <!-- options para quiz mode -->
+        <div class="options-grid" id="options-grid" style="display: none"></div>
+        <div class="guided-panel" id="guided-panel" style="display: none"></div>
+      </div>
+
+      <!-- TELA FIM -->
+      <div id="screen-end">
+        <span class="result-icon" id="result-icon">🏆</span>
+        <div class="result-title" id="result-title">Incrível!</div>
+        <p class="result-sub" id="result-sub">Você acertou todos!</p>
+        <div class="stats-row">
+          <div class="stat-box">
+            <span class="stat-val" id="end-score" style="color: var(--accent2)"
+              >0</span
+            ><span class="stat-lbl" id="stat-points-label">Pontos</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-val" id="end-acc" style="color: var(--accent3)"
+              >0%</span
+            ><span class="stat-lbl" id="stat-accuracy-label">Acertos</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-val" id="end-combo" style="color: var(--accent4)"
+              >0x</span
+            ><span class="stat-lbl" id="stat-combo-label">Combo máx</span>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="startGame()">
+            <span id="play-again-btn-label">🔄 Jogar de Novo</span>
+          </button>
+          <button class="btn btn-secondary" onclick="showStart()">
+            <span id="home-btn-label">🏠 Início</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+            const SHORTCUTS = [
+        {
+          keys: ["meta"],
+          meta: true,
+          label: "Tecla Windows",
+          action: "Abrir/fechar menu Iniciar",
+          emoji: "⊞",
+          hint: "Abre ou fecha o menu Iniciar.",
+          practice:
+            "Pressione a tecla Windows para abrir o menu Iniciar, depois pressione novamente para fechar.",
+          difficulty: "easy",
+          shortcutMode: false,
+        },
+        {
+          keys: ["i"],
+          meta: true,
+          label: "Win + I",
+          action: "Abrir Configurações",
+          emoji: "⚙️",
+          hint: "Abre as Configurações do Windows.",
+          practice: "Pressione Win + I e confirme que a tela de Configurações abriu.",
+          difficulty: "easy",
+          shortcutMode: false,
+        },
+        {
+          keys: ["e"],
+          meta: true,
+          label: "Win + E",
+          action: "Abrir Explorador de Arquivos",
+          emoji: "📁",
+          hint: "Abre o Explorador de Arquivos.",
+          practice:
+            "Pressione Win + E para abrir o Explorador de Arquivos e navegue por uma pasta.",
+          difficulty: "easy",
+          shortcutMode: false,
+        },
+        {
+          keys: ["d"],
+          meta: true,
+          label: "Win + D",
+          action: "Mostrar/Restaurar área de trabalho",
+          emoji: "🖥️",
+          hint: "Minimiza ou restaura todas as janelas.",
+          practice:
+            "Com algumas janelas abertas, use Win + D para mostrar a área de trabalho e use de novo para restaurar.",
+          difficulty: "medium",
+          shortcutMode: false,
+        },
+        {
+          keys: ["l"],
+          meta: true,
+          label: "Win + L",
+          action: "Bloquear o computador",
+          emoji: "🔒",
+          hint: "Bloqueia o computador imediatamente.",
+          practice:
+            "Use Win + L para bloquear. Depois faça login novamente e volte ao jogo.",
+          difficulty: "hard",
+          shortcutMode: false,
+        },
+        {
+          keys: ["s"],
+          meta: true,
+          label: "Win + S",
+          action: "Abrir pesquisa do Windows",
+          emoji: "🔎",
+          hint: "Abre a pesquisa do Windows.",
+          practice:
+            "Pressione Win + S e pesquise por um aplicativo, como Bloco de Notas.",
+          difficulty: "easy",
+          shortcutMode: false,
+        },
+        {
+          keys: ["tab"],
+          alt: true,
+          label: "Alt + Tab",
+          action: "Alternar aplicativos abertos",
+          emoji: "🔁",
+          hint: "Alterna entre aplicativos abertos.",
+          practice:
+            "Abra 2 programas e use Alt + Tab para alternar entre eles.",
+          difficulty: "medium",
+          shortcutMode: false,
+        },
+        {
+          keys: ["tab"],
+          meta: true,
+          label: "Win + Tab",
+          action: "Abrir visão de tarefas",
+          emoji: "🗂️",
+          hint: "Abre a visão de tarefas e áreas de trabalho virtuais.",
+          practice:
+            "Pressione Win + Tab e visualize as janelas abertas na visão de tarefas.",
+          difficulty: "medium",
+          shortcutMode: false,
+        },
+        {
+          keys: ["arrowup", "arrowdown", "arrowleft", "arrowright"],
+          meta: true,
+          label: "Win + Seta (↑/↓/←/→)",
+          action: "Ajustar janela (Snap Layouts)",
+          emoji: "🪟",
+          hint: "Ajusta a janela atual nas laterais/cantos da tela.",
+          practice:
+            "Com uma janela ativa, use Win + setas para encaixar em lado/canto da tela.",
+          difficulty: "hard",
+          shortcutMode: false,
+        },
+        {
+          keys: ["f4"],
+          alt: true,
+          label: "Alt + F4",
+          action: "Fechar aplicativo/janela ativa",
+          emoji: "❌",
+          hint: "Fecha o aplicativo ou janela ativa.",
+          practice:
+            "Abra um app simples e use Alt + F4 para fechar com segurança.",
+          difficulty: "medium",
+          shortcutMode: false,
+        },
+        {
+          keys: ["s"],
+          meta: true,
+          shift: true,
+          label: "Win + Shift + S",
+          action: "Capturar área da tela",
+          emoji: "📸",
+          hint: "Abre a captura de tela por recorte.",
+          practice:
+            "Use Win + Shift + S e faça um recorte de uma área da tela.",
+          difficulty: "medium",
+          shortcutMode: false,
+        },
+        {
+          keys: ["v"],
+          meta: true,
+          label: "Win + V",
+          action: "Abrir histórico da área de transferência",
+          emoji: "📋",
+          hint: "Mostra vários itens copiados no histórico.",
+          practice:
+            "Copie dois textos diferentes e abra Win + V para ver o histórico.",
+          difficulty: "hard",
+          shortcutMode: false,
+        },
+        {
+          keys: ["r"],
+          meta: true,
+          label: "Win + R",
+          action: "Abrir Executar",
+          emoji: "▶️",
+          hint: "Abre a caixa de diálogo Executar.",
+          practice:
+            "Pressione Win + R, digite notepad e confirme para abrir o Bloco de Notas.",
+          difficulty: "easy",
+          shortcutMode: false,
+        },
+        {
+          keys: ["n"],
+          meta: true,
+          label: "Win + N",
+          action: "Abrir central de notificações e calendário",
+          emoji: "🔔",
+          hint: "Abre a central de notificações e calendário.",
+          practice:
+            "Pressione Win + N e visualize as notificações e o calendário.",
+          difficulty: "medium",
+          shortcutMode: false,
+        },
+        {
+          keys: ["c", "x", "v"],
+          ctrl: true,
+          label: "Ctrl + C / X / V",
+          action: "Copiar, recortar e colar",
+          emoji: "📝",
+          hint: "Copia, recorta e cola conteúdo.",
+          practice:
+            "Digite um texto curto, copie (Ctrl + C), cole em outro lugar (Ctrl + V) e teste recortar (Ctrl + X).",
+          difficulty: "easy",
+          shortcutMode: true,
+        },
+        {
+          keys: ["z", "y"],
+          ctrl: true,
+          label: "Ctrl + Z / Y",
+          action: "Desfazer e refazer",
+          emoji: "↩️",
+          hint: "Desfaz e refaz ações.",
+          practice:
+            "Digite uma frase, use Ctrl + Z para desfazer e Ctrl + Y para refazer.",
+          difficulty: "easy",
+          shortcutMode: true,
+        },
+        {
+          keys: ["a"],
+          ctrl: true,
+          label: "Ctrl + A",
+          action: "Selecionar tudo",
+          emoji: "🗂️",
+          hint: "Seleciona todos os itens ou todo o texto.",
+          practice:
+            "Abra um texto com várias linhas e use Ctrl + A para selecionar tudo.",
+          difficulty: "easy",
+          shortcutMode: true,
+        },
+        {
+          keys: ["n"],
+          ctrl: true,
+          shift: true,
+          label: "Ctrl + Shift + N",
+          action: "Criar nova pasta",
+          emoji: "📂",
+          hint: "Cria uma nova pasta no Explorador de Arquivos.",
+          practice:
+            "No Explorador de Arquivos, pressione Ctrl + Shift + N para criar uma pasta nova.",
+          difficulty: "hard",
+          browserBlocked: true,
+          shortcutMode: false,
+        },
+        {
+          keys: ["y"],
+          ctrl: true,
+          label: "Bônus: Ctrl + Y",
+          action: "Refazer ação",
+          emoji: "↪️",
+          hint: "Refaz a última ação desfeita.",
+          practice:
+            "Escreva algo, use Ctrl + Z para desfazer e depois Ctrl + Y para refazer.",
+          difficulty: "hard",
+          shortcutMode: true,
+        },
+        {
+          keys: ["x"],
+          ctrl: true,
+          label: "Bônus: Ctrl + X",
+          action: "Recortar item",
+          emoji: "✂️",
+          hint: "Recorta o conteúdo selecionado.",
+          practice:
+            "Selecione um texto e pressione Ctrl + X para recortar.",
+          difficulty: "hard",
+          shortcutMode: true,
+        },
+        {
+          keys: ["v"],
+          ctrl: true,
+          label: "Bônus: Ctrl + V",
+          action: "Colar conteúdo",
+          emoji: "📌",
+          hint: "Cola o conteúdo copiado ou recortado.",
+          practice:
+            "Após copiar ou recortar algo, use Ctrl + V para colar.",
+          difficulty: "hard",
+          shortcutMode: true,
+        },
+        {
+          keys: ["c"],
+          ctrl: true,
+          label: "Bônus: Ctrl + C",
+          action: "Copiar item",
+          emoji: "📋",
+          hint: "Copia o conteúdo selecionado.",
+          practice:
+            "Selecione um trecho de texto e use Ctrl + C para copiar.",
+          difficulty: "hard",
+          shortcutMode: true,
+        },
+        {
+          keys: ["s"],
+          ctrl: true,
+          label: "Ctrl + S",
+          action: "Salvar",
+          emoji: "💾",
+          hint: "Salva o arquivo ou documento atual.",
+          practice:
+            "Abra um editor de texto e pressione Ctrl + S para salvar o conteúdo.",
+          difficulty: "easy",
+          shortcutMode: true,
+        },
+        {
+          keys: ["f"],
+          ctrl: true,
+          label: "Ctrl + F",
+          action: "Localizar",
+          emoji: "🔍",
+          hint: "Abre a busca para localizar termos na página ou documento.",
+          practice:
+            "Abra um texto longo, use Ctrl + F e pesquise por uma palavra específica.",
+          difficulty: "easy",
+          shortcutMode: true,
+        },
+        {
+          keys: ["f5"],
+          label: "F5",
+          action: "Atualizar página",
+          emoji: "🔄",
+          hint: "Recarrega a página atual no navegador.",
+          practice:
+            "No navegador, pressione F5 para atualizar e ver mudanças recentes.",
+          difficulty: "easy",
+          browserBlocked: true,
+          shortcutMode: false,
+        },
+        {
+          keys: ["r"],
+          ctrl: true,
+          label: "Ctrl + R",
+          action: "Atualizar página",
+          emoji: "♻️",
+          hint: "Recarrega a página atual no navegador.",
+          practice:
+            "Use Ctrl + R para atualizar uma aba enquanto testa alterações.",
+          difficulty: "easy",
+          browserBlocked: true,
+          shortcutMode: true,
+        },
+        {
+          keys: ["."],
+          meta: true,
+          label: "Win + .",
+          action: "Abrir seletor de emoji",
+          emoji: "😀",
+          hint: "Abre o painel de emojis do Windows.",
+          practice:
+            "Pressione Win + . e escolha um emoji para inserir em um texto.",
+          difficulty: "easy",
+          shortcutMode: false,
+        },
+        {
+          keys: ["p"],
+          ctrl: true,
+          label: "Ctrl + P",
+          action: "Imprimir",
+          emoji: "🖨️",
+          hint: "Abre a janela de impressão do sistema ou navegador.",
+          practice:
+            "Em um documento ou página, pressione Ctrl + P e visualize as opções de impressão.",
+          difficulty: "easy",
+          browserBlocked: true,
+          shortcutMode: true,
+        },
+        {
+          keys: ["f2"],
+          label: "F2",
+          action: "Renomear item",
+          emoji: "✏️",
+          hint: "Renomeia arquivo ou pasta selecionada no Explorador.",
+          practice:
+            "Selecione um arquivo no Explorador e use F2 para alterar o nome.",
+          difficulty: "medium",
+          shortcutMode: true,
+        },
+        {
+          keys: ["t"],
+          ctrl: true,
+          label: "Ctrl + T",
+          action: "Nova guia no navegador",
+          emoji: "🆕",
+          hint: "Abre uma nova aba no navegador.",
+          practice:
+            "No navegador, pressione Ctrl + T para abrir uma nova guia.",
+          difficulty: "medium",
+          browserBlocked: true,
+          shortcutMode: true,
+        },
+        {
+          keys: ["w"],
+          ctrl: true,
+          label: "Ctrl + W",
+          action: "Fechar guia atual",
+          emoji: "🗙",
+          hint: "Fecha a aba atual do navegador.",
+          practice:
+            "Abra duas abas e use Ctrl + W para fechar a guia ativa.",
+          difficulty: "medium",
+          browserBlocked: true,
+          shortcutMode: true,
+        },
+        {
+          keys: ["d"],
+          alt: true,
+          label: "Alt + D",
+          action: "Selecionar barra de endereço",
+          emoji: "🌐",
+          hint: "Leva o foco para a barra de endereço do navegador.",
+          practice:
+            "Com o navegador aberto, use Alt + D e digite um novo site.",
+          difficulty: "medium",
+          browserBlocked: true,
+          shortcutMode: true,
+        },
+        {
+          keys: ["1", "2", "3", "4", "5"],
+          meta: true,
+          label: "Win + 1/2/3...",
+          action: "Abrir apps da barra de tarefas",
+          emoji: "🚀",
+          hint: "Abre o app fixado na posição correspondente da barra.",
+          practice:
+            "Pressione Win + 1 ou Win + 2 para abrir apps fixados na barra de tarefas.",
+          difficulty: "medium",
+          shortcutMode: false,
+        },
+        {
+          keys: ["escape"],
+          ctrl: true,
+          shift: true,
+          label: "Ctrl + Shift + Esc",
+          action: "Abrir Gerenciador de Tarefas",
+          emoji: "📊",
+          hint: "Abre direto o Gerenciador de Tarefas do Windows.",
+          practice:
+            "Use Ctrl + Shift + Esc para abrir o Gerenciador e visualizar processos.",
+          difficulty: "hard",
+          browserBlocked: true,
+          shortcutMode: false,
+        },
+        {
+          keys: ["t"],
+          ctrl: true,
+          shift: true,
+          label: "Ctrl + Shift + T",
+          action: "Reabrir guia fechada",
+          emoji: "↩️",
+          hint: "Reabre a última guia fechada no navegador.",
+          practice:
+            "Feche uma aba no navegador e use Ctrl + Shift + T para restaurar.",
+          difficulty: "hard",
+          browserBlocked: true,
+          shortcutMode: true,
+        },
+        {
+          keys: ["x"],
+          meta: true,
+          label: "Win + X",
+          action: "Abrir menu de link rápido",
+          emoji: "🧰",
+          hint: "Abre o menu avançado com utilitários do sistema.",
+          practice:
+            "Pressione Win + X para abrir o menu rápido com opções administrativas.",
+          difficulty: "hard",
+          shortcutMode: false,
+        },
+        {
+          keys: ["arrowleft", "arrowright"],
+          meta: true,
+          shift: true,
+          label: "Win + Shift + Seta (←/→)",
+          action: "Mover janela entre monitores",
+          emoji: "🖥️",
+          hint: "Move a janela ativa para o monitor à esquerda/direita.",
+          practice:
+            "Com dois monitores, use Win + Shift + seta para mover a janela ativa.",
+          difficulty: "hard",
+          shortcutMode: false,
+        },
+        {
+          keys: ["space"],
+          alt: true,
+          label: "Alt + Space",
+          action: "Abrir menu da janela",
+          emoji: "🪟",
+          hint: "Abre o menu do sistema da janela ativa (mover, redimensionar, etc.).",
+          practice:
+            "Com uma janela ativa, pressione Alt + Space e navegue no menu usando o teclado.",
+          difficulty: "hard",
+          browserBlocked: true,
+          shortcutMode: true,
+        },
+      ];
+
+      const SHORTCUTS_EN = {
+        "Tecla Windows": {
+          label: "Windows Key",
+          action: "Open/close Start menu",
+          hint: "Opens or closes the Start menu.",
+          practice: "Press the Windows key to open Start, then press again to close it.",
+        },
+        "Win + I": {
+          action: "Open Settings",
+          hint: "Opens Windows Settings.",
+          practice: "Press Win + I and confirm the Settings window opens.",
+        },
+        "Win + E": {
+          action: "Open File Explorer",
+          hint: "Opens File Explorer.",
+          practice: "Press Win + E to open File Explorer and browse a folder.",
+        },
+        "Win + D": {
+          action: "Show/restore desktop",
+          hint: "Minimizes or restores all windows.",
+          practice: "With a few windows open, use Win + D to show desktop, then use it again to restore.",
+        },
+        "Win + L": {
+          action: "Lock computer",
+          hint: "Locks the computer immediately.",
+          practice: "Use Win + L to lock your computer, then sign in again and return to the game.",
+        },
+        "Win + S": {
+          action: "Open Windows Search",
+          hint: "Opens Windows Search.",
+          practice: "Press Win + S and search for an app like Notepad.",
+        },
+        "Alt + Tab": {
+          action: "Switch open apps",
+          hint: "Switches between open applications.",
+          practice: "Open 2 apps and use Alt + Tab to switch between them.",
+        },
+        "Win + Tab": {
+          action: "Open task view",
+          hint: "Opens task view and virtual desktops.",
+          practice: "Press Win + Tab and view open windows in task view.",
+        },
+        "Win + Seta (↑/↓/←/→)": {
+          label: "Win + Arrow (↑/↓/←/→)",
+          action: "Snap active window",
+          hint: "Snaps the active window to screen sides/corners.",
+          practice: "With a window active, use Win + arrows to snap it to a side/corner.",
+        },
+        "Alt + F4": {
+          action: "Close active app/window",
+          hint: "Closes the active app or window.",
+          practice: "Open a simple app and use Alt + F4 to close it safely.",
+        },
+        "Win + Shift + S": {
+          action: "Capture screen area",
+          hint: "Opens snipping capture tool.",
+          practice: "Use Win + Shift + S and capture an area of your screen.",
+        },
+        "Win + V": {
+          action: "Open clipboard history",
+          hint: "Shows multiple copied items in history.",
+          practice: "Copy two different texts and press Win + V to view clipboard history.",
+        },
+        "Win + R": {
+          action: "Open Run dialog",
+          hint: "Opens the Run dialog box.",
+          practice: "Press Win + R, type notepad, and confirm to open Notepad.",
+        },
+        "Win + N": {
+          action: "Open notifications and calendar",
+          hint: "Opens notifications center and calendar.",
+          practice: "Press Win + N and view notifications and calendar.",
+        },
+        "Ctrl + C / X / V": {
+          action: "Copy, cut, and paste",
+          hint: "Copies, cuts, and pastes content.",
+          practice: "Type a short text, copy (Ctrl + C), paste elsewhere (Ctrl + V), and test cut (Ctrl + X).",
+        },
+        "Ctrl + Z / Y": {
+          action: "Undo and redo",
+          hint: "Undoes and redoes actions.",
+          practice: "Type a sentence, use Ctrl + Z to undo, then Ctrl + Y to redo.",
+        },
+        "Ctrl + A": {
+          action: "Select all",
+          hint: "Selects all items or all text.",
+          practice: "Open text with multiple lines and use Ctrl + A to select all.",
+        },
+        "Ctrl + Shift + N": {
+          action: "Create new folder",
+          hint: "Creates a new folder in File Explorer.",
+          practice: "In File Explorer, press Ctrl + Shift + N to create a new folder.",
+        },
+        "Bônus: Ctrl + Y": {
+          label: "Bonus: Ctrl + Y",
+          action: "Redo action",
+          hint: "Redoes the last undone action.",
+          practice: "Type something, undo with Ctrl + Z, then redo with Ctrl + Y.",
+        },
+        "Bônus: Ctrl + X": {
+          label: "Bonus: Ctrl + X",
+          action: "Cut item",
+          hint: "Cuts selected content.",
+          practice: "Select text and press Ctrl + X to cut it.",
+        },
+        "Bônus: Ctrl + V": {
+          label: "Bonus: Ctrl + V",
+          action: "Paste content",
+          hint: "Pastes copied or cut content.",
+          practice: "After copying or cutting content, use Ctrl + V to paste.",
+        },
+        "Bônus: Ctrl + C": {
+          label: "Bonus: Ctrl + C",
+          action: "Copy item",
+          hint: "Copies selected content.",
+          practice: "Select a text snippet and use Ctrl + C to copy it.",
+        },
+        "Ctrl + S": {
+          action: "Save",
+          hint: "Saves the current file or document.",
+          practice: "Open a text editor and press Ctrl + S to save your content.",
+        },
+        "Ctrl + F": {
+          action: "Find",
+          hint: "Opens search to find terms on the page or document.",
+          practice: "Open a long text, use Ctrl + F, and search for a specific word.",
+        },
+        F5: {
+          action: "Refresh page",
+          hint: "Reloads the current page in the browser.",
+          practice: "In the browser, press F5 to refresh and see recent changes.",
+        },
+        "Ctrl + R": {
+          action: "Refresh page",
+          hint: "Reloads the current page in the browser.",
+          practice: "Use Ctrl + R to refresh a tab while testing changes.",
+        },
+        "Win + .": {
+          action: "Open emoji picker",
+          hint: "Opens the Windows emoji panel.",
+          practice: "Press Win + . and choose an emoji to insert into text.",
+        },
+        "Ctrl + P": {
+          action: "Print",
+          hint: "Opens the system or browser print window.",
+          practice: "In a document or page, press Ctrl + P and preview print options.",
+        },
+        F2: {
+          action: "Rename item",
+          hint: "Renames selected file or folder in File Explorer.",
+          practice: "Select a file in Explorer and use F2 to rename it.",
+        },
+        "Ctrl + T": {
+          action: "New browser tab",
+          hint: "Opens a new tab in the browser.",
+          practice: "In your browser, press Ctrl + T to open a new tab.",
+        },
+        "Ctrl + W": {
+          action: "Close current tab",
+          hint: "Closes the active browser tab.",
+          practice: "Open two tabs and use Ctrl + W to close the current tab.",
+        },
+        "Alt + D": {
+          action: "Select address bar",
+          hint: "Moves focus to the browser address bar.",
+          practice: "With the browser open, use Alt + D and type a new website.",
+        },
+        "Win + 1/2/3...": {
+          action: "Open taskbar apps",
+          hint: "Opens the pinned app in the matching taskbar position.",
+          practice: "Press Win + 1 or Win + 2 to open pinned taskbar apps.",
+        },
+        "Ctrl + Shift + Esc": {
+          action: "Open Task Manager",
+          hint: "Directly opens the Windows Task Manager.",
+          practice: "Use Ctrl + Shift + Esc to open Task Manager and view processes.",
+        },
+        "Ctrl + Shift + T": {
+          action: "Reopen closed tab",
+          hint: "Reopens the last closed browser tab.",
+          practice: "Close a browser tab and use Ctrl + Shift + T to restore it.",
+        },
+        "Win + X": {
+          action: "Open quick link menu",
+          hint: "Opens the advanced system utilities menu.",
+          practice: "Press Win + X to open the quick menu with admin options.",
+        },
+        "Win + Shift + Seta (←/→)": {
+          label: "Win + Shift + Arrow (←/→)",
+          action: "Move window between monitors",
+          hint: "Moves the active window to the monitor on the left/right.",
+          practice: "With two monitors, use Win + Shift + Arrow to move the active window.",
+        },
+        "Alt + Space": {
+          action: "Open window system menu",
+          hint: "Opens the active window system menu (move, resize, etc.).",
+          practice: "With an active window, press Alt + Space and navigate with keyboard.",
+        },
+      };
+
+      const I18N = {
+        "pt-BR": {
+          logoSubtitle: "⌨ treino de atalhos",
+          startDesc: "Aprenda os atalhos mais usados do computador de um jeito divertido!",
+          accessTitle: "Perfil de acesso:",
+          accessPlayerTitle: "Jogador",
+          accessTeacherTitle: "Professor",
+          accessPracticeTitle: "Aprendizado",
+          accessPlayerSub: "Entrar na turma com código",
+          accessTeacherSub: "Criar turma e gerenciar ranking",
+          accessPracticeSub: "Prática livre sem usuário",
+          playerPanelTitle: "Jogador",
+          joinClassroomBtnLabel: "Entrar na turma",
+          rankingTitle: "Ranking",
+          rankingGlobalTitle: "Global",
+          rankingClassTitle: "Por Turma",
+          teacherModeSummary: "Modo Professor",
+          teacherCreateBtnLabel: "Criar turma",
+          teacherViewBtnLabel: "Ver ranking da turma",
+          teacherResetBtnLabel: "Resetar pontuação",
+          teacherRankingTitle: "Alunos da turma",
+          practicePanelTitle: "Modo Aprendizado e Prática",
+          practicePanelSub: "Neste modo você pratica livremente, sem login e sem turma.",
+          chooseModeLabel: "Escolha o modo:",
+          modeShortcutTitle: "Atalho Rápido",
+          modeShortcutSub: "Veja a ação, pressione o atalho",
+          modeQuizTitle: "Quiz",
+          modeQuizSub: "Veja o atalho, escolha o que faz",
+          modeGuidedTitle: "Aprendizado guiado",
+          modeGuidedSub: "Explicação + prática + validação",
+          mapPanelTitle: "Mapa mental dos comandos",
+          mapPanelSub: "Veja todos os atalhos e relembre com explicações rápidas.",
+          mapTabMind: "Mapa mental",
+          mapTabBonus: "Comandos bônus (fora do navegador)",
+          badgeBonus: "Bônus",
+          bonusNote: "Atalho reservado pelo sistema/navegador: use como referência.",
+          bonusEmpty: "Nenhum comando bônus detectado.",
+          groupWindows: "Windows e sistema",
+          groupEditing: "Edição e texto",
+          groupWindowMgmt: "Janelas e navegação",
+          groupBrowserSystem: "Navegador e sistema",
+          groupOther: "Outros",
+          playBtn: "▶ Jogar!",
+          hudScoreLabel: "Pontos",
+          hudPhaseLabel: "Fase",
+          hudLivesLabel: "Vidas",
+          playAgainBtnLabel: "🔄 Jogar de Novo",
+          homeBtnLabel: "🏠 Início",
+          placeholderUsername: "Nome (opcional)",
+          placeholderClassroom: "Código da turma",
+          placeholderTeacherName: "Nome da turma",
+          placeholderTeacherCode: "Código único da turma",
+          placeholderTeacherKey: "Chave do professor (opcional)",
+          modeBadgeShortcut: "⚡ Pressione o atalho",
+          modeBadgeQuiz: "🧠 Qual é essa ação?",
+          modeBadgeGuided: "📘 Aprendizado guiado",
+          challengeHintDefault: "Pressione o atalho correto no teclado",
+          quizHint: "Escolha a função correta do atalho",
+          guidedServeTitle: "Para que serve",
+          guidedPracticeTitle: "Aplicação prática",
+          guidedValidationTitle: "Validação",
+          guidedDoneBtn: "Concluí a prática",
+          guidedStatusBefore: "Faça a prática e depois valide a resposta.",
+          guidedStatusAfter: "Prática marcada como concluída. Agora escolha a alternativa correta.",
+          playerNeedClassroom: "Informe o código da turma para entrar.",
+          playerJoined: "Entrou na turma {turma} como {username}.",
+          playerJoinError: "Erro ao entrar na turma. Verifique o backend.",
+          rankingUpdated: "Ranking atualizado em tempo real.",
+          rankingError: "Erro ao carregar ranking. Verifique o backend.",
+          noDataOnline: "Sem dados online.",
+          noUsersYet: "Nenhum usuário ainda.",
+          noStudentsInClass: "Nenhum aluno na turma {turma}.",
+          setClassToView: "Defina sua turma para ver este ranking.",
+          teacherNeedCodeCreate: "Informe um código de turma.",
+          teacherCreated: "Turma {codigo} criada/atualizada com sucesso.",
+          teacherCreateError: "Erro ao criar turma.",
+          teacherNeedCodeView: "Informe o código da turma para consultar.",
+          teacherLoaded: "Ranking da turma {codigo} carregado.",
+          teacherLoadError: "Erro ao carregar ranking da turma.",
+          teacherNeedCodeReset: "Informe o código da turma para resetar.",
+          teacherResetConfirm: "Resetar a pontuação da turma {codigo}?",
+          teacherResetDone: "Pontuação da turma {codigo} resetada.",
+          teacherResetError: "Erro ao resetar pontuação.",
+          needJoinToScore: "Para registrar pontuação, entre na turma com seu código.",
+          saveScoreError: "Não foi possível salvar a pontuação online.",
+          scoreCorrectSimple: "✓ Correto!",
+          scoreWrongQuiz: "Resposta incorreta",
+          timeoutPrefix: "⏰ Tempo!",
+          resultAmazing: "Incrível!",
+          resultAmazingSub: "Você está dominando os atalhos do Windows.",
+          resultVeryGood: "Muito bom!",
+          resultVeryGoodSub: "Você já está com ótimo progresso.",
+          resultGood: "Bom trabalho!",
+          resultGoodSub: "Continue praticando para ganhar fluidez.",
+          resultTryAgain: "Continue tentando!",
+          resultTryAgainSub: "Treino guiado ajuda muito na memorização.",
+          statusBackendReady: "Backend Supabase conectado.",
+          statusBackendMissing: "Supabase não configurado.",
+          statusBackendApi: "Backend API ativo (configuração client-side opcional).",
+          statusPlayerDefault: "Defina usuário e turma para entrar no ranking.",
+          statusTeacherDefault: "Crie uma turma ou informe o código para gerenciar competições.",
+          statusRankingLoading: "Carregando ranking...",
+          playerActive: "Jogador ativo: {username} | Turma: {turma}",
+          unnamedUser: "Sem nome",
+          noStudentsFoundInClass: "Nenhum aluno encontrado na turma {turma}.",
+          teacherLoadedSimple: "Ranking da turma {codigo} carregado.",
+          scoreBreakdownBase: "Base",
+          scoreBreakdownFlawless: "Sem erro",
+          scoreBreakdownCombo: "Combo",
+          scoreWrongShortcut: "Era {label}",
+          resultDefaultSub: "Você acertou todos!",
+          statPointsLabel: "Pontos",
+          statAccuracyLabel: "Acertos",
+          statComboLabel: "Combo máx",
+        },
+        en: {
+          logoSubtitle: "⌨ shortcut training",
+          startDesc: "Learn the most-used computer shortcuts in a fun way!",
+          accessTitle: "Access profile:",
+          accessPlayerTitle: "Player",
+          accessTeacherTitle: "Teacher",
+          accessPracticeTitle: "Learning",
+          accessPlayerSub: "Join class with code",
+          accessTeacherSub: "Create class and manage ranking",
+          accessPracticeSub: "Free practice without user",
+          playerPanelTitle: "Player",
+          joinClassroomBtnLabel: "Join classroom",
+          rankingTitle: "Ranking",
+          rankingGlobalTitle: "Global",
+          rankingClassTitle: "By Classroom",
+          teacherModeSummary: "Teacher Mode",
+          teacherCreateBtnLabel: "Create classroom",
+          teacherViewBtnLabel: "View classroom ranking",
+          teacherResetBtnLabel: "Reset scores",
+          teacherRankingTitle: "Classroom students",
+          practicePanelTitle: "Learning and Practice Mode",
+          practicePanelSub: "Practice freely without login or classroom.",
+          chooseModeLabel: "Choose mode:",
+          modeShortcutTitle: "Quick Shortcut",
+          modeShortcutSub: "See the action, press the shortcut",
+          modeQuizTitle: "Quiz",
+          modeQuizSub: "See the shortcut, choose its action",
+          modeGuidedTitle: "Guided Learning",
+          modeGuidedSub: "Explanation + practice + validation",
+          mapPanelTitle: "Shortcut mind map",
+          mapPanelSub: "All shortcuts with quick reminders.",
+          mapTabMind: "Mind map",
+          mapTabBonus: "Bonus (system-reserved)",
+          badgeBonus: "Bonus",
+          bonusNote: "Reserved by system/browser: reference only.",
+          bonusEmpty: "No bonus shortcuts detected.",
+          groupWindows: "Windows & system",
+          groupEditing: "Editing & text",
+          groupWindowMgmt: "Windows & navigation",
+          groupBrowserSystem: "Browser & system",
+          groupOther: "Other",
+          playBtn: "▶ Play!",
+          hudScoreLabel: "Score",
+          hudPhaseLabel: "Round",
+          hudLivesLabel: "Lives",
+          playAgainBtnLabel: "🔄 Play Again",
+          homeBtnLabel: "🏠 Home",
+          placeholderUsername: "Name (optional)",
+          placeholderClassroom: "Classroom code",
+          placeholderTeacherName: "Classroom name",
+          placeholderTeacherCode: "Unique classroom code",
+          placeholderTeacherKey: "Teacher key (optional)",
+          modeBadgeShortcut: "⚡ Press the shortcut",
+          modeBadgeQuiz: "🧠 What action is this?",
+          modeBadgeGuided: "📘 Guided learning",
+          challengeHintDefault: "Press the correct shortcut on the keyboard",
+          quizHint: "Choose the correct shortcut action",
+          guidedServeTitle: "What it does",
+          guidedPracticeTitle: "Practical application",
+          guidedValidationTitle: "Validation",
+          guidedDoneBtn: "I completed the practice",
+          guidedStatusBefore: "Complete the practice and then validate your answer.",
+          guidedStatusAfter: "Practice marked as done. Now choose the correct option.",
+          playerNeedClassroom: "Enter the classroom code to join.",
+          playerJoined: "Joined classroom {turma} as {username}.",
+          playerJoinError: "Could not join classroom. Check backend.",
+          rankingUpdated: "Ranking updated in real time.",
+          rankingError: "Could not load ranking. Check backend.",
+          noDataOnline: "No online data.",
+          noUsersYet: "No users yet.",
+          noStudentsInClass: "No students in classroom {turma}.",
+          setClassToView: "Set your classroom to view this ranking.",
+          teacherNeedCodeCreate: "Enter a classroom code.",
+          teacherCreated: "Classroom {codigo} created/updated successfully.",
+          teacherCreateError: "Could not create classroom.",
+          teacherNeedCodeView: "Enter classroom code to view ranking.",
+          teacherLoaded: "Ranking for classroom {codigo} loaded.",
+          teacherLoadError: "Could not load classroom ranking.",
+          teacherNeedCodeReset: "Enter classroom code to reset.",
+          teacherResetConfirm: "Reset scores for classroom {codigo}?",
+          teacherResetDone: "Scores for classroom {codigo} have been reset.",
+          teacherResetError: "Could not reset scores.",
+          needJoinToScore: "To save score, join a classroom using its code.",
+          saveScoreError: "Could not save score online.",
+          scoreCorrectSimple: "✓ Correct!",
+          scoreWrongQuiz: "Wrong answer",
+          timeoutPrefix: "⏰ Time up!",
+          resultAmazing: "Amazing!",
+          resultAmazingSub: "You are mastering Windows shortcuts.",
+          resultVeryGood: "Very good!",
+          resultVeryGoodSub: "You are making great progress.",
+          resultGood: "Good job!",
+          resultGoodSub: "Keep practicing to gain fluency.",
+          resultTryAgain: "Keep trying!",
+          resultTryAgainSub: "Guided training helps memorization.",
+          statusBackendReady: "Supabase backend connected.",
+          statusBackendMissing: "Supabase is not configured.",
+          statusBackendApi: "Backend API active (client-side config is optional).",
+          statusPlayerDefault: "Set user and classroom to join the ranking.",
+          statusTeacherDefault: "Create a classroom or enter a code to manage competitions.",
+          statusRankingLoading: "Loading ranking...",
+          playerActive: "Active player: {username} | Classroom: {turma}",
+          unnamedUser: "Unnamed",
+          noStudentsFoundInClass: "No students found in classroom {turma}.",
+          teacherLoadedSimple: "Ranking for classroom {codigo} loaded.",
+          scoreBreakdownBase: "Base",
+          scoreBreakdownFlawless: "Flawless",
+          scoreBreakdownCombo: "Combo",
+          scoreWrongShortcut: "Was {label}",
+          resultDefaultSub: "You got them all right!",
+          statPointsLabel: "Points",
+          statAccuracyLabel: "Accuracy",
+          statComboLabel: "Max combo",
+        },
+      };
+
+      let currentLang = localStorage.getItem("app_lang") || "pt-BR";
+      let mapTab = "mind";
+
+      function t(key, vars = {}) {
+        const dict = I18N[currentLang] || I18N["pt-BR"];
+        let text = dict[key] || I18N["pt-BR"][key] || key;
+        Object.keys(vars).forEach((k) => {
+          text = text.replaceAll(`{${k}}`, String(vars[k]));
+        });
+        return text;
+      }
+
+      function getLocalizedShortcut(shortcut) {
+        if (currentLang !== "en") return shortcut;
+        const translated = SHORTCUTS_EN[shortcut.label];
+        if (!translated) return shortcut;
+        return {
+          ...shortcut,
+          label: translated.label || shortcut.label,
+          action: translated.action || shortcut.action,
+          hint: translated.hint || shortcut.hint,
+          practice: translated.practice || shortcut.practice,
+        };
+      }
+
+      function isBrowserBlockedShortcut(shortcut) {
+        if (shortcut.browserBlocked) return true;
+        if (shortcut.meta) return true;
+        const keys = shortcut.keys || [];
+        if (shortcut.alt && keys.some((k) => ["tab", "f4", "space"].includes(k))) return true;
+        return false;
+      }
+
+      function getShortcutGroupKey(shortcut) {
+        if (shortcut.groupKey) return shortcut.groupKey;
+        const keys = shortcut.keys || [];
+        if (shortcut.meta) return "groupWindows";
+        if (shortcut.ctrl) return "groupEditing";
+        if (shortcut.alt) return "groupWindowMgmt";
+        if (keys.some((k) => k.startsWith("f"))) return "groupBrowserSystem";
+        return "groupOther";
+      }
+
+      function renderMindMap() {
+        const container = document.getElementById("mindmap-list");
+        if (!container) return;
+
+        const groups = {};
+        const order = [];
+        SHORTCUTS.forEach((shortcut) => {
+          const localized = getLocalizedShortcut(shortcut);
+          const groupKey = getShortcutGroupKey(shortcut);
+          if (!groups[groupKey]) {
+            groups[groupKey] = [];
+            order.push(groupKey);
+          }
+          groups[groupKey].push({ ...shortcut, ...localized });
+        });
+
+        container.innerHTML = order
+          .map((groupKey) => {
+            const items = groups[groupKey]
+              .map((shortcut) => {
+                return `
+                  <div class="mindmap-item">
+                    <div class="mindmap-title">
+                      <span>${shortcut.label}</span>
+                    </div>
+                    <div class="mindmap-action">${shortcut.action}</div>
+                    <div class="mindmap-hint">${shortcut.hint}</div>
+                  </div>
+                `;
+              })
+              .join("");
+
+            return `
+              <div class="mindmap-group">
+                <div class="mindmap-head">${t(groupKey)}</div>
+                <div class="mindmap-items">${items}</div>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      function renderBonusList() {
+        const container = document.getElementById("bonus-list");
+        if (!container) return;
+
+        const bonusItems = SHORTCUTS.filter((shortcut) => isBrowserBlockedShortcut(shortcut)).map(
+          (shortcut) => ({ ...shortcut, ...getLocalizedShortcut(shortcut) }),
+        );
+
+        if (bonusItems.length === 0) {
+          container.innerHTML = `<div class="panel-status">${t("bonusEmpty")}</div>`;
+          return;
+        }
+
+        container.innerHTML = bonusItems
+          .map(
+            (shortcut) => `
+              <div class="mindmap-item">
+                <div class="mindmap-title">
+                  <span>${shortcut.label}</span>
+                </div>
+                <div class="mindmap-action">${shortcut.action}</div>
+                <div class="mindmap-hint">${shortcut.hint}</div>
+              </div>
+            `,
+          )
+          .join("");
+      }
+
+      function selectMapTab(tab) {
+        mapTab = tab === "bonus" ? "bonus" : "mind";
+        updateMapTabs();
+      }
+
+      function updateMapTabs() {
+        const mindBtn = document.getElementById("map-tab-mind");
+        const bonusBtn = document.getElementById("map-tab-bonus");
+        const mindList = document.getElementById("mindmap-list");
+        const bonusList = document.getElementById("bonus-list");
+
+        if (mindBtn && bonusBtn) {
+          mindBtn.classList.toggle("active", mapTab === "mind");
+          bonusBtn.classList.toggle("active", mapTab === "bonus");
+        }
+        if (mindList) mindList.style.display = mapTab === "mind" ? "grid" : "none";
+        if (bonusList) bonusList.style.display = mapTab === "bonus" ? "grid" : "none";
+      }
+
+      function applyLanguage() {
+        const map = {
+          "logo-subtitle": "logoSubtitle",
+          "start-desc": "startDesc",
+          "access-title": "accessTitle",
+          "access-player-title": "accessPlayerTitle",
+          "access-teacher-title": "accessTeacherTitle",
+          "access-practice-title": "accessPracticeTitle",
+          "access-player-sub": "accessPlayerSub",
+          "access-teacher-sub": "accessTeacherSub",
+          "access-practice-sub": "accessPracticeSub",
+          "player-panel-title": "playerPanelTitle",
+          "join-classroom-btn-label": "joinClassroomBtnLabel",
+          "ranking-title": "rankingTitle",
+          "ranking-global-title": "rankingGlobalTitle",
+          "ranking-class-title": "rankingClassTitle",
+          "teacher-mode-summary": "teacherModeSummary",
+          "teacher-create-btn-label": "teacherCreateBtnLabel",
+          "teacher-view-btn-label": "teacherViewBtnLabel",
+          "teacher-reset-btn-label": "teacherResetBtnLabel",
+          "teacher-ranking-title": "teacherRankingTitle",
+          "practice-panel-title": "practicePanelTitle",
+          "practice-panel-sub": "practicePanelSub",
+          "choose-mode-label": "chooseModeLabel",
+          "mode-shortcut-title": "modeShortcutTitle",
+          "mode-shortcut-sub": "modeShortcutSub",
+          "mode-quiz-title": "modeQuizTitle",
+          "mode-quiz-sub": "modeQuizSub",
+          "mode-guided-title": "modeGuidedTitle",
+          "mode-guided-sub": "modeGuidedSub",
+          "map-panel-title": "mapPanelTitle",
+          "map-panel-sub": "mapPanelSub",
+          "map-tab-mind": "mapTabMind",
+          "map-tab-bonus": "mapTabBonus",
+          "play-btn": "playBtn",
+          "hud-score-label": "hudScoreLabel",
+          "hud-phase-label": "hudPhaseLabel",
+          "hud-lives-label": "hudLivesLabel",
+          "play-again-btn-label": "playAgainBtnLabel",
+          "home-btn-label": "homeBtnLabel",
+          "challenge-hint": "challengeHintDefault",
+          "stat-points-label": "statPointsLabel",
+          "stat-accuracy-label": "statAccuracyLabel",
+          "stat-combo-label": "statComboLabel",
+        };
+
+        Object.entries(map).forEach(([id, key]) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = t(key);
+        });
+
+        const usernameInput = document.getElementById("username-input");
+        const classroomInput = document.getElementById("classroom-input");
+        const teacherNameInput = document.getElementById("teacher-class-name");
+        const teacherCodeInput = document.getElementById("teacher-class-code");
+        const teacherKeyInput = document.getElementById("teacher-access-key");
+        if (usernameInput) usernameInput.placeholder = t("placeholderUsername");
+        if (classroomInput) classroomInput.placeholder = t("placeholderClassroom");
+        if (teacherNameInput) teacherNameInput.placeholder = t("placeholderTeacherName");
+        if (teacherCodeInput) teacherCodeInput.placeholder = t("placeholderTeacherCode");
+        if (teacherKeyInput) teacherKeyInput.placeholder = t("placeholderTeacherKey");
+
+        setStatus("player-status", t("statusPlayerDefault"));
+        setStatus("teacher-status", t("statusTeacherDefault"));
+        setStatus("ranking-status", t("statusRankingLoading"));
+        setStatus(
+          "supabase-status",
+          supabaseUrl && supabaseAnonKey ? t("statusBackendReady") : t("statusBackendApi"),
+          "var(--accent4)",
+        );
+        if (currentPlayer.username && currentPlayer.turma) {
+          setStatus(
+            "player-status",
+            t("playerActive", { username: currentPlayer.username, turma: currentPlayer.turma }),
+            "var(--accent4)",
+          );
+        }
+
+        const ptBtn = document.getElementById("lang-pt-btn");
+        const enBtn = document.getElementById("lang-en-btn");
+        if (ptBtn && enBtn) {
+          ptBtn.classList.toggle("active", currentLang === "pt-BR");
+          enBtn.classList.toggle("active", currentLang === "en");
+        }
+
+        renderMindMap();
+        renderBonusList();
+        updateMapTabs();
+      }
+
+      function setLanguage(lang) {
+        currentLang = lang === "en" ? "en" : "pt-BR";
+        localStorage.setItem("app_lang", currentLang);
+        applyLanguage();
+      }
+
+      const SCORE_PER_HIT = 20;
+      const ERROR_PENALTY = 6;
+      const FLAWLESS_MULTIPLIER = 0.3;
+      const COMBO_MULTIPLIER = 0.2;
+
+      let supabaseUrl = window.SUPABASE_URL || "";
+      let supabaseAnonKey = window.SUPABASE_ANON_KEY || "";
+
+      let currentPlayer = {
+        id: "",
+        username: "",
+        turma: "",
+      };
+
+      let mode = "shortcut";
+      let accessMode = "player";
+      let questions = [];
+      let current = 0;
+      let totalQuestions = 0;
+      let score = 0;
+      let lives = 3;
+      let combo = 0;
+      let maxCombo = 0;
+      let correct = 0;
+      let mistakes = 0;
+      let timerInterval = null;
+      let timeLeft = 0;
+      let TIME_LIMIT = 8;
+      let answered = false;
+      let keysDown = {};
+      let rankingPollInterval = null;
+      const API_BASE = "/api";
+
+      function setStatus(id, message, color = "var(--sub)") {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = message;
+        el.style.color = color;
+      }
+
+      function getBasePoints() {
+        return SCORE_PER_HIT;
+      }
+
+      function getErrorPenalty() {
+        return ERROR_PENALTY;
+      }
+
+      function selectMode(m, el) {
+        mode = m;
+        document
+          .querySelectorAll(".mode-card[data-mode]")
+          .forEach((c) => c.classList.remove("selected"));
+        el.classList.add("selected");
+      }
+
+      function selectAccessMode(m, el) {
+        accessMode = m;
+        document
+          .querySelectorAll(".access-card[data-access]")
+          .forEach((c) => c.classList.remove("selected"));
+        el.classList.add("selected");
+        updateAccessLayout();
+      }
+
+      function updateAccessLayout() {
+        const playerArea = document.getElementById("player-area");
+        const teacherArea = document.getElementById("teacher-area");
+        const practiceArea = document.getElementById("practice-area");
+        if (!playerArea || !teacherArea || !practiceArea) return;
+        playerArea.style.display = accessMode === "player" ? "block" : "none";
+        teacherArea.style.display = accessMode === "teacher" ? "block" : "none";
+        practiceArea.style.display = accessMode === "practice" ? "block" : "none";
+      }
+
+      function shuffle(a) {
+        return [...a].sort(() => Math.random() - 0.5);
+      }
+
+      function loadPlayerFromStorage() {
+        try {
+          const raw = localStorage.getItem("kg_player");
+          if (!raw) return;
+          const data = JSON.parse(raw);
+          if (!data) return;
+          currentPlayer = {
+            id: data.id || "",
+            username: data.username || "",
+            turma: data.turma || "",
+          };
+          document.getElementById("username-input").value = currentPlayer.username;
+          document.getElementById("classroom-input").value = currentPlayer.turma;
+          if (currentPlayer.username && currentPlayer.turma) {
+            setStatus(
+              "player-status",
+              t("playerActive", {
+                username: currentPlayer.username,
+                turma: currentPlayer.turma,
+              }),
+              "var(--accent4)",
+            );
+          }
+        } catch (_e) {
+          // ignore storage parse issues
+        }
+      }
+
+      function savePlayerToStorage() {
+        localStorage.setItem("kg_player", JSON.stringify(currentPlayer));
+      }
+
+      async function apiRequest(path, options = {}) {
+        const response = await fetch(`${API_BASE}${path}`, {
+          headers: {
+            "Content-Type": "application/json",
+            ...(options.headers || {}),
+          },
+          ...options,
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(data.error || "Request failed");
+        }
+        return data;
+      }
+
+      function createLocalId() {
+        if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
+        return `usr_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+      }
+
+      function initBackend() {
+        setStatus(
+          "supabase-status",
+          supabaseUrl && supabaseAnonKey ? t("statusBackendReady") : t("statusBackendApi"),
+          "var(--accent4)",
+        );
+        if (rankingPollInterval) clearInterval(rankingPollInterval);
+        rankingPollInterval = setInterval(() => {
+          if (document.getElementById("screen-start").style.display !== "none") {
+            refreshRankings();
+          }
+        }, 10000);
+      }
+
+      async function savePlayerProfile() {
+        let username = document.getElementById("username-input").value.trim();
+        const turma = document.getElementById("classroom-input").value.trim().toUpperCase();
+
+        if (!turma) {
+          setStatus("player-status", t("playerNeedClassroom"), "var(--accent3)");
+          return;
+        }
+        if (!username) {
+          username = `Aluno-${Math.floor(Math.random() * 9000 + 1000)}`;
+          document.getElementById("username-input").value = username;
+        }
+
+        currentPlayer = {
+          id: currentPlayer.id || createLocalId(),
+          username,
+          turma,
+        };
+
+        try {
+          const joined = await apiRequest("/player/join", {
+            method: "POST",
+            body: JSON.stringify({
+              playerId: currentPlayer.id,
+              username: currentPlayer.username,
+              turma: currentPlayer.turma,
+            }),
+          });
+          currentPlayer = {
+            id: joined.id,
+            username: joined.username,
+            turma: joined.turma,
+          };
+          savePlayerToStorage();
+          setStatus(
+            "player-status",
+            t("playerJoined", {
+              turma: currentPlayer.turma,
+              username: currentPlayer.username,
+            }),
+            "var(--accent4)",
+          );
+          await refreshRankings();
+        } catch (_e) {
+          setStatus("player-status", t("playerJoinError"), "var(--accent3)");
+        }
+      }
+
+      function renderRanking(listId, users, emptyText) {
+        const el = document.getElementById(listId);
+        if (!el) return;
+        if (!users || users.length === 0) {
+          el.innerHTML = `<div class="panel-status">${emptyText}</div>`;
+          return;
+        }
+
+        el.innerHTML = users
+          .map(
+            (u, i) => `
+              <div class="rank-row">
+                <span>${i + 1}</span>
+                <span>${u.username || t("unnamedUser")}</span>
+                <b>${u.pontos || 0}</b>
+              </div>
+            `,
+          )
+          .join("");
+      }
+
+      async function refreshRankings() {
+        try {
+          const payload = await apiRequest(
+            `/rankings${currentPlayer.turma ? `?turma=${encodeURIComponent(currentPlayer.turma)}` : ""}`,
+          );
+          renderRanking("global-ranking-list", payload.global || [], t("noUsersYet"));
+          renderRanking(
+            "class-ranking-list",
+            payload.turma || [],
+            currentPlayer.turma
+              ? t("noStudentsInClass", { turma: currentPlayer.turma })
+              : t("setClassToView"),
+          );
+          setStatus("ranking-status", t("rankingUpdated"), "var(--accent4)");
+        } catch (_e) {
+          renderRanking("global-ranking-list", [], t("noDataOnline"));
+          renderRanking("class-ranking-list", [], t("noDataOnline"));
+          setStatus("ranking-status", t("rankingError"), "var(--accent3)");
+        }
+      }
+
+      async function teacherCreateClassroom() {
+        const className = document.getElementById("teacher-class-name").value.trim();
+        const classCode = document
+          .getElementById("teacher-class-code")
+          .value.trim()
+          .toUpperCase();
+        const teacherKey = document.getElementById("teacher-access-key").value.trim();
+
+        if (!classCode) {
+          setStatus("teacher-status", t("teacherNeedCodeCreate"), "var(--accent3)");
+          return;
+        }
+
+        try {
+          await apiRequest("/teacher/classroom", {
+            method: "POST",
+            body: JSON.stringify({
+              codigo: classCode,
+              nome: className || classCode,
+              teacherKey,
+            }),
+          });
+          setStatus(
+            "teacher-status",
+            t("teacherCreated", { codigo: classCode }),
+            "var(--accent4)",
+          );
+        } catch (_e) {
+          setStatus("teacher-status", t("teacherCreateError"), "var(--accent3)");
+        }
+      }
+
+      async function teacherLoadClassRanking() {
+        const classCode = document
+          .getElementById("teacher-class-code")
+          .value.trim()
+          .toUpperCase();
+
+        if (!classCode) {
+          setStatus("teacher-status", t("teacherNeedCodeView"), "var(--accent3)");
+          return;
+        }
+
+        try {
+          const payload = await apiRequest(`/rankings?turma=${encodeURIComponent(classCode)}`);
+
+          renderRanking(
+            "teacher-ranking-list",
+            payload.turma || [],
+            t("noStudentsFoundInClass", { turma: classCode }),
+          );
+          setStatus("teacher-status", t("teacherLoadedSimple", { codigo: classCode }), "var(--accent4)");
+        } catch (_e) {
+          setStatus("teacher-status", t("teacherLoadError"), "var(--accent3)");
+        }
+      }
+
+      async function teacherResetClassroomScore() {
+        const classCode = document
+          .getElementById("teacher-class-code")
+          .value.trim()
+          .toUpperCase();
+        const teacherKey = document.getElementById("teacher-access-key").value.trim();
+
+        if (!classCode) {
+          setStatus("teacher-status", t("teacherNeedCodeReset"), "var(--accent3)");
+          return;
+        }
+
+        if (!window.confirm(t("teacherResetConfirm", { codigo: classCode }))) return;
+
+        try {
+          await apiRequest("/teacher/reset", {
+            method: "POST",
+            body: JSON.stringify({
+              codigo: classCode,
+              teacherKey,
+            }),
+          });
+
+          setStatus("teacher-status", t("teacherResetDone", { codigo: classCode }), "var(--accent4)");
+          await teacherLoadClassRanking();
+          await refreshRankings();
+        } catch (_e) {
+          setStatus("teacher-status", t("teacherResetError"), "var(--accent3)");
+        }
+      }
+
+      async function submitScoreToRanking() {
+        if (accessMode === "practice") return;
+        if (!currentPlayer.id || !currentPlayer.username || !currentPlayer.turma) return;
+
+        try {
+          await apiRequest("/player/score", {
+            method: "POST",
+            body: JSON.stringify({
+              playerId: currentPlayer.id,
+              username: currentPlayer.username,
+              turma: currentPlayer.turma,
+              points: score,
+            }),
+          });
+          await refreshRankings();
+        } catch (_e) {
+          setStatus("ranking-status", t("saveScoreError"), "var(--accent3)");
+        }
+      }
+
+      function getPlayableShortcuts(gameMode = mode) {
+        return SHORTCUTS.filter((shortcut) => {
+          if (gameMode === "shortcut" && isBrowserBlockedShortcut(shortcut)) return false;
+          return true;
+        });
+      }
+
+      function startGame() {
+        if (accessMode !== "practice" && (!currentPlayer.username || !currentPlayer.turma)) {
+          setStatus("player-status", t("needJoinToScore"), "var(--accent2)");
+        }
+
+        score = 0;
+        lives = 3;
+        combo = 0;
+        maxCombo = 0;
+        correct = 0;
+        mistakes = 0;
+        current = 0;
+        answered = false;
+
+        const playableShortcuts = getPlayableShortcuts(mode);
+        let filteredShortcuts = [...playableShortcuts];
+        if (mode === "shortcut") {
+          filteredShortcuts = filteredShortcuts.filter((s) => s.shortcutMode);
+        }
+
+        if (filteredShortcuts.length === 0) {
+          filteredShortcuts = mode === "shortcut"
+            ? playableShortcuts.filter((s) => s.shortcutMode)
+            : [...playableShortcuts];
+        }
+
+        questions = shuffle(filteredShortcuts).slice(0, Math.min(15, filteredShortcuts.length));
+        totalQuestions = questions.length;
+
+        showScreen("game");
+        loadQuestion();
+        document.removeEventListener("keydown", onKeyDown);
+        document.removeEventListener("keyup", onKeyUp);
+        document.addEventListener("keydown", onKeyDown);
+        document.addEventListener("keyup", onKeyUp);
+      }
+
+      function showStart() {
+        showScreen("start");
+        document.removeEventListener("keydown", onKeyDown);
+        document.removeEventListener("keyup", onKeyUp);
+        clearInterval(timerInterval);
+        refreshRankings();
+      }
+
+      function showScreen(s) {
+        document.getElementById("screen-start").style.display = s === "start" ? "block" : "none";
+        document.getElementById("screen-game").style.display = s === "game" ? "block" : "none";
+        document.getElementById("screen-end").style.display = s === "end" ? "block" : "none";
+      }
+
+      function loadQuestion() {
+        if (current >= questions.length || lives <= 0) {
+          endGame();
+          return;
+        }
+        answered = false;
+        keysDown = {};
+        const q = questions[current];
+        const qView = getLocalizedShortcut(q);
+
+        document.getElementById("progress-val").textContent = `${current + 1}/${totalQuestions}`;
+        document.getElementById("score-val").textContent = score;
+        updateLivesDisplay();
+
+        const badge = document.getElementById("mode-badge");
+        const emojiEl = document.getElementById("challenge-emoji");
+        const textEl = document.getElementById("challenge-text");
+        const hintEl = document.getElementById("challenge-hint");
+        const keyDisplay = document.getElementById("key-display");
+        const optGrid = document.getElementById("options-grid");
+        const guidedPanel = document.getElementById("guided-panel");
+        const feedback = document.getElementById("feedback");
+        feedback.className = "feedback";
+
+        clearInterval(timerInterval);
+        keyDisplay.style.display = "none";
+        optGrid.style.display = "none";
+        guidedPanel.style.display = "none";
+
+        if (mode === "shortcut") {
+          badge.textContent = t("modeBadgeShortcut");
+          emojiEl.textContent = qView.emoji;
+          textEl.textContent = qView.action;
+          hintEl.textContent = qView.hint;
+          TIME_LIMIT = 10;
+        } else if (mode === "quiz") {
+          badge.textContent = t("modeBadgeQuiz");
+          emojiEl.textContent = "⌨️";
+          textEl.textContent = qView.label;
+          hintEl.textContent = t("quizHint");
+          optGrid.style.display = "grid";
+          TIME_LIMIT = 15;
+          renderQuizOptions(q, optGrid);
+        } else {
+          badge.textContent = t("modeBadgeGuided");
+          emojiEl.textContent = qView.emoji;
+          textEl.textContent = qView.label;
+          hintEl.textContent = "";
+          guidedPanel.style.display = "block";
+          TIME_LIMIT = 30;
+          renderGuidedPanel(q, guidedPanel);
+        }
+
+        timeLeft = TIME_LIMIT;
+        const bar = document.getElementById("timer-bar");
+        bar.style.width = "100%";
+        bar.style.background = "linear-gradient(90deg, #6bcb77, #4d96ff)";
+        timerInterval = setInterval(() => {
+          timeLeft -= 0.1;
+          const pct = Math.max(0, (timeLeft / TIME_LIMIT) * 100);
+          bar.style.width = pct + "%";
+          if (pct < 40) bar.style.background = "linear-gradient(90deg, #ffd93d, #ff6b6b)";
+          if (pct < 15) bar.style.background = "var(--accent1)";
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            if (!answered) timeUp();
+          }
+        }, 100);
+      }
+
+      function getActionOptions(q, total = 4) {
+        const seen = new Set([q.action]);
+        const others = [];
+        shuffle(SHORTCUTS).forEach((s) => {
+          if (s !== q && !seen.has(s.action)) {
+            seen.add(s.action);
+            others.push(s);
+          }
+        });
+        return shuffle([q, ...others.slice(0, total - 1)]);
+      }
+
+      function renderQuizOptions(q, optGrid) {
+        const opts = getActionOptions(q, 4);
+        optGrid.innerHTML = "";
+        opts.forEach((o) => {
+          const oView = getLocalizedShortcut(o);
+          const btn = document.createElement("button");
+          btn.className = "opt-btn";
+          btn.dataset.correct = o === q ? "true" : "false";
+          btn.textContent = `${oView.emoji} ${oView.action}`;
+          btn.onclick = () => answerQuiz(btn.dataset.correct === "true", btn, optGrid);
+          optGrid.appendChild(btn);
+        });
+      }
+
+      function renderGuidedPanel(q, panel) {
+        const qView = getLocalizedShortcut(q);
+        panel.innerHTML = `
+          <div id="guided-info">
+            <div class="guided-title">${t("guidedServeTitle")}</div>
+            <div class="guided-text">${qView.label}: ${qView.action}. ${qView.hint}</div>
+            <div class="guided-title">${t("guidedPracticeTitle")}</div>
+            <div class="guided-text">${qView.practice}</div>
+          </div>
+          <div class="guided-actions">
+            <button class="opt-btn" id="practice-done-btn">${t("guidedDoneBtn")}</button>
+            <div class="guided-status" id="practice-status">${t("guidedStatusBefore")}</div>
+            <div class="guided-title">${t("guidedValidationTitle")}</div>
+            <div id="guided-options" class="options-grid"></div>
+          </div>
+        `;
+
+        const status = panel.querySelector("#practice-status");
+        const doneBtn = panel.querySelector("#practice-done-btn");
+        const infoWrap = panel.querySelector("#guided-info");
+        const optionsWrap = panel.querySelector("#guided-options");
+        const options = getActionOptions(q, 3);
+        let practiceDone = false;
+
+        options.forEach((o) => {
+          const oView = getLocalizedShortcut(o);
+          const btn = document.createElement("button");
+          btn.className = "opt-btn";
+          btn.disabled = true;
+          btn.dataset.correct = o === q ? "true" : "false";
+          btn.textContent = `${oView.emoji} ${oView.action}`;
+          btn.onclick = () => answerQuiz(btn.dataset.correct === "true", btn, optionsWrap);
+          optionsWrap.appendChild(btn);
+        });
+
+        doneBtn.onclick = () => {
+          if (practiceDone) return;
+          practiceDone = true;
+          if (infoWrap) infoWrap.style.display = "none";
+          status.textContent = t("guidedStatusAfter");
+          Array.from(optionsWrap.children).forEach((b) => {
+            b.disabled = false;
+          });
+        };
+      }
+
+      function normalizeKey(keyValue) {
+        if (!keyValue) return "";
+        if (keyValue === " ") return "space";
+        return keyValue.toLowerCase();
+      }
+
+      function isShortcutMatch(q, e) {
+        const key = normalizeKey(e.key);
+        const expectedKeys = q.keys || [];
+
+        if (!!q.ctrl !== e.ctrlKey) return false;
+        if (!!q.alt !== e.altKey) return false;
+        if (!!q.shift !== e.shiftKey) return false;
+        if (!!q.meta !== e.metaKey) return false;
+
+        return expectedKeys.includes(key);
+      }
+
+      function shouldIgnoreGlobalBlock(target) {
+        if (!target || !target.closest) return false;
+        return !!target.closest("input, textarea, select, [contenteditable='true']");
+      }
+
+      function shouldBlockAppShortcut(e) {
+        if (shouldIgnoreGlobalBlock(e.target)) return false;
+        return SHORTCUTS.some((shortcut) => shortcut.browserBlocked && isShortcutMatch(shortcut, e));
+      }
+
+      function blockReservedShortcutDefaults(e) {
+        if (shouldBlockAppShortcut(e)) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }
+
+      function onKeyDown(e) {
+        if (answered || mode !== "shortcut") return;
+        keysDown[normalizeKey(e.key)] = true;
+
+        const q = questions[current];
+        if ((q.ctrl && e.ctrlKey) || (q.alt && e.altKey) || (q.shift && e.shiftKey) || (q.meta && e.metaKey)) {
+          e.preventDefault();
+        }
+
+        if (isShortcutMatch(q, e)) {
+          handleResult(true);
+          return;
+        }
+
+        const key = normalizeKey(e.key);
+        const isModifier = ["control", "shift", "alt", "meta", "os"].includes(key);
+        if ((e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) && !isModifier) {
+          handleResult(false);
+        }
+      }
+
+      function onKeyUp(e) {
+        delete keysDown[normalizeKey(e.key)];
+      }
+
+      function answerQuiz(isCorrect, btn, grid) {
+        if (answered) return;
+        answered = true;
+        clearInterval(timerInterval);
+
+        Array.from(grid.children).forEach((b) => {
+          b.disabled = true;
+          if (b.dataset.correct === "true") b.classList.add("correct");
+        });
+        if (!isCorrect) btn.classList.add("wrong");
+
+        handleResult(isCorrect);
+      }
+
+      function handleResult(isCorrect) {
+        answered = true;
+        clearInterval(timerInterval);
+        const q = questions[current];
+        const qView = getLocalizedShortcut(q);
+        const basePoints = getBasePoints();
+
+        if (isCorrect) {
+          correct++;
+          combo++;
+          if (combo > maxCombo) maxCombo = combo;
+
+          const flawlessBonus = mistakes === 0 ? Math.round(basePoints * FLAWLESS_MULTIPLIER) : 0;
+          const comboBonus = combo > 1 ? Math.round(basePoints * COMBO_MULTIPLIER * (combo - 1)) : 0;
+          const earned = basePoints + flawlessBonus + comboBonus;
+
+          score += earned;
+          const baseLabel = t("scoreBreakdownBase");
+          const flawlessLabel = t("scoreBreakdownFlawless");
+          const comboLabel = t("scoreBreakdownCombo");
+          showFeedback(
+            true,
+            `+${earned} (${baseLabel} ${basePoints}${flawlessBonus ? ` + ${flawlessLabel} ${flawlessBonus}` : ""}${comboBonus ? ` + ${comboLabel} ${comboBonus}` : ""})`,
+          );
+          document.getElementById("score-val").textContent = score;
+          if (mode === "shortcut") highlightKeys(q);
+        } else {
+          mistakes++;
+          combo = 0;
+          lives--;
+
+          const penalty = getErrorPenalty();
+          score = Math.max(0, score - penalty);
+
+          updateLivesDisplay();
+          document.getElementById("score-val").textContent = score;
+          showFeedback(
+            false,
+            `✗ -${penalty} | ${mode === "shortcut" ? t("scoreWrongShortcut", { label: qView.label }) : t("scoreWrongQuiz")}`,
+          );
+          document.getElementById("challenge-card").classList.add("shake");
+          setTimeout(() => document.getElementById("challenge-card").classList.remove("shake"), 400);
+        }
+
+        setTimeout(() => {
+          current++;
+          if (lives <= 0 || current >= questions.length) {
+            endGame();
+          } else {
+            loadQuestion();
+          }
+        }, 1200);
+      }
+
+      function timeUp() {
+        if (answered) return;
+        answered = true;
+        lives--;
+        combo = 0;
+        mistakes++;
+
+        const q = questions[current];
+        const qView = getLocalizedShortcut(q);
+        const penalty = Math.max(2, Math.round(getErrorPenalty() / 2));
+        score = Math.max(0, score - penalty);
+
+        updateLivesDisplay();
+        document.getElementById("score-val").textContent = score;
+        showFeedback(
+          false,
+          `${t("timeoutPrefix")} -${penalty} | ${t("scoreWrongShortcut", { label: qView.label })}`,
+        );
+        setTimeout(() => {
+          current++;
+          if (lives <= 0 || current >= questions.length) endGame();
+          else loadQuestion();
+        }, 1400);
+      }
+
+      function highlightKeys(q) {
+        const kd = document.getElementById("key-display");
+        kd.style.display = "flex";
+        const parts = q.label.split(" + ");
+        kd.innerHTML = parts
+          .map(
+            (p, i) =>
+              `<span class="key active">${p}</span>${i < parts.length - 1 ? '<span class="key-plus">+</span>' : ""}`,
+          )
+          .join("");
+      }
+
+      function showFeedback(ok, msg) {
+        const fb = document.getElementById("feedback");
+        fb.className = "feedback show " + (ok ? "correct" : "wrong");
+        fb.innerHTML = (ok ? "🎉" : "😅") + `<span class="fb-sub">${msg}</span>`;
+      }
+
+      function updateLivesDisplay() {
+        const icons = ["❤", "❤", "❤"].map((h, i) => (i < lives ? "❤" : "🖤")).join("");
+        document.getElementById("lives-val").textContent = icons;
+      }
+
+      function endGame() {
+        clearInterval(timerInterval);
+        document.removeEventListener("keydown", onKeyDown);
+        document.removeEventListener("keyup", onKeyUp);
+
+        const acc = totalQuestions > 0 ? Math.round((correct / totalQuestions) * 100) || 0 : 0;
+        document.getElementById("end-score").textContent = score;
+        document.getElementById("end-acc").textContent = acc + "%";
+        document.getElementById("end-combo").textContent = maxCombo + "x";
+
+        let icon, title, sub;
+        if (acc >= 90) {
+          icon = "🏆";
+          title = t("resultAmazing");
+          sub = t("resultAmazingSub");
+        } else if (acc >= 70) {
+          icon = "🌟";
+          title = t("resultVeryGood");
+          sub = t("resultVeryGoodSub");
+        } else if (acc >= 50) {
+          icon = "💪";
+          title = t("resultGood");
+          sub = t("resultGoodSub");
+        } else {
+          icon = "📚";
+          title = t("resultTryAgain");
+          sub = t("resultTryAgainSub");
+        }
+
+        document.getElementById("result-icon").textContent = icon;
+        document.getElementById("result-title").textContent = title;
+        document.getElementById("result-sub").textContent = sub;
+        showScreen("end");
+
+        submitScoreToRanking();
+      }
+
+      async function initApp() {
+        loadPlayerFromStorage();
+        applyLanguage();
+        initBackend();
+        updateAccessLayout();
+        document.addEventListener("keydown", blockReservedShortcutDefaults, true);
+        await refreshRankings();
+      }
+
+      initApp();
+    </script>
+  </body>
+</html>
+
+
+

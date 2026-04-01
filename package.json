@@ -1,0 +1,21 @@
+{
+  "name": "keyboard-shortcuts-game",
+  "version": "1.0.0",
+  "description": "Um jogo divertido para aprender atalhos de teclado",
+  "main": "index.html",
+  "scripts": {
+    "dev": "serve .",
+    "build": "echo 'No build step required'",
+    "start": "serve .",
+    "test": "node tests/run-tests.js"
+  },
+  "keywords": ["game", "keyboard", "shortcuts", "learning"],
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.4"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}
