@@ -11,7 +11,7 @@
   },
   "keywords": ["game", "keyboard", "shortcuts", "learning"],
   "author": "",
-  "license": "UNLICENSED",
+"license":"MIT"
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4"
   },
