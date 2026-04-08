@@ -6,7 +6,7 @@ This repository showcases my experience in software engineering and pragmatic pr
 ### 🎮 The Game in Action
 [Play KeyGame Here](https://keyboardgame-main.vercel.app)
 
-<img src="demo-screenshots/game-interface.jpeg" alt="Demo of KeyGame Interface" width="800">
+<img src="demo-screenshots/game-interface.png" alt="Demo of KeyGame Interface" width="800">
 
 ### 🏫 Real-World Impact
 I applied this project in a real classroom environment with 22 students. The real-time ranking system created a healthy competitive environment, driving engagement and solving the lack of keyboard familiarity in a natural and exciting way.
