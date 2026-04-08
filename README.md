@@ -1,40 +1,85 @@
-﻿# ⌨️ KeyGame
+# ?? KeyGame: High-Performance Real-Time Learning Platform
 
-### Welcome to my Full-Stack project!
-This repository showcases my experience in software engineering and pragmatic problem-solving, highlighting a fast, real-time web application built from scratch to address a real-world educational gap.
+[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=flat-square&logo=vercel)](https://keyboardgame-main.vercel.app)
+[![Supabase](https://img.shields.io/badge/Backend-Supabase-3ECF8E?style=flat-square&logo=supabase)](https://supabase.com)
+[![VanillaJS](https://img.shields.io/badge/Frontend-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-### 🎮 The Game in Action
-[Play KeyGame Here](https://keyboardgame-main.vercel.app)
+[???? English Version](#-overview) | [???? Vers�o em Portugu�s](#-visao-geral)
+
+---
+
+## ???? Overview
+**KeyGame** is a full-stack web application engineered to solve a specific educational bottleneck: the lack of digital fluency among students. Developed during my tenure as a scholarship instructor for the **PIBEX "Programe seu Futuro"** project, this tool uses gamification and real-time feedback to accelerate the learning curve of essential Windows/Linux shortcuts.
+
+### ?? The Game in Action
+[**Play KeyGame Here**](https://keyboardgame-main.vercel.app)
 
 <img src="demo-screenshots/game-interface.png" alt="Demo of KeyGame Interface" width="800">
 
-### 🏫 Real-World Impact
-I applied this project in a real classroom environment with 22 students. The real-time ranking system created a healthy competitive environment, driving engagement and solving the lack of keyboard familiarity in a natural and exciting way.
+---
+
+### ?? Engineering Decisions & Architecture
+
+To meet the requirements of a low-resource classroom environment while maintaining professional engineering standards, I made the following choices:
+
+* **Zero-Dependency Frontend:** Built with **Vanilla JavaScript**. This ensures an ultra-low **Time-to-Interactive (TTI)** and minimal bundle size, crucial for older school computers with limited hardware.
+* **Real-time Synchronization:** Leveraged **Supabase (PostgreSQL + WebSockets)** to build a live global leaderboard. This created a high-engagement, competitive environment for students.
+* **Security & Data Integrity:** Implemented **Row Level Security (RLS)** policies at the database level. This prevents client-side manipulation of scores, ensuring that only valid game sessions can write to the ranking.
+* **Bilingual by Design:** Engineered a lightweight custom translation engine to support `en` and `pt-BR` natively.
+
+### ?? Real-World Impact
+I applied this project in a real classroom environment with **22 students**. The real-time ranking system created a healthy competitive environment, driving engagement and solving the lack of keyboard familiarity in a natural and exciting way.
 
 <img src="demo-screenshots/students-playing.jpeg" alt="Students playing KeyGame" width="800">
 
-### ⚙️ Architecture & Tech Stack
-The focus of this project was delivering value without unnecessary complexity:
-* **Frontend:** Vanilla JavaScript, HTML, and CSS for instant loading on limited school computers.
-* **Backend & DB:** Supabase (PostgreSQL) for real-time ranking and data persistence, leveraging Row Level Security (RLS).
-* **Deployment:** Vercel.
-* **Bilingual by Design:** Built-in support for `pt-BR` and `en` to provide practical English exposure to students.
+---
 
-### ⌨️ About KeyGame
-During my work as an instructor on the extension project **"Programe seu Futuro"**, I identified a critical obstacle: students had gaps in basic digital literacy and didn’t know essential Windows shortcuts like `Ctrl+C` and `Ctrl+V`.
+## ???? Vis�o Geral
+O **KeyGame** � uma aplica��o web full-stack projetada para resolver um gargalo educacional espec�fico: a falta de fluidez digital (atalhos de teclado) entre estudantes. Desenvolvido durante minha monitoria no projeto **PIBEX "Programe seu Futuro"**, a ferramenta utiliza gamifica��o e feedback em tempo real para acelerar o aprendizado de atalhos essenciais.
 
-Knowing that the next phase of the course would use MIT App Inventor, this lack of fluency would significantly slow down their learning. Since I couldn't find a dynamic, interactive tool to teach this, I decided to build one. KeyGame's mission is to make digital fluency straightforward and enjoyable through gamification.
+### ?? Decis�es de Engenharia
+* **Frontend Zero-Dependency:** Constru�do com **Vanilla JavaScript** para garantir um **TTI (Time-to-Interactive)** baix�ssimo, essencial para computadores escolares antigos.
+* **Sincroniza��o em Tempo Real:** Utiliza��o do **Supabase (PostgreSQL + WebSockets)** para um ranking global vivo.
+* **Seguran�a e Integridade:** Implementa��o de pol�ticas de **Row Level Security (RLS)** no banco de dados para evitar trapa�as via console do navegador.
 
-### 🙋 About Me
+---
+
+## ??? Technical Architecture / Arquitetura
+
+```mermaid
+graph TD
+    A[User Browser - Vanilla JS] -->|Real-time Updates| B(Supabase Realtime)
+    B --> C[(PostgreSQL Database)]
+    A -->|Secure Write| D{RLS Security Layer}
+    D --> C
+    E[Vercel Edge Network] -->|Deployment| A
+```
+
+## ?? Getting Started / Como Rodar
+
+### Prerequisites / Pr�-requisitos
+* A Supabase project (URL and Anon Key).
+* Local server (e.g., Live Server extension or Node.js).
+
+### Installation / Instala��o
+```bash
+# Clone the repository
+git clone https://github.com/erikllasch/KeyGame.git
+
+# Navigate to the project
+cd KeyGame
+
+# Setup Environment Variables
+# Create a .env file or config.js with your Supabase credentials
+```
+
+## ?? About Me / Sobre Mim
 <img src="demo-screenshots/erik-presenting.jpeg" alt="Erik Presenting KeyGame" width="300">
 
-I’m Erik, a Software Engineering student passionate about building software solutions that tackle real problems directly, scalably, and without unnecessary complexity. I believe the best technology is the one that creates tangible impact on people’s lives.
+I�m Erik Luan Lasch, a Software Engineering student passionate about building software solutions that tackle real problems directly, scalably, and without unnecessary complexity. I believe the best technology is the one that creates tangible impact on people�s lives.
 
 I have hands-on experience in full-stack development, applying software engineering methods and processes to deliver efficient applications. I thrive in environments where I can observe a problem, focus on the user, and build a pragmatic solution.
 
-### 📞 Contact me
-If you liked this project, feel free to share 🚀
-
-💠 My LinkedIn profile: https://www.linkedin.com/in/erikllasch/
-
-💠 My email: erikllasch@gmail.com
+## ?? Contact / Contato
+* ?? LinkedIn
+* ?? Email
