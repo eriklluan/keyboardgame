@@ -1,7 +1,7 @@
 {
   "name": "keyboard-shortcuts-game",
   "version": "1.0.0",
-  "description": "Um jogo divertido para aprender atalhos de teclado",
+  "description": "Gamified bilingual web app for teaching keyboard shortcuts with classroom rankings and teacher tools.",
   "main": "index.html",
   "scripts": {
     "dev": "serve .",
@@ -9,9 +9,17 @@
     "start": "serve .",
     "test": "node tests/run-tests.js"
   },
-  "keywords": ["game", "keyboard", "shortcuts", "learning"],
-  "author": "",
-"license":"MIT"
+  "keywords": [
+    "educational-game",
+    "keyboard-shortcuts",
+    "digital-literacy",
+    "gamification",
+    "supabase",
+    "vercel",
+    "portfolio-project"
+  ],
+  "author": "Erik Luan Lasch",
+  "license": "MIT",
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4"
   },

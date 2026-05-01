@@ -50,6 +50,10 @@ function createMockSupabase(seed = {}) {
       return Promise.resolve({ data: first, error: null });
     }
 
+    then(resolve, reject) {
+      return Promise.resolve(this._read()).then(resolve, reject);
+    }
+
     insert(payload) {
       const rows = Array.isArray(payload) ? payload : [payload];
       rows.forEach((row) => {
