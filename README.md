@@ -1,4 +1,4 @@
-# KeyGame - Educational Keyboard Shortcut Game
+# KeyGame | EdTech Full-Stack Solution
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=flat-square&logo=vercel)](https://keyboardgame-main.vercel.app)
 [![Backend: Supabase](https://img.shields.io/badge/Backend-Supabase-3ECF8E?style=flat-square&logo=supabase)](https://supabase.com)
@@ -9,75 +9,84 @@
 
 **Live demo:** https://keyboardgame-main.vercel.app
 
-**Portfolio case study:** [PORTFOLIO.md](PORTFOLIO.md)
-
-KeyGame is a gamified web application created from a real classroom need: helping beginner students become faster and more confident with keyboard shortcuts while learning programming.
-
 <img src="demo-screenshots/game-interface.png" alt="KeyGame interface" width="800">
-
-## Portfolio Snapshot
-
-| Area | Evidence |
-| :--- | :--- |
-| Real problem | Built during the Programe seu Futuro extension project after observing students struggling with basic shortcuts. |
-| Product thinking | Includes player, teacher, and practice flows for a classroom environment. |
-| Frontend | Single-page experience with practice, quiz, guided learning, scoring, and bilingual content. |
-| Backend | Vercel Serverless Functions connected to Supabase/PostgreSQL. |
-| Quality | Automated API tests and frontend smoke checks for core flows. |
-| Deployment | Public production demo hosted on Vercel. |
 
 ## English
 
-### Overview
+**KeyGame** is a high-performance, full-stack educational platform designed to bridge the digital literacy gap. It transforms keyboard fluency, a critical bottleneck in developer productivity, into a gamified and measurable learning experience.
 
-KeyGame is a full-stack educational tool designed to improve digital literacy through repetition, feedback, and classroom-friendly gamification. It was developed in the context of the **Programe seu Futuro (Unijui)** project, where students were learning programming concepts and needed more fluency with common Windows/Linux shortcuts.
+### Business Impact & Real-World Validation
 
-### Main Features
+Unlike many portfolio projects, KeyGame was engineered to solve a validated classroom bottleneck inside **Programe seu Futuro**, an educational initiative by **Unijui** in Ijui, Brazil. Public school students attend a full year of introductory programming classes, and I have worked on the project for one year as a teacher.
 
-- Practice mode without login.
-- Player mode with classroom code.
-- Teacher mode to create classrooms, view rankings, reset scores, and clear data.
-- Quick shortcut challenges.
-- Quiz mode.
-- Guided learning mode with explanation, practical task, and validation.
-- Difficulty progression: easy, medium, and hard.
-- Score system with combos, flawless bonus, and light penalties.
-- Bilingual interface: `pt-BR` and `en`.
-- Global and classroom rankings backed by Supabase.
-
-### Real-World Use
-
-The project was applied in a classroom environment with **22 students**. The ranking and game flow helped transform repetitive shortcut practice into a more engaging activity.
+- **Target audience:** 22+ active students in introductory programming.
+- **Problem:** classroom observation showed slower task completion when students lacked keyboard shortcut fluency.
+- **Outcome:** improved engagement through competitive rankings, immediate feedback loops, and repeatable practice.
+- **Scalability:** serverless architecture designed for classroom usage spikes with minimal infrastructure overhead.
 
 <img src="demo-screenshots/students-playing.jpeg" alt="Students using KeyGame in class" width="800">
 
-### Technical Decisions
+### Product Capabilities
 
-- **Vanilla JavaScript frontend:** keeps the app lightweight and easy to run on low-resource computers.
-- **Serverless backend:** Vercel functions separate player, ranking, and teacher operations.
-- **Supabase persistence:** stores classrooms and student scores in PostgreSQL.
-- **Environment-based configuration:** keeps Supabase credentials and teacher access keys outside the codebase.
-- **Automated tests:** cover player join, scoring, rankings, teacher flows, and key frontend smoke checks.
+- Practice mode without login.
+- Classroom mode using a class code.
+- Teacher mode to create classrooms, manage rankings, reset scores, and clear data.
+- Quick shortcut challenges.
+- Quiz mode.
+- Guided learning mode with explanation, task, and validation.
+- Difficulty progression: easy, medium, and hard.
+- Score system with combos, flawless bonus, and light penalties.
+- Global and classroom rankings backed by Supabase/PostgreSQL.
+- Bilingual interface: Portuguese and English.
 
-### Tech Stack
+### Technical Architecture & Decisions
 
-- HTML5
-- CSS3
-- JavaScript
-- Node.js
-- Vercel Serverless Functions
-- Supabase/PostgreSQL
+#### High-Efficiency Frontend
+
+- **Vanilla JavaScript, no framework:** chosen to maximize compatibility with low-resource computers in public schools and avoid unnecessary bundle overhead.
+- **Custom state management:** handles game state, scoring combos, difficulty, validation, and UI transitions without heavy libraries.
+- **Single-page experience:** keeps the learning flow fast and direct for classroom use.
+
+#### Serverless Backend & Persistence
+
+- **Architecture:** decoupled Node.js serverless functions hosted on Vercel.
+- **Database:** Supabase/PostgreSQL stores classrooms, users, scores, and leaderboards.
+- **Security:** environment-based credential management, teacher-specific access key, and Supabase schema with Row Level Security enabled.
+- **API design:** routes are split by domain: player, rankings, and teacher operations.
 
 ### API Endpoints
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `POST` | `/api/player/join` | Register or join a classroom. |
-| `POST` | `/api/player/score` | Submit and accumulate player score. |
-| `GET` | `/api/rankings` | Get global and class rankings. |
+| `POST` | `/api/player/score` | Submit and accumulate player scores. |
+| `GET` | `/api/rankings` | Get global and classroom rankings. |
 | `POST` | `/api/teacher/classroom` | Create or update a classroom. |
-| `POST` | `/api/teacher/reset` | Reset class scores. |
-| `POST` | `/api/teacher/clear` | Clear class or database records with confirmation. |
+| `POST` | `/api/teacher/reset` | Reset classroom scores. |
+| `POST` | `/api/teacher/clear` | Clear classroom or database records with confirmation. |
+
+### Engineering Mindset: AI-Assisted Development
+
+This project is also a case study in modern engineering productivity.
+
+- **Workflow:** I used AI for rapid prototyping, implementation support, automated test generation, documentation, and iteration.
+- **Ownership:** AI acted as a multiplier, while I maintained ownership of the system design, decision-making, classroom implementation, validation, and final result.
+
+### Quality Assurance
+
+- **Smoke testing:** automated checks for critical paths such as player join, score submit, ranking update, and teacher flows.
+- **Deployment:** Vercel deployment enables fast iteration based on classroom feedback.
+- **Configuration:** sensitive values are handled through environment variables instead of being committed to the repository.
+
+### Technical Stack
+
+| Layer | Technology |
+| :--- | :--- |
+| Frontend | HTML5, CSS3, ES6+ JavaScript |
+| Backend | Node.js Serverless Functions |
+| Database | Supabase/PostgreSQL |
+| DevOps | Vercel |
+| Testing | Custom Node.js test runner |
 
 ### Setup
 
@@ -102,39 +111,114 @@ Run tests:
 npm test
 ```
 
+### Contact
+
+- **GitHub:** https://github.com/eriklluan
+- **LinkedIn:** https://www.linkedin.com/in/erikllasch
+- **Email:** erikllasch@gmail.com
+
 ## Portugues
 
-### Visao Geral
+**KeyGame** e uma solucao educacional full-stack de alta eficiencia criada para reduzir uma lacuna de fluencia digital. O projeto transforma o dominio de atalhos de teclado, um gargalo importante na produtividade de quem esta aprendendo programacao, em uma experiencia gamificada e mensuravel.
 
-O KeyGame e uma ferramenta educacional full-stack criada para melhorar a fluencia digital de estudantes por meio de repeticao, feedback e gamificacao. O projeto nasceu no contexto do **Programe seu Futuro (Unijui)**, onde os alunos estavam aprendendo programacao e precisavam ganhar velocidade com atalhos comuns de Windows/Linux.
+### Impacto Real & Validacao em Sala
 
-### Funcionalidades
+Diferente de muitos projetos de portfolio, o KeyGame foi criado para resolver um gargalo observado em sala dentro do **Programe seu Futuro**, uma iniciativa educacional da **Unijui** em Ijui, Brasil. Estudantes do ensino publico participam de um ano inteiro de aulas introdutorias de programacao, e eu atuo no projeto ha um ano como professor.
+
+- **Publico-alvo:** 22+ estudantes ativos em introducao a programacao.
+- **Problema:** observacao em sala mostrou conclusao de tarefas mais lenta quando os alunos nao dominavam atalhos de teclado.
+- **Resultado:** maior engajamento por meio de ranking competitivo, feedback imediato e pratica repetivel.
+- **Escalabilidade:** arquitetura serverless pensada para picos de uso em sala com baixo custo operacional.
+
+<img src="demo-screenshots/erik-presenting.jpeg" alt="Erik apresentando o KeyGame" width="480">
+
+### Capacidades do Produto
 
 - Modo pratica sem login.
-- Modo jogador com codigo de turma.
-- Modo professor para criar turmas, ver rankings, resetar pontuacoes e limpar dados.
+- Modo turma usando codigo de acesso.
+- Modo professor para criar turmas, gerenciar rankings, resetar pontuacoes e limpar dados.
 - Desafios rapidos de atalhos.
 - Modo quiz.
-- Aprendizado guiado com explicacao, tarefa pratica e validacao.
+- Modo de aprendizado guiado com explicacao, tarefa e validacao.
 - Progressao por dificuldade: facil, medio e dificil.
 - Sistema de pontuacao com combos, bonus por acerto perfeito e penalidades leves.
-- Interface bilingue: `pt-BR` e `en`.
-- Ranking global e por turma usando Supabase.
+- Ranking global e por turma com Supabase/PostgreSQL.
+- Interface bilingue: portugues e ingles.
 
-### Impacto Real
+### Arquitetura Tecnica & Decisoes
 
-O projeto foi aplicado em uma turma com **22 estudantes**. O ranking e a dinamica de jogo ajudaram a transformar o treino repetitivo de atalhos em uma atividade mais envolvente.
+#### Frontend de Alta Eficiencia
 
-<img src="demo-screenshots/erik-presenting.jpeg" alt="Erik apresentando o KeyGame" width="420">
+- **JavaScript puro, sem framework:** escolhido para maximizar compatibilidade com computadores de poucos recursos em escolas publicas e evitar peso desnecessario no carregamento.
+- **Gerenciamento de estado customizado:** controla estados do jogo, combos, dificuldade, validacao e transicoes de interface sem bibliotecas pesadas.
+- **Experiencia single-page:** mantem o fluxo de aprendizagem rapido e direto para uso em sala.
 
-### Decisoes Tecnicas
+#### Backend Serverless & Persistencia
 
-- **Frontend em JavaScript puro:** app leve, simples de abrir e adequado para computadores escolares com poucos recursos.
-- **Backend serverless:** funcoes da Vercel separadas por jogador, ranking e professor.
-- **Persistencia com Supabase:** turmas e pontuacoes salvas em PostgreSQL.
-- **Configuracao por variaveis de ambiente:** credenciais e chave do professor ficam fora do codigo.
-- **Testes automatizados:** cobertura dos fluxos de entrada, pontuacao, ranking, professor e smoke tests de interface.
+- **Arquitetura:** funcoes serverless em Node.js hospedadas na Vercel.
+- **Banco de dados:** Supabase/PostgreSQL para turmas, usuarios, pontuacoes e rankings.
+- **Seguranca:** credenciais por variaveis de ambiente, chave de acesso especifica para professor e schema Supabase com Row Level Security habilitado.
+- **Design de API:** rotas separadas por dominio: jogador, rankings e operacoes do professor.
 
-### Sobre Mim
+### Endpoints da API
 
-Sou Erik Luan Lasch, estudante de Engenharia de Software, com interesse em criar solucoes simples, uteis e conectadas a problemas reais. Este projeto representa minha capacidade de observar uma dificuldade concreta, transformar isso em produto, implementar frontend e backend, testar, documentar e publicar uma versao funcional.
+| Metodo | Endpoint | Descricao |
+| :--- | :--- | :--- |
+| `POST` | `/api/player/join` | Registra ou entra em uma turma. |
+| `POST` | `/api/player/score` | Envia e acumula pontuacao do jogador. |
+| `GET` | `/api/rankings` | Busca rankings globais e por turma. |
+| `POST` | `/api/teacher/classroom` | Cria ou atualiza uma turma. |
+| `POST` | `/api/teacher/reset` | Reseta pontuacoes da turma. |
+| `POST` | `/api/teacher/clear` | Limpa registros de turma ou banco com confirmacao. |
+
+### Mentalidade de Engenharia: Desenvolvimento Assistido por IA
+
+Este projeto tambem funciona como um estudo pratico de produtividade moderna em engenharia de software.
+
+- **Fluxo de trabalho:** usei IA para prototipacao rapida, apoio na implementacao, geracao de testes automatizados, documentacao e iteracao.
+- **Responsabilidade:** a IA atuou como multiplicador, enquanto mantive responsabilidade pelo desenho do sistema, tomada de decisoes, aplicacao em sala, validacao e resultado final.
+
+### Qualidade
+
+- **Smoke testing:** verificacoes automatizadas para caminhos criticos como entrada de jogador, envio de pontuacao, atualizacao de ranking e fluxos do professor.
+- **Deploy:** publicacao na Vercel para iteracao rapida a partir de feedback em sala.
+- **Configuracao:** valores sensiveis sao tratados por variaveis de ambiente e nao ficam versionados no repositorio.
+
+### Stack Tecnica
+
+| Camada | Tecnologia |
+| :--- | :--- |
+| Frontend | HTML5, CSS3, JavaScript ES6+ |
+| Backend | Node.js Serverless Functions |
+| Banco de dados | Supabase/PostgreSQL |
+| DevOps | Vercel |
+| Testes | Runner customizado em Node.js |
+
+### Como Rodar
+
+```bash
+git clone https://github.com/eriklluan/keyboardgame.git
+cd keyboardgame
+npm install
+npm run dev
+```
+
+Crie as variaveis de ambiente localmente ou na Vercel:
+
+```bash
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+TEACHER_ACCESS_KEY=optional_teacher_key
+```
+
+Execute os testes:
+
+```bash
+npm test
+```
+
+### Contato
+
+- **GitHub:** https://github.com/eriklluan
+- **LinkedIn:** https://www.linkedin.com/in/erikllasch
+- **Email:** erikllasch@gmail.com
