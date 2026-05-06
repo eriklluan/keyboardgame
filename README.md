@@ -1,15 +1,15 @@
-# KeyGame | EdTech Full-Stack Solution
+# KeyGame | Solução EdTech Full-Stack
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=flat-square&logo=vercel)](https://keyboardgame-main.vercel.app)
 [![Backend: Supabase](https://img.shields.io/badge/Backend-Supabase-3ECF8E?style=flat-square&logo=supabase)](https://supabase.com)
 [![Frontend: Vanilla JS](https://img.shields.io/badge/Frontend-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[English](#english) | [Portugues](#portugues)
+[English](#english) | [Português](#português)
 
 **Live demo:** https://keyboardgame-main.vercel.app
 
-<img src="demo-screenshots/game-interface.png" alt="KeyGame interface" width="800">
+<img src="demo-screenshots/game-interface.png" alt="Interface do KeyGame" width="800">
 
 ## English
 
@@ -117,84 +117,81 @@ npm test
 - **LinkedIn:** https://www.linkedin.com/in/erikllasch
 - **Email:** erikllasch@gmail.com
 
-## Portugues
+## Português
 
-**KeyGame** e uma solucao educacional full-stack de alta eficiencia criada para reduzir uma lacuna de fluencia digital. O projeto transforma o dominio de atalhos de teclado, um gargalo importante na produtividade de quem esta aprendendo programacao, em uma experiencia gamificada e mensuravel.
+O **KeyGame** é uma solução educacional full-stack de alta eficiência, projetada para mitigar a lacuna de fluência digital. O projeto transforma o domínio de atalhos de teclado, um gargalo crítico na produtividade de novos desenvolvedores, em uma experiência de aprendizado gamificada, imersiva e mensurável.
 
-### Impacto Real & Validacao em Sala
+### Impacto Real e Validação em Campo
 
-Diferente de muitos projetos de portfolio, o KeyGame foi criado para resolver um gargalo observado em sala dentro do **Programe seu Futuro**, uma iniciativa educacional da **Unijui** em Ijui, Brasil. Estudantes do ensino publico participam de um ano inteiro de aulas introdutorias de programacao, e eu atuo no projeto ha um ano como professor.
+Diferente de projetos estritamente acadêmicos, o KeyGame foi concebido para resolver um problema real identificado no **Programe seu Futuro**, uma iniciativa educacional da **Unijuí** em Ijuí/RS. Como instrutor do projeto, pude validar a solução diretamente com o público-alvo.
 
-- **Publico-alvo:** 22+ estudantes ativos em introducao a programacao.
-- **Problema:** observacao em sala mostrou conclusao de tarefas mais lenta quando os alunos nao dominavam atalhos de teclado.
-- **Resultado:** maior engajamento por meio de ranking competitivo, feedback imediato e pratica repetivel.
-- **Escalabilidade:** arquitetura serverless pensada para picos de uso em sala com baixo custo operacional.
+- **Público-alvo:** mais de 22 estudantes ativos em cursos introdutórios de programação.
+- **Problema:** a observação em sala de aula revelou uma redução na cadência de execução de tarefas devido à falta de familiaridade com atalhos essenciais.
+- **Resultado:** aumento expressivo no engajamento através de rankings competitivos, loops de feedback imediato e prática deliberada.
+- **Escalabilidade:** arquitetura serverless dimensionada para suportar picos de tráfego simultâneos em ambiente escolar com custo operacional zero.
 
 <img src="demo-screenshots/erik-presenting.jpeg" alt="Erik apresentando o KeyGame" width="480">
 
-### Capacidades do Produto
+### Funcionalidades do Produto
 
-- Modo pratica sem login.
-- Modo turma usando codigo de acesso.
-- Modo professor para criar turmas, gerenciar rankings, resetar pontuacoes e limpar dados.
-- Desafios rapidos de atalhos.
-- Modo quiz.
-- Modo de aprendizado guiado com explicacao, tarefa e validacao.
-- Progressao por dificuldade: facil, medio e dificil.
-- Sistema de pontuacao com combos, bonus por acerto perfeito e penalidades leves.
-- Ranking global e por turma com Supabase/PostgreSQL.
-- Interface bilingue: portugues e ingles.
+- **Modo Prática:** acesso imediato sem necessidade de autenticação.
+- **Modo Turma:** entrada simplificada via código de acesso exclusivo.
+- **Painel do Instrutor:** gestão completa de turmas, rankings, reset de pontuações e limpeza de dados.
+- **Desafios Dinâmicos:** testes rápidos de reflexo e memória motora.
+- **Aprendizado Guiado:** módulos com explicação teórica, tarefa prática e validação em tempo real.
+- **Progressão de Dificuldade:** níveis Fácil, Médio e Difícil para evolução gradual.
+- **Sistema de Scoring:** algoritmo com combos, bônus de performance (flawless) e penalidades leves.
+- **Persistência de Dados:** rankings globais e locais integrados ao Supabase/PostgreSQL.
+- **Internacionalização:** interface bilíngue (Português e Inglês).
 
-### Arquitetura Tecnica & Decisoes
+### Arquitetura Técnica e Decisões de Engenharia
 
-#### Frontend de Alta Eficiencia
+#### Frontend de Baixa Latência
 
-- **JavaScript puro, sem framework:** escolhido para maximizar compatibilidade com computadores de poucos recursos em escolas publicas e evitar peso desnecessario no carregamento.
-- **Gerenciamento de estado customizado:** controla estados do jogo, combos, dificuldade, validacao e transicoes de interface sem bibliotecas pesadas.
-- **Experiencia single-page:** mantem o fluxo de aprendizagem rapido e direto para uso em sala.
+- **Vanilla JavaScript (ES6+):** optei por não utilizar frameworks para maximizar a compatibilidade com o hardware legado das escolas públicas, garantindo um *footprint* mínimo e carregamento instantâneo.
+- **State Management Customizado:** implementação de uma gerência de estado leve para controlar o fluxo do jogo, pontuações e transições de UI sem dependências externas.
+- **SPA (Single Page Application):** experiência fluida que mantém o foco do aluno no aprendizado, sem recarregamentos de página.
 
-#### Backend Serverless & Persistencia
+#### Backend Serverless e Persistência
 
-- **Arquitetura:** funcoes serverless em Node.js hospedadas na Vercel.
-- **Banco de dados:** Supabase/PostgreSQL para turmas, usuarios, pontuacoes e rankings.
-- **Seguranca:** credenciais por variaveis de ambiente, chave de acesso especifica para professor e schema Supabase com Row Level Security habilitado.
-- **Design de API:** rotas separadas por dominio: jogador, rankings e operacoes do professor.
+- **Infraestrutura:** funções serverless em Node.js hospedadas na Vercel, garantindo alta disponibilidade e escalonamento sob demanda.
+- **Banco de Dados:** utilização do Supabase para persistência de dados, aproveitando o poder do PostgreSQL.
+- **Segurança:** implementação de políticas de **Row Level Security (RLS)** no banco de dados, gestão de credenciais via variáveis de ambiente e chaves de acesso administrativo.
 
 ### Endpoints da API
 
-| Metodo | Endpoint | Descricao |
+| Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
-| `POST` | `/api/player/join` | Registra ou entra em uma turma. |
-| `POST` | `/api/player/score` | Envia e acumula pontuacao do jogador. |
-| `GET` | `/api/rankings` | Busca rankings globais e por turma. |
-| `POST` | `/api/teacher/classroom` | Cria ou atualiza uma turma. |
-| `POST` | `/api/teacher/reset` | Reseta pontuacoes da turma. |
-| `POST` | `/api/teacher/clear` | Limpa registros de turma ou banco com confirmacao. |
+| `POST` | `/api/player/join` | Registro ou ingresso em uma turma específica. |
+| `POST` | `/api/player/score` | Submissão e acumulação de pontuação do jogador. |
+| `GET` | `/api/rankings` | Recuperação de rankings globais e por turma. |
+| `POST` | `/api/teacher/classroom` | Criação ou atualização de configurações de turma. |
+| `POST` | `/api/teacher/reset` | Reinicialização das pontuações de uma turma. |
+| `POST` | `/api/teacher/clear` | Limpeza de registros com confirmação de segurança. |
 
 ### Mentalidade de Engenharia: Desenvolvimento Assistido por IA
 
-Este projeto tambem funciona como um estudo pratico de produtividade moderna em engenharia de software.
+Este projeto também atua como um estudo de caso em **produtividade moderna**.
 
-- **Fluxo de trabalho:** usei IA para prototipacao rapida, apoio na implementacao, geracao de testes automatizados, documentacao e iteracao.
-- **Responsabilidade:** a IA atuou como multiplicador, enquanto mantive responsabilidade pelo desenho do sistema, tomada de decisoes, aplicacao em sala, validacao e resultado final.
+- **Workflow:** utilizei ferramentas de IA para acelerar a prototipagem, suporte na implementação de lógica complexa, geração de testes automatizados e refinamento de documentação.
+- **Propriedade Técnica:** a IA funcionou como um multiplicador de capacidade (*force multiplier*), enquanto mantive a autoridade sobre o design do sistema, decisões arquiteturais e validação prática em ambiente real.
 
-### Qualidade
+### Qualidade e Confiabilidade
 
-- **Smoke testing:** verificacoes automatizadas para caminhos criticos como entrada de jogador, envio de pontuacao, atualizacao de ranking e fluxos do professor.
-- **Deploy:** publicacao na Vercel para iteracao rapida a partir de feedback em sala.
-- **Configuracao:** valores sensiveis sao tratados por variaveis de ambiente e nao ficam versionados no repositorio.
+- **Smoke Testing:** verificações automatizadas para caminhos críticos, garantindo que o fluxo "Join -> Score -> Ranking" seja resiliente.
+- **CI/CD:** deploy automatizado via Vercel, permitindo iterações rápidas baseadas no feedback colhido em tempo real nas aulas.
 
-### Stack Tecnica
+### Stack Técnica
 
 | Camada | Tecnologia |
 | :--- | :--- |
-| Frontend | HTML5, CSS3, JavaScript ES6+ |
-| Backend | Node.js Serverless Functions |
-| Banco de dados | Supabase/PostgreSQL |
-| DevOps | Vercel |
-| Testes | Runner customizado em Node.js |
+| **Frontend** | HTML5, CSS3, JavaScript ES6+ |
+| **Backend** | Node.js (Serverless Functions) |
+| **Banco de Dados** | Supabase (PostgreSQL) |
+| **DevOps** | Vercel |
+| **Testes** | Test Runner customizado em Node.js |
 
-### Como Rodar
+### Configuração e Instalação
 
 ```bash
 git clone https://github.com/eriklluan/keyboardgame.git
@@ -203,15 +200,15 @@ npm install
 npm run dev
 ```
 
-Crie as variaveis de ambiente localmente ou na Vercel:
+Configure as variáveis de ambiente localmente ou no painel da Vercel:
 
 ```bash
-SUPABASE_URL=https://your-project-ref.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-TEACHER_ACCESS_KEY=optional_teacher_key
+SUPABASE_URL=https://seu-projeto.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=sua_chave_service_role
+TEACHER_ACCESS_KEY=chave_opcional_professor
 ```
 
-Execute os testes:
+Executar testes:
 
 ```bash
 npm test
