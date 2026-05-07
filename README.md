@@ -17,7 +17,7 @@
 
 ### Business Impact & Real-World Validation
 
-Unlike many portfolio projects, KeyGame was engineered to solve a validated classroom bottleneck inside **Programe seu Futuro**, an educational initiative by **Unijui** in Ijui, Brazil. Public school students attend a full year of introductory programming classes, and I have worked on the project for one year as a teacher.
+Unlike many portfolio projects, KeyGame was engineered to solve a validated classroom bottleneck inside **Programe seu Futuro**, an educational initiative by **Unijuí** in Ijuí, Brazil. Public school students attend a full year of introductory programming classes, and I have worked on the project for one year as a teacher.
 
 - **Target audience:** 22+ active students in introductory programming.
 - **Problem:** classroom observation showed slower task completion when students lacked keyboard shortcut fluency.
@@ -119,16 +119,16 @@ npm test
 
 ## Português
 
-O **KeyGame** é uma solução educacional full-stack de alta eficiência, projetada para mitigar a lacuna de fluência digital. O projeto transforma o domínio de atalhos de teclado, um gargalo crítico na produtividade de novos desenvolvedores, em uma experiência de aprendizado gamificada, imersiva e mensurável.
+O **KeyGame** é uma solução educacional full-stack de alta eficiência, projetada para reduzir a lacuna de fluência digital. O projeto transforma o domínio de atalhos de teclado, um gargalo crítico na produtividade de novos desenvolvedores, em uma experiência de aprendizado gamificada, imersiva e mensurável.
 
 ### Impacto Real e Validação em Campo
 
-Diferente de projetos estritamente acadêmicos, o KeyGame foi concebido para resolver um problema real identificado no **Programe seu Futuro**, uma iniciativa educacional da **Unijuí** em Ijuí/RS. Como instrutor do projeto, pude validar a solução diretamente com o público-alvo.
+Diferentemente de projetos estritamente acadêmicos, o KeyGame foi concebido para resolver um problema real identificado no **Programe seu Futuro**, uma iniciativa educacional da **Unijuí** em Ijuí/RS. Como instrutor do projeto, pude validar a solução diretamente com o público-alvo.
 
 - **Público-alvo:** mais de 22 estudantes ativos em cursos introdutórios de programação.
-- **Problema:** a observação em sala de aula revelou uma redução na cadência de execução de tarefas devido à falta de familiaridade com atalhos essenciais.
-- **Resultado:** aumento expressivo no engajamento através de rankings competitivos, loops de feedback imediato e prática deliberada.
-- **Escalabilidade:** arquitetura serverless dimensionada para suportar picos de tráfego simultâneos em ambiente escolar com custo operacional zero.
+- **Problema:** a observação em sala de aula revelou uma redução no ritmo de execução das tarefas devido à falta de familiaridade com atalhos essenciais.
+- **Resultado:** aumento expressivo no engajamento por meio de rankings competitivos, loops de feedback imediato e prática deliberada.
+- **Escalabilidade:** arquitetura serverless dimensionada para suportar picos simultâneos de tráfego em ambiente escolar com custo operacional zero.
 
 <img src="demo-screenshots/erik-presenting.jpeg" alt="Erik apresentando o KeyGame" width="480">
 
@@ -136,11 +136,11 @@ Diferente de projetos estritamente acadêmicos, o KeyGame foi concebido para res
 
 - **Modo Prática:** acesso imediato sem necessidade de autenticação.
 - **Modo Turma:** entrada simplificada via código de acesso exclusivo.
-- **Painel do Instrutor:** gestão completa de turmas, rankings, reset de pontuações e limpeza de dados.
+- **Painel do Instrutor:** gestão completa de turmas, rankings, redefinição de pontuações e limpeza de dados.
 - **Desafios Dinâmicos:** testes rápidos de reflexo e memória motora.
 - **Aprendizado Guiado:** módulos com explicação teórica, tarefa prática e validação em tempo real.
 - **Progressão de Dificuldade:** níveis Fácil, Médio e Difícil para evolução gradual.
-- **Sistema de Scoring:** algoritmo com combos, bônus de performance (flawless) e penalidades leves.
+- **Sistema de Pontuação:** algoritmo com combos, bônus de desempenho (flawless) e penalidades leves.
 - **Persistência de Dados:** rankings globais e locais integrados ao Supabase/PostgreSQL.
 - **Internacionalização:** interface bilíngue (Português e Inglês).
 
@@ -149,7 +149,7 @@ Diferente de projetos estritamente acadêmicos, o KeyGame foi concebido para res
 #### Frontend de Baixa Latência
 
 - **Vanilla JavaScript (ES6+):** optei por não utilizar frameworks para maximizar a compatibilidade com o hardware legado das escolas públicas, garantindo um *footprint* mínimo e carregamento instantâneo.
-- **State Management Customizado:** implementação de uma gerência de estado leve para controlar o fluxo do jogo, pontuações e transições de UI sem dependências externas.
+- **Gerenciamento de Estado Customizado:** implementação de uma camada leve de estado para controlar o fluxo do jogo, pontuações e transições de UI sem dependências externas.
 - **SPA (Single Page Application):** experiência fluida que mantém o foco do aluno no aprendizado, sem recarregamentos de página.
 
 #### Backend Serverless e Persistência
@@ -173,7 +173,7 @@ Diferente de projetos estritamente acadêmicos, o KeyGame foi concebido para res
 
 Este projeto também atua como um estudo de caso em **produtividade moderna**.
 
-- **Workflow:** utilizei ferramentas de IA para acelerar a prototipagem, suporte na implementação de lógica complexa, geração de testes automatizados e refinamento de documentação.
+- **Workflow:** utilizei ferramentas de IA para acelerar a prototipagem, apoiar a implementação de lógicas complexas, gerar testes automatizados e refinar a documentação.
 - **Propriedade Técnica:** a IA funcionou como um multiplicador de capacidade (*force multiplier*), enquanto mantive a autoridade sobre o design do sistema, decisões arquiteturais e validação prática em ambiente real.
 
 ### Qualidade e Confiabilidade
